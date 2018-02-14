@@ -1,5 +1,3 @@
-# Getting started
-
 ## Cloning the repo:
 
 git clone https://github.com/uwblueprint/dancefest-mobile.git
