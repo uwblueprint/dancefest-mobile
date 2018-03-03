@@ -5,7 +5,7 @@ export class TextField extends React.Component {
   render() {
     return (
     <View style={styles.textField}>
-      <Text style={styles.titleText}>{this.props.title}</Text>
+      {this.props.title && <Text style={styles.titleText}>{this.props.title}</Text>}
       <TextInput underlineColorAndroid={'transparent'}
                  multiline={this.props.large}
                  numberOfLines={this.props.large ? 8 : 1}
