@@ -7,7 +7,9 @@ The README in GitHub repo has instructions to start developing the app
 
 Make sure you have npm installed
 
-With npm installed on your machine you can run `npm install` and `exp start` to start the app in development mode
+With npm installed on your machine you can run `npm install`
+
+Then run `npm install exp -g` to install expo globally, and then `exp start` to start the app in development mode
 
 ## Opening the app through the expo app:
 
