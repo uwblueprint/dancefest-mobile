@@ -1,12 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Text, TouchableHighlight, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 
-export default class ButtonRadio extends React.Component {
+export default class RadioButton extends React.Component {
+  static propTypes = {
+    buttonNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
-      chosenButton: -1
+      chosenButton: -1,
     }
   }
 
@@ -16,14 +21,14 @@ export default class ButtonRadio extends React.Component {
         {this.props.buttonNames.map((button, i) => (
           <TouchableHighlight
             key={i} 
-            style={[style.button, this.state.chosenButton == i ? style.selectedButton : {}]}
+            style={[style.button, this.state.chosenButton === i ? style.selectedButton : {}]}
             onPress={() => {
               this.setState({
                 chosenButton: i,
               });
             }}
             underlayColor='#fff'>
-              <Text style={this.state.chosenButton == i ? style.selectedText : {}}>{button}</Text>
+              <Text style={this.state.chosenButton === i ? style.selectedText : {}}>{button}</Text>
           </TouchableHighlight>
         ))}
       </View>
