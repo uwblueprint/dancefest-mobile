@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform, StyleSheet, Text, View, TextInput } from 'react-native';
 
-export class TextField extends React.Component {
+export default class TextField extends React.Component {
   render() {
     return (
     <View style={styles.textField}>
