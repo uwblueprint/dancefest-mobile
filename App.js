@@ -1,5 +1,5 @@
 import React from 'react';
-import RadioButton from './components/RadioButton'
+import RadioButtons from './components/RadioButtons'
 import { StyleSheet, Text, View } from 'react-native';
 
 export default class App extends React.Component {
@@ -7,7 +7,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <Text>DanceFest!</Text>
-        <RadioButton buttonNames={['Hip Hop', 'Jazz', 'Lyrical', 'Modern/Contemporary', 'Ballet', 'Cultural']}/>
+        <RadioButtons buttonNames={['Hip Hop', 'Jazz', 'Lyrical', 'Modern/Contemporary', 'Ballet', 'Cultural']}/>
       </View>
     );
   }

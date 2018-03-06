@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, TouchableHighlight, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 
-export default class RadioButton extends React.Component {
+export default class RadioButtons extends React.Component {
   static propTypes = {
     buttonNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   }
