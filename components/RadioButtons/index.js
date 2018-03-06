@@ -7,18 +7,18 @@ export default class RadioButtons extends React.Component {
   static propTypes = {
     buttonNames: PropTypes.arrayOf(PropTypes.string).isRequired,
     input: PropTypes.shape({
-      value: PropTypes.string.isRequired,
       onChange: PropTypes.func.isRequired,
+      value: PropTypes.string.isRequired,
     }),
   }
 
   render() {
-    const { input: { value, onChange } } = this.props;
-    const chosenIndex = this.props.buttonNames.indexOf(value);
+    const { buttonNames, input: { onChange, value } } = this.props;
+    const chosenIndex = buttonNames.indexOf(value);
 
     return (
       <View style={style.buttonCollection}>
-        {this.props.buttonNames.map((button, i) => (
+        {buttonNames.map((button, i) => (
           <TouchableHighlight
             key={i} 
             style={[style.button, chosenIndex === i ? style.selectedButton : {}]}
@@ -50,5 +50,5 @@ const style = StyleSheet.create({
   },
   selectedText: {
     color: '#fff',
-  }
+  },
 });
