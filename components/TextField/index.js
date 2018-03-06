@@ -6,20 +6,20 @@ export default class TextField extends React.Component {
   static propTypes = {
     numberOfLines: PropTypes.number,
     input: PropTypes.shape({
-      value: PropTypes.string.isRequired,
       onChange: PropTypes.func.isRequired,
+      value: PropTypes.string.isRequired,
     }),
   };
 
   render() {
-    const { input: { value, onChange }, numberOfLines } = this.props;
+    const { input: { onChange, value }, numberOfLines } = this.props;
     return (
     <View style={styles.textField}>
-      <TextInput underlineColorAndroid={'transparent'}
-                 multiline={numberOfLines > 1}
+      <TextInput multiline={numberOfLines > 1}
                  numberOfLines={numberOfLines}
-                 style={[styles.inputField, numberOfLines > 1 ? styles.largeInputField : {}]}
                  onChangeText={(text) => onChange(text)}
+                 style={[styles.inputField, numberOfLines > 1 ? styles.largeInputField : {}]}
+                 underlineColorAndroid={'transparent'}
                  value={value}/>
     </View>
     );
