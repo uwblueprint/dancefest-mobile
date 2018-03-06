@@ -5,6 +5,10 @@ import { Platform, StyleSheet, Text, View, TextInput } from 'react-native';
 export default class TextField extends React.Component {
   static propTypes = {
     numberOfLines: PropTypes.number,
+    input: PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      onChange: PropTypes.func.isRequired,
+    }),
   };
 
   render() {
