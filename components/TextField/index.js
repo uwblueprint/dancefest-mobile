@@ -8,12 +8,15 @@ export default class TextField extends React.Component {
   };
 
   render() {
+    const { input: { value, onChange } } = this.props;
     return (
     <View style={styles.textField}>
       <TextInput underlineColorAndroid={'transparent'}
                  multiline={this.props.numberOfLines > 1}
                  numberOfLines={this.props.numberOfLines}
-                 style={[styles.inputField, this.props.numberOfLines > 1 ? styles.largeInputField : {}]}/>
+                 style={[styles.inputField, this.props.numberOfLines > 1 ? styles.largeInputField : {}]}
+                 onChangeText={(text) => onChange(text)}
+                 value={value}/>
     </View>
     );
   }
