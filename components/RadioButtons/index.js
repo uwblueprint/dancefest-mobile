@@ -6,29 +6,25 @@ import { StyleSheet } from 'react-native';
 export default class RadioButtons extends React.Component {
   static propTypes = {
     buttonNames: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      chosenButton: -1,
-    }
+    input: PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      onChange: PropTypes.func.isRequired,
+    }),
   }
 
   render() {
+    const { input: { value, onChange } } = this.props;
+    const chosenIndex = this.props.buttonNames.indexOf(value);
+
     return (
       <View style={style.buttonCollection}>
         {this.props.buttonNames.map((button, i) => (
           <TouchableHighlight
             key={i} 
-            style={[style.button, this.state.chosenButton === i ? style.selectedButton : {}]}
-            onPress={() => {
-              this.setState({
-                chosenButton: i,
-              });
-            }}
+            style={[style.button, chosenIndex === i ? style.selectedButton : {}]}
+            onPress={onChange(button)}
             underlayColor='#fff'>
-              <Text style={this.state.chosenButton === i ? style.selectedText : {}}>{button}</Text>
+              <Text style={chosenIndex === i ? style.selectedText : {}}>{button}</Text>
           </TouchableHighlight>
         ))}
       </View>
