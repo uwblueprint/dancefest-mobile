@@ -1,15 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Platform, StyleSheet, Text, View, TextInput } from 'react-native';
 
 export default class TextField extends React.Component {
+  static propTypes = {
+    numberOfLines: PropTypes.number,
+  };
+
   render() {
     return (
     <View style={styles.textField}>
-      {this.props.title && <Text style={styles.titleText}>{this.props.title}</Text>}
       <TextInput underlineColorAndroid={'transparent'}
-                 multiline={this.props.large}
-                 numberOfLines={this.props.large ? 8 : 1}
-                 style={[styles.inputField, this.props.large ? styles.largeInputField : {}]}/>
+                 multiline={this.props.numberOfLines > 1}
+                 numberOfLines={this.props.numberOfLines}
+                 style={[styles.inputField, this.props.numberOfLines > 1 ? styles.largeInputField : {}]}/>
     </View>
     );
   }
@@ -18,12 +22,6 @@ export default class TextField extends React.Component {
 const styles = StyleSheet.create({
   textField: {
     alignSelf: 'stretch',
-  },
-  titleText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingVertical: 15,
   },
   inputField: {
     backgroundColor: 'white',
