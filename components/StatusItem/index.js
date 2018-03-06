@@ -23,7 +23,7 @@ class Information extends Component {
   render() {
     return (
       <View style={style.information}>
-        <Text style={style.danceNum}> Dance1 {this.props.danceNum} </Text>
+        <Text style={style.danceNum}> Dance {this.props.danceNum} </Text>
         <Text style={style.status}> {this.props.status} </Text>
       </View>
     );
