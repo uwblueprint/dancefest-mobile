@@ -10,9 +10,9 @@ const store = createStore(rootReducer)
 export default class App extends React.Component {
   render() {
     return (
-			<Provider store={store}>
-				<DanceCritiqueForm />
-			</Provider>
+      <Provider store={store}>
+        <DanceCritiqueForm />
+      </Provider>
     );
   }
 }
