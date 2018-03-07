@@ -2,14 +2,17 @@ import React from 'react'
 import { reduxForm } from 'redux-form'
 import { StyleSheet, Text, View } from 'react-native'
 
-const DanceCritiqueForm = props => {
-  const { handleSubmit } = props
-  return (
-		<View style={styles.container}>
-			<Text>DanceFest!</Text>
-				{/* form body*/}
-		</View>
-	)
+export default class DanceCritiqueForm extends React.Component {
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>DanceFest!</Text>
+          {/* form body*/}
+      </View>
+    )
+  }
+
 }
 
 const styles = StyleSheet.create({
@@ -25,5 +28,3 @@ const styles = StyleSheet.create({
 DanceCritiqueForm = reduxForm({
   form: 'danceCritique'
 })(DanceCritiqueForm)
-
-export default DanceCritiqueForm
