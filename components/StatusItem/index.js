@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 class Icon extends Component {
   render() {
-    if (this.props.status == 'Uploaded') {
+    if (this.props.danceStatus == 'Uploaded') {
     pic=require('..\\icons\\checkmark.png')
   } else {
     pic=require('..\\icons\\exclamation.jpg')
@@ -23,8 +23,8 @@ class Information extends Component {
   render() {
     return (
       <View style={style.information}>
-        <Text style={style.danceNum}> Dance {this.props.danceNum} </Text>
-        <Text style={style.status}> {this.props.status} </Text>
+        <Text style={style.danceNum}> # {this.props.danceNum} </Text>
+        <Text style={style.danceName}> {this.props.danceName} </Text>
       </View>
     );
   }
@@ -33,13 +33,14 @@ class Information extends Component {
 export default class StatusItem extends React.Component {
   static propTypes = {
     danceNum: PropTypes.number.isRequired,
-    status: PropTypes.string.isRequired,
+    danceStatus: PropTypes.string.isRequired,
+    danceName: PropTypes.string.isRequired,
   }
   render () {
     return (
       <View style={style.items}>
-        <Icon status={this.props.status} />
-        <Information danceNum={this.props.danceNum} status={this.props.status} />
+        <Information danceNum={this.props.danceNum} danceName={this.props.danceName} />
+        <Icon danceStatus={this.props.danceStatus} />
       </View>
     );
   }
@@ -51,25 +52,26 @@ const style = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    height: 70,
+    height: 'auto',
     borderRadius: 4,
     borderWidth: 1.5,
     borderColor: '#d6d7da',
   },
   danceNum: {
     alignItems: 'flex-start',
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: '300',
   },
   icon: {
-    height: '100%',
+    height: 70,
     width: '100%',
   },
-  status: {
+  danceName: {
     alignItems: 'flex-end',
-    fontSize: 16,
+    fontSize: 24,
   },
   information: {
     width: '75%',
+    height: 'auto',
   },
 });
