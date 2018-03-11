@@ -22,15 +22,15 @@ const RadioButtons = ({ buttonNames, input: { onChange, value } }) => {
       ))}
     </View>
   );
-}
+};
 
 RadioButtons.propTypes = {
   buttonNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   input: PropTypes.shape({
     onChange: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
-  }),
-}
+  }).isRequired,
+};
 
 /**
  * Styles
