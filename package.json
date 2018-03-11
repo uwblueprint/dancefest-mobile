@@ -20,7 +20,10 @@
   },
   "dependencies": {
     "expo": "^25.0.0",
+    "npm": "^5.7.1",
     "react": "16.2.0",
-    "react-native": "0.52.0"
+    "react-native": "0.52.0",
+    "react-native-svg": "^5.5.1",
+    "react-native-svg-icon": "^0.7.0"
   }
 }
