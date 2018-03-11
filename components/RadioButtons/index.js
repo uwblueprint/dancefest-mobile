@@ -17,7 +17,7 @@ const RadioButtons = ({ buttonNames, input: { onChange, value } }) => {
           style={[style.button, chosenIndex === i ? style.selectedButton : {}]}
           onPress={onChange(button)}
           underlayColor='#fff'>
-            <Text style={chosenIndex === i ? style.selectedText : {}}>{button}</Text>
+          <Text style={chosenIndex === i ? style.selectedText : {}}>{button}</Text>
         </TouchableHighlight>
       ))}
     </View>
