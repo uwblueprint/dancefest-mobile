@@ -3,26 +3,21 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 import { Field } from 'redux-form';
 
-export default class CritiqueSection extends React.Component {
-  static propTypes = {
-    component: PropTypes.func.isRequired,
-    description: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    props: PropTypes.object,
-    title: PropTypes.string.isRequired,
-  };
+const CritiqueSection = ({ component, description, name, props, title }) => (
+  <View style={styles.fieldView}>
+    <Text style={styles.titleText}>{title}</Text>
+    <Text style={styles.descText}>{description}</Text>
+    <Field name={name} component={component} props={props} />
+  </View>
+);
 
-  render() {
-    const { component, description, name,  props, title } = this.props;
-    return (
-    <View style={styles.fieldView}>
-      <Text style={styles.titleText}>{title}</Text>
-      <Text style={styles.descText}>{description}</Text>
-      <Field name={name} component={component} props={props} />
-    </View>
-    );
-  }
-}
+CritiqueSection.propTypes = {
+  component: PropTypes.func.isRequired,
+  description: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  props: PropTypes.object,
+  title: PropTypes.string.isRequired,
+};
 
 const styles = StyleSheet.create({
   fieldView: {
@@ -39,3 +34,5 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 });
+
+export default CritiqueSection;
