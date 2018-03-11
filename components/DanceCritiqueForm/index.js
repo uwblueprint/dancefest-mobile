@@ -1,6 +1,7 @@
 import React from 'react'
-import { reduxForm } from 'redux-form'
+import { reduxForm, Field } from 'redux-form'
 import { StyleSheet, Text, View } from 'react-native'
+import RadioButtons from '../RadioButtons'
 
 class DanceCritiqueForm extends React.Component {
 
@@ -8,7 +9,8 @@ class DanceCritiqueForm extends React.Component {
     return (
       <View style={styles.container}>
         <Text>DanceFest!</Text>
-          {/* form body*/}
+        <Field name={'test1'} component={RadioButtons} props={{buttonNames: ['1', '2', '3', '4'], mergeButtons: true}} />
+        <Field name={'test2'} component={RadioButtons} props={{buttonNames: ['Jazz', 'Hip-Hop', 'Contemporary', 'Fusion']}} />
       </View>
     )
   }
@@ -18,7 +20,7 @@ class DanceCritiqueForm extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
   },
