@@ -2,28 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Platform, StyleSheet, Text, View, TextInput } from 'react-native';
 
-export default class TextField extends React.Component {
-  static propTypes = {
-    numberOfLines: PropTypes.number,
-    input: PropTypes.shape({
-      onChange: PropTypes.func.isRequired,
-      value: PropTypes.string.isRequired,
-    }),
-  };
+/**
+ * Component
+ */
 
-  render() {
-    const { input: { onChange, value }, numberOfLines } = this.props;
-    return (
+const TextField = ({ numberOfLines, input: { onChange, value } }) => {
+  return (
     <View style={styles.textField}>
       <TextInput multiline={numberOfLines > 1}
                  numberOfLines={numberOfLines}
                  onChangeText={(text) => onChange(text)}
                  style={[styles.inputField, numberOfLines > 1 ? styles.largeInputField : {}]}
                  underlineColorAndroid={'transparent'}
-                 value={value}/>
+                 value={value} />
     </View>
-    );
-  }
+  );
+}
+
+TextField.propTypes = {
+  numberOfLines: PropTypes.number,
+  input: PropTypes.shape({
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+  }),
+}
 }
 
 const styles = StyleSheet.create({
@@ -44,3 +46,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   }
 });
+
+/**
+ * Exports
+ */
+
+export default TextField;
