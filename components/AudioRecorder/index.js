@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import _ from 'lodash';
+import _ from 'lodash-fp';
 
+const micIcon = require('./../../assets/ic_mic_white_24dp_2x.png');
 
 export default class AudioRecorder extends React.Component {
   constructor(props) {
@@ -10,7 +10,7 @@ export default class AudioRecorder extends React.Component {
     this.state = {
       isRecording: false,
       recordingDuration: 100000000,
-    }
+    };
   }
 
   toggleRecording(value) {
@@ -26,13 +26,13 @@ export default class AudioRecorder extends React.Component {
     const seconds = _.padStart((recordingDuration % 60000) / 1000, 2, '0');
     return (
       <View style={styles.audioRecorder}>
-        <Image source={require('./../../assets/ic_mic_white_24dp_2x.png')} />
+        <Image source={micIcon} />
         <Text style={styles.counter}>{hours}:{minutes}:{seconds}</Text>
         <Text style={styles.subText}>{this.state.isRecording ? 'Recording' : ' '}</Text>
         <TouchableHighlight
           onPress={() => this.toggleRecording(!this.state.isRecording)}
           style={styles.recordButtonOutline}>
-            <View style={this.state.isRecording? styles.stopButton : styles.recordButton} />
+          <View style={this.state.isRecording ? styles.stopButton : styles.recordButton} />
         </TouchableHighlight>
       </View>
     );
