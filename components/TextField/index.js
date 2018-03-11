@@ -26,6 +26,9 @@ TextField.propTypes = {
     value: PropTypes.string.isRequired,
   }),
 }
+
+TextField.defaultProps = {
+  numberOfLines: 1,
 }
 
 const styles = StyleSheet.create({
