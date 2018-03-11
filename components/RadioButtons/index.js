@@ -22,7 +22,7 @@ export default class RadioButtons extends React.Component {
           <TouchableHighlight
             key={i} 
             style={[style.button, chosenIndex === i ? style.selectedButton : {}]}
-            onPress={onChange(button)}
+            onPress={() => onChange(button)}
             underlayColor='#fff'>
               <Text style={chosenIndex === i ? style.selectedText : {}}>{button}</Text>
           </TouchableHighlight>
