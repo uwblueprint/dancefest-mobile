@@ -2,7 +2,7 @@ import React from 'react'
 import { reduxForm } from 'redux-form'
 import { StyleSheet, Text, View } from 'react-native'
 
-export default class DanceCritiqueForm extends React.Component {
+class DanceCritiqueForm extends React.Component {
 
   render() {
     return (
@@ -25,6 +25,6 @@ const styles = StyleSheet.create({
 });
 
 
-DanceCritiqueForm = reduxForm({
+export default DanceCritiqueForm = reduxForm({
   form: 'danceCritique'
-})(DanceCritiqueForm)
+})(DanceCritiqueForm);
