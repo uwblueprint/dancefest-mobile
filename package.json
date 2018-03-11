@@ -23,6 +23,8 @@
     "lodash-fp": "^0.10.4",
     "react": "16.2.0",
     "react-native": "0.52.0",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
     "redux-form": "^7.3.0",
     "underscore": "^1.8.3"
   }
