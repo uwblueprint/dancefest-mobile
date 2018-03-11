@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "expo": "^25.0.0",
-    "lodash": "^4.17.4",
+    "lodash-fp": "^0.10.4",
     "react": "16.2.0",
     "react-native": "0.52.0",
     "redux-form": "^7.3.0",
