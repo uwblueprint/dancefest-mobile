@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import _ from 'lodash-fp';
+import _ from 'lodash';
+import { Audio } from 'expo';
 
 const micIcon = require('./../../assets/ic_mic_white_24dp_2x.png');
 
@@ -10,13 +11,54 @@ export default class AudioRecorder extends React.Component {
     this.state = {
       isRecording: false,
       recordingDuration: 100000000,
+      recording: null,
     };
   }
 
-  toggleRecording(value) {
+  async toggleRecording() {
+    try {
+      if (!this.state.recording) {
+        const recording = new Audio.Recording();
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+          playsInSilentModeIOS: true,
+          shouldDuckAndroid: true,
+          interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+        });
+        await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+        this.setState({
+          recording: recording,
+        });
+      }
+      if (this.state.isRecording) {
+        await this.state.recording.pauseAsync();
+      } else {
+        await this.state.recording.startAsync();
+      }
+    } catch (error) {
+      console.log(error);
+    }
     this.setState({
-      isRecording: value,
+      isRecording: !this.state.isRecording,
     });
+  }
+
+  async stopRecording() {
+    if (this.state.recording) {
+      try {
+        await this.state.recording.stopAndUnloadAsync();
+        const uri = await this.state.recording.getURI();
+        const soundObject = await this.state.recording.createNewLoadedSound();
+        await soundObject['sound'].playAsync();
+      } catch (error) {
+        console.log(error);
+      }
+      this.setState({
+        isRecording: false,
+        recording: null,
+      });
+    }
   }
 
   render() {
@@ -30,9 +72,13 @@ export default class AudioRecorder extends React.Component {
         <Text style={styles.counter}>{hours}:{minutes}:{seconds}</Text>
         <Text style={styles.subText}>{this.state.isRecording ? 'Recording' : ' '}</Text>
         <TouchableHighlight
-          onPress={() => this.toggleRecording(!this.state.isRecording)}
+          onPress={async () => await this.toggleRecording()}
           style={styles.recordButtonOutline}>
           <View style={this.state.isRecording ? styles.stopButton : styles.recordButton} />
+        </TouchableHighlight>
+        <TouchableHighlight
+          onPress={async () => await this.stopRecording()}>
+          <Text style={styles.subText}>Stop and Play recording</Text>
         </TouchableHighlight>
       </View>
     );

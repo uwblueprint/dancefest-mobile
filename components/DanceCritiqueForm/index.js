@@ -1,14 +1,14 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
 import { StyleSheet, Text, View } from 'react-native'
+import AudioRecorder from '../AudioRecorder';
 
 class DanceCritiqueForm extends React.Component {
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>DanceFest!</Text>
-          {/* form body*/}
+        <AudioRecorder />
       </View>
     )
   }
@@ -18,7 +18,7 @@ class DanceCritiqueForm extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
   },
