@@ -10,14 +10,14 @@ const RadioButtons = ({ buttonNames, input: { onChange, value }, mergeButtons })
   const chosenIndex = buttonNames.indexOf(value);
 
   return (
-    <View style={mergeButtons ? style.mergedButtonCollection: style.buttonCollection}>
+    <View style={mergeButtons ? style.mergedButtonCollection : style.buttonCollection}>
       {buttonNames.map((button, i) => {
-        var styleArray = [];
+        const styleArray = [];
         if (mergeButtons) {
           styleArray.push(style.mergedButton);
-          if (i == 0) {
+          if (i === 0) {
             styleArray.push(style.leftMergedButton);
-          } else if (i == buttonNames.length - 1) {
+          } else if (i === buttonNames.length - 1) {
             styleArray.push(style.rightMergedButton);
           }
         } else {
@@ -31,9 +31,11 @@ const RadioButtons = ({ buttonNames, input: { onChange, value }, mergeButtons })
             style={styleArray}
             onPress={() => onChange(button)}
             activeOpacity={0.9}>
-              <Text style={[style.text, chosenIndex === i ? style.selectedText : {}]}>{button}</Text>
+            <Text style={[style.text, chosenIndex === i ? style.selectedText : {}]}>
+              {button}
+            </Text>
           </TouchableOpacity>
-        )
+        );
       })}
     </View>
   );
@@ -46,6 +48,10 @@ RadioButtons.propTypes = {
     value: PropTypes.string.isRequired,
   }).isRequired,
   mergeButtons: PropTypes.bool,
+};
+
+RadioButtons.defaultProps = {
+  mergeButtons: false,
 };
 
 /**
