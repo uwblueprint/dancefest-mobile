@@ -12,3 +12,10 @@ it('renders without crashing', () => {
   ).toJSON();
   expect(rendered).toBeTruthy();
 });
+
+it('renders merged buttons without crashing', () => {
+  const rendered = renderer.create(
+    <RadioButtons input={{value: 'a', onChange: () => {}}} mergeButtons={true} buttonNames={['a', 'b']}/>
+  ).toJSON();
+  expect(rendered).toBeTruthy();
+});
