@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import { Constants } from 'expo';
 import PropTypes from 'prop-types';
-import Icon from '..\\Icon';
+import Icon from './../Icon';
 
 
 class StatusItemIcon extends Component {

@@ -1,5 +1,5 @@
 import React from 'react';
-import StatusItem from '..\\index';
+import StatusItem from './index';
 import renderer from 'react-test-renderer';
 
 it('Renders exclamation without crashing', () => {
