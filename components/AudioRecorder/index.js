@@ -17,6 +17,14 @@ export default class AudioRecorder extends React.Component {
   }
 
   async toggleRecording() {
+    if (this.state.isRecording) {
+      await this.stopRecording();
+    } else {
+      await this.startRecording();
+    }
+  }
+
+  async startRecording() {
     let newRecording = null;
 
     try {
