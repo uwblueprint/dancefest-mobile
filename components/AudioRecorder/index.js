@@ -43,6 +43,8 @@ export default class AudioRecorder extends React.Component {
       let recording = null;
       if (!this.state.recording) {
         newRecording = new Audio.Recording();
+
+        // set audio mode to allow recording
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: true,
           interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -50,8 +52,12 @@ export default class AudioRecorder extends React.Component {
           shouldDuckAndroid: true,
           interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
         });
+
+        // audio file extension will be .m4a for iOS and Android
         const recordingOptions = Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY;
-        // recordingOptions.ios.extension = '.mp3';
+        recordingOptions.ios.extension = '.m4a';
+        recordingOptions.ios.outputFormat = Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_APPLELOSSLESS;
+
         await newRecording.prepareToRecordAsync(recordingOptions);
         recording = newRecording;
       } else {
@@ -84,6 +90,7 @@ export default class AudioRecorder extends React.Component {
       try {
         await this.state.recording.stopAndUnloadAsync();
         const uri = await this.state.recording.getURI();
+        console.log(uri);
         const soundObject = await this.state.recording.createNewLoadedSound();
         await soundObject.sound.playAsync();
       } catch (error) {
