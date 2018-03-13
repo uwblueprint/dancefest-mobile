@@ -17,9 +17,13 @@ export default class AudioRecorder extends React.Component {
   }
 
   async toggleRecording() {
+    let newRecording = null;
+
     try {
+      // either create a new recording or use the one on the state
+      let recording = null;
       if (!this.state.recording) {
-        const recording = new Audio.Recording();
+        newRecording = new Audio.Recording();
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: true,
           interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -27,22 +31,33 @@ export default class AudioRecorder extends React.Component {
           shouldDuckAndroid: true,
           interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
         });
-        await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
-        this.setState({
-          recording: recording,
-        });
-      }
-      if (this.state.isRecording) {
-        await this.state.recording.pauseAsync();
+        const recordingOptions = Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY;
+        // recordingOptions.ios.extension = '.mp3';
+        await newRecording.prepareToRecordAsync(recordingOptions);
+        recording = newRecording;
       } else {
-        await this.state.recording.startAsync();
+        recording = this.state.recording;
+      }
+
+      // pause or start/resume recording based on state
+      if (this.state.isRecording) {
+        await recording.pauseAsync();
+      } else {
+        await recording.startAsync();
       }
     } catch (error) {
       console.log(error);
+      return;
     }
-    this.setState({
+
+    // only update state if everything ran successfully
+    const stateUpdate = {
       isRecording: !this.state.isRecording,
-    });
+    }
+    if (newRecording) {
+      stateUpdate.recording = newRecording;
+    }
+    this.setState(stateUpdate);
   }
 
   async stopRecording() {
@@ -51,10 +66,12 @@ export default class AudioRecorder extends React.Component {
         await this.state.recording.stopAndUnloadAsync();
         const uri = await this.state.recording.getURI();
         const soundObject = await this.state.recording.createNewLoadedSound();
-        await soundObject['sound'].playAsync();
+        await soundObject.sound.playAsync();
       } catch (error) {
         console.log(error);
+        return;
       }
+
       this.setState({
         isRecording: false,
         recording: null,
