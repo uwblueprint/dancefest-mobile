@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { Audio } from 'expo';
 
 const micIcon = require('./../../assets/ic_mic_white_24dp_2x.png');
+const redoIcon = require('./../../assets/ic_replay_black_24dp_1x.png');
 
 export default class AudioRecorder extends React.Component {
   constructor(props) {
@@ -71,15 +72,18 @@ export default class AudioRecorder extends React.Component {
         <Image source={micIcon} />
         <Text style={styles.counter}>{hours}:{minutes}:{seconds}</Text>
         <Text style={styles.subText}>{this.state.isRecording ? 'Recording' : ' '}</Text>
-        <TouchableHighlight
-          onPress={async () => await this.toggleRecording()}
-          style={styles.recordButtonOutline}>
-          <View style={this.state.isRecording ? styles.stopButton : styles.recordButton} />
-        </TouchableHighlight>
-        <TouchableHighlight
-          onPress={async () => await this.stopRecording()}>
-          <Text style={styles.subText}>Stop and Play recording</Text>
-        </TouchableHighlight>
+        <View style={styles.buttonContainer}>
+          <TouchableHighlight
+            onPress={() => this.redo}
+            style={styles.redoButton}>
+            <Image source={redoIcon} />
+          </TouchableHighlight>
+          <TouchableHighlight
+            onPress={async () => await this.toggleRecording()}
+            style={styles.recordButtonOutline}>
+            <View style={this.state.isRecording ? styles.stopButton : styles.recordButton} />
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
@@ -100,9 +104,15 @@ const styles = StyleSheet.create({
     color: '#838383',
     marginBottom: 20,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
   recordButtonOutline: {
     width: 60,
     height: 60,
+    marginLeft: 25,
+    marginRight: 57,
     borderRadius: 30,
     borderWidth: 5,
     borderColor: 'white',
@@ -120,5 +130,13 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 3,
     backgroundColor: '#FF2464',
+  },
+  redoButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
