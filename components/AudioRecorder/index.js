@@ -16,6 +16,17 @@ export default class AudioRecorder extends React.Component {
     };
   }
 
+  async redo() {
+    if (this.state.isRecording) {
+      await this.stopRecording();
+    }
+    this.setState({
+      isRecording: false,
+      recordingDuration: 0,
+      recording: null,
+    });
+  }
+
   async toggleRecording() {
     if (this.state.isRecording) {
       await this.stopRecording();
@@ -99,7 +110,7 @@ export default class AudioRecorder extends React.Component {
         <Text style={styles.subText}>{this.state.isRecording ? 'Recording' : ' '}</Text>
         <View style={styles.buttonContainer}>
           <TouchableHighlight
-            onPress={() => this.redo}
+            onPress={async () => await this.redo()}
             style={styles.redoButton}>
             <Image source={redoIcon} />
           </TouchableHighlight>
