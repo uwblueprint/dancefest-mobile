@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 import { Field } from 'redux-form';
 
-const CritiqueSection = ({ component, description, name, props, title }) => (
+const CritiqueSection = ({ critiqueInput, critiqueInputProps, description, name, title }) => (
   <View style={styles.fieldView}>
     <Text style={styles.titleText}>{title}</Text>
     <Text style={styles.descText}>{description}</Text>
-    <Field name={name} component={component} props={props} />
+    <Field name={name} component={critiqueInput} {...critiqueInputProps} />
   </View>
 );
 
 CritiqueSection.propTypes = {
-  component: PropTypes.func.isRequired,
+  critiqueInput: PropTypes.func.isRequired,
+  critiqueInputProps: PropTypes.object,
   description: PropTypes.string,
   name: PropTypes.string.isRequired,
-  props: PropTypes.object,
   title: PropTypes.string.isRequired,
 };
 
