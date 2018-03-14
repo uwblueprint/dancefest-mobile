@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Alert, Image, Platform, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import _ from 'lodash';
 import { Audio } from 'expo';
 
@@ -77,19 +77,38 @@ export default class AudioRecorder extends React.Component {
     this.setState(stateUpdate);
   }
 
-  async stopRecording() {
+  async stopRecordingAlert() {
+    if (!this.state.recording) {
+      return;
+    }
+
+    Alert.alert(
+      'Warning',
+      'This will erase your existing recording and you will have to re-record!',
+      [
+        { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+        { text: 'Erase Recording (cannot be undone)', onPress: () => this.stopRecording(false) },
+      ],
+      { cancelable: false },
+    );
+  }
+
+  async stopRecording(saveURIToStore) {
+    let uri = '';
     if (this.state.recording) {
       try {
         await this.state.recording.stopAndUnloadAsync();
-        const uri = await this.state.recording.getURI();
-        console.log(uri);
-        const soundObject = await this.state.recording.createNewLoadedSound();
-        await soundObject.sound.playAsync();
+        if (saveURIToStore) {
+          uri = await this.state.recording.getURI();
+        }
       } catch (error) {
         console.log(error);
         return;
       }
 
+      if (uri) {
+        // TODO: save URI to the store so that it can be uploaded to Google Drive
+      }
       this.setState({
         isRecording: false,
         recordingDuration: 0,
@@ -103,14 +122,16 @@ export default class AudioRecorder extends React.Component {
     const hours = _.padStart(Math.floor(recordingDuration / 3600000), 2, '0');
     const minutes = _.padStart(Math.floor((recordingDuration % 3600000) / 60000), 2, '0');
     const seconds = _.padStart(Math.ceil((recordingDuration % 60000) / 1000), 2, '0');
+    const fontFamily = Platform.OS === 'ios' ? 'Avenir' : 'Roboto';
+
     return (
       <View style={styles.audioRecorder}>
         <Image source={micIcon} />
-        <Text style={styles.counter}>{hours}:{minutes}:{seconds}</Text>
+        <Text style={[styles.counter, { fontFamily }]}>{hours}:{minutes}:{seconds}</Text>
         <Text style={styles.subText}>{this.state.isRecording ? 'Recording' : ' '}</Text>
         <View style={styles.buttonContainer}>
           <TouchableHighlight
-            onPress={async () => this.stopRecording()}
+            onPress={async () => this.stopRecordingAlert()}
             style={styles.redoButton}>
             <Image source={redoIcon} />
           </TouchableHighlight>
