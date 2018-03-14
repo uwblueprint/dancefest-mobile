@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { some, isEmpty } from 'lodash/fp';
+
 import RadioButtons from '../RadioButtons';
 
 class DanceCritiqueForm extends React.Component {
@@ -23,6 +25,15 @@ class DanceCritiqueForm extends React.Component {
     communicationElementsMark: state.currentCritique.communicationElementsMark,
     communicationMark: state.currentCritique.communicationMark,
   })
+
+  onSubmit = () => {
+    if (some(this.props)(isEmpty)) {
+      console.log('yo you\'re missing some required fields');
+      // TODO: handle error better
+    } else {
+      AsyncStorage.mergeItem(this.props.danceNumber, JSON.stringify(this.props));
+    }
+  }
 
   render() {
     return (
