@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { StyleSheet, Text, View } from 'react-native';
 import RadioButtons from '../RadioButtons';
@@ -13,6 +14,15 @@ class DanceCritiqueForm extends React.Component {
     communicationElementsMark: PropTypes.number.isRequired,
     communicationMark: PropTypes.number.isRequired,
   }
+
+  mapStateToProps = state => ({
+    danceNumber: state.currentCritique.danceNumber,
+    techniqueMark: state.currentCritique.techniqueMark,
+    spatialAwarenessMark: state.currentCritique.spatialAwarenessMark,
+    useOfMusicTextSilenceMark: state.currentCritique.useOfMusicTextSilenceMark,
+    communicationElementsMark: state.currentCritique.communicationElementsMark,
+    communicationMark: state.currentCritique.communicationMark,
+  })
 
   render() {
     return (
@@ -35,6 +45,9 @@ const styles = StyleSheet.create({
   },
 });
 
+DanceCritiqueForm = connect(
+  DanceCritiqueForm.mapStateToProps,
+)(DanceCritiqueForm);
 
 export default DanceCritiqueForm = reduxForm({
   form: 'danceCritique'
