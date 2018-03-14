@@ -49,6 +49,6 @@ DanceCritiqueForm = connect(
   DanceCritiqueForm.mapStateToProps,
 )(DanceCritiqueForm);
 
-export default DanceCritiqueForm = reduxForm({
-  form: 'danceCritique'
+export default reduxForm({
+  form: 'danceCritique',
 })(DanceCritiqueForm);
