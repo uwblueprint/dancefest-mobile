@@ -7,7 +7,7 @@ import { some, isEmpty } from 'lodash/fp';
 
 import RadioButtons from '../RadioButtons';
 
-class DanceCritiqueForm extends React.Component {
+class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
     danceNumber: PropTypes.number.isRequired,
     techniqueMark: PropTypes.number.isRequired,
@@ -44,7 +44,6 @@ class DanceCritiqueForm extends React.Component {
       </View>
     );
   }
-
 }
 
 const styles = StyleSheet.create({
@@ -56,9 +55,9 @@ const styles = StyleSheet.create({
   },
 });
 
-DanceCritiqueForm = connect(
-  DanceCritiqueForm.mapStateToProps,
-)(DanceCritiqueForm);
+const DanceCritiqueForm = connect(
+  DanceCritiqueFormInner.mapStateToProps,
+)(DanceCritiqueFormInner);
 
 export default reduxForm({
   form: 'danceCritique',
