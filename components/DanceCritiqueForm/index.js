@@ -1,9 +1,40 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { some, isEmpty } from 'lodash/fp';
+
 import RadioButtons from '../RadioButtons';
 
-class DanceCritiqueForm extends React.Component {
+class DanceCritiqueFormInner extends React.Component {
+  static propTypes = {
+    danceNumber: PropTypes.number.isRequired,
+    techniqueMark: PropTypes.number.isRequired,
+    spatialAwarenessMark: PropTypes.number.isRequired,
+    useOfMusicTextSilenceMark: PropTypes.number.isRequired,
+    communicationElementsMark: PropTypes.number.isRequired,
+    communicationMark: PropTypes.number.isRequired,
+  }
+
+  mapStateToProps = state => ({
+    danceNumber: state.currentCritique.danceNumber,
+    techniqueMark: state.currentCritique.techniqueMark,
+    spatialAwarenessMark: state.currentCritique.spatialAwarenessMark,
+    useOfMusicTextSilenceMark: state.currentCritique.useOfMusicTextSilenceMark,
+    communicationElementsMark: state.currentCritique.communicationElementsMark,
+    communicationMark: state.currentCritique.communicationMark,
+  })
+
+  onSubmit = () => {
+    if (some(this.props)(isEmpty)) {
+      console.log('yo you\'re missing some required fields');
+      // TODO: handle error better
+    } else {
+      AsyncStorage.mergeItem(this.props.danceNumber, JSON.stringify(this.props));
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -13,7 +44,6 @@ class DanceCritiqueForm extends React.Component {
       </View>
     );
   }
-
 }
 
 const styles = StyleSheet.create({
@@ -25,7 +55,10 @@ const styles = StyleSheet.create({
   },
 });
 
+const DanceCritiqueForm = connect(
+  DanceCritiqueFormInner.mapStateToProps,
+)(DanceCritiqueFormInner);
 
-export default DanceCritiqueForm = reduxForm({
-  form: 'danceCritique'
+export default reduxForm({
+  form: 'danceCritique',
 })(DanceCritiqueForm);
