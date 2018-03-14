@@ -3,51 +3,40 @@ import { Text, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from './../Icon';
 
-const StatusItemIcon = ({ danceStatus }) => {
-  if (danceStatus === 'Uploaded') {
-    return (
-      <Icon name="Checkmark" height="50" width="50" fill="grey" viewBox="0 0 30 30" />
-    );
-  } else if (danceStatus === 'Loading') {
-    return (
-      <Icon name="Loop" height="50" width="50" fill="black" viewBox="0 0 30 30" />
-    );
-  } else if (danceStatus === 'Required internet connection') {
-    return (
-      <Icon name="Exclamation" height="50" width="50" fill="red" viewBox="0 0 30 30" />
-    );
+const DANCE_STATUS = {
+  uploaded: 0,
+  loading: 1,
+  requireInternet: 2,
+};
+
+const StatusItem = ({ danceNum, danceName, danceStatus }) => {
+  let iconName;
+  let fillColor;
+  if (danceStatus === DANCE_STATUS.uploaded) {
+    iconName = 'Checkmark';
+    fillColor = 'grey';
+  } else if (danceStatus === DANCE_STATUS.loading) {
+    iconName = 'Loop';
+    fillColor = 'white';
+  } else if (danceStatus === DANCE_STATUS.requireInternet) {
+    iconName = 'Exclamation';
+    fillColor = 'red';
   }
-  return (null);
+  return (
+    <View style={style.items}>
+      <View style={style.information}>
+        <Text style={style.danceNum}>#{danceNum}</Text>
+        <Text style={style.danceName}>{danceName}</Text>
+      </View>
+      <Icon name={iconName} height="50" width="50" fill={fillColor} viewBox="0 0 30 30" />
+    </View>
+  );
 };
-
-StatusItemIcon.propTypes = {
-  danceStatus: PropTypes.string.isRequired,
-};
-
-const Information = ({ danceNum, danceName }) => (
-  <View style={style.information}>
-    <Text style={style.danceNum}>#{danceNum}</Text>
-    <Text style={style.danceName}>{danceName}</Text>
-  </View>
-);
-
-
-Information.propTypes = {
-  danceNum: PropTypes.number.isRequired,
-  danceName: PropTypes.string.isRequired,
-};
-
-const StatusItem = ({ danceNum, danceName, danceStatus }) => (
-  <View style={style.items}>
-    <Information danceNum={danceNum} danceName={danceName} />
-    <StatusItemIcon danceStatus={danceStatus} />
-  </View>
-);
 
 
 StatusItem.propTypes = {
   danceNum: PropTypes.number.isRequired,
-  danceStatus: PropTypes.string.isRequired,
+  danceStatus: PropTypes.number.isRequired,
   danceName: PropTypes.string.isRequired,
 };
 
@@ -58,10 +47,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     height: 'auto',
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: 'black',
-    backgroundColor: 'white',
+    backgroundColor: 'black',
   },
   danceNum: {
     alignItems: 'flex-start',
@@ -69,15 +55,10 @@ const style = StyleSheet.create({
     fontWeight: '300',
     color: 'grey',
   },
-  statusItemIcon: {
-    backgroundColor: 'green',
-    height: 70,
-    width: '100%',
-  },
   danceName: {
     alignItems: 'flex-end',
     fontSize: 24,
-    color: 'black',
+    color: 'white',
   },
   information: {
     width: '75%',
@@ -85,4 +66,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default StatusItem;
+export { StatusItem, DANCE_STATUS };
