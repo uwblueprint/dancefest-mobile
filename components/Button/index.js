@@ -6,25 +6,25 @@ import { StyleSheet } from 'react-native';
 export default class Button extends React.Component {
   static propTypes = {
     action: PropTypes.string,
-		color: PropTypes.string,
+    color: PropTypes.string,
   }
 
-	getButtonStyle() {
-		return {
-			backgroundColor: this.props.color,
-			display: 'flex',
-			justifyContent: 'center',
-			margin:5,
-			padding: 20,
-		}
-	}
+  getButtonStyle() {
+    return {
+      backgroundColor: this.props.color,
+      display: 'flex',
+      justifyContent: 'center',
+      margin:5,
+      padding: 20,
+    }
+  }
 
   render() {
-		const buttonStyle = this.getButtonStyle()
+    const buttonStyle = this.getButtonStyle()
     return (
       <View style={style.buttonCollection}>
           <TouchableHighlight
-						style={buttonStyle}
+            style={buttonStyle}
             onPress={() => {this.props.onSubmit}}
             underlayColor='#EB6284'>
               <Text style={style.text}>{this.props.action}</Text>
