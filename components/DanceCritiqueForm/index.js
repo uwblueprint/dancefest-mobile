@@ -7,15 +7,25 @@ import { some, isEmpty } from 'lodash/fp';
 
 import RadioButtons from '../RadioButtons';
 import Button from '../Button';
+import AudioRecorder from '../AudioRecorder';
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
-    danceNumber: PropTypes.number.isRequired,
-    techniqueMark: PropTypes.number.isRequired,
-    spatialAwarenessMark: PropTypes.number.isRequired,
-    useOfMusicTextSilenceMark: PropTypes.number.isRequired,
-    communicationElementsMark: PropTypes.number.isRequired,
-    communicationMark: PropTypes.number.isRequired,
+    danceNumber: PropTypes.string.isRequired,
+    techniqueMark: PropTypes.string.isRequired,
+    spatialAwarenessMark: PropTypes.string.isRequired,
+    useOfMusicTextSilenceMark: PropTypes.string.isRequired,
+    communicationElementsMark: PropTypes.string.isRequired,
+    communicationMark: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    danceNumber: '',
+    techniqueMark: '',
+    spatialAwarenessMark: '',
+    useOfMusicTextSilenceMark: '',
+    communicationElementsMark: '',
+    communicationMark: '',
   }
 
   mapStateToProps = state => ({
@@ -39,6 +49,7 @@ class DanceCritiqueFormInner extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <AudioRecorder />
         <Text>DanceFest!</Text>
         <Field name="test1" component={RadioButtons} props={{ buttonNames: ['1', '2', '3', '4'], mergeButtons: true }} />
         <Field name="test2" component={RadioButtons} props={{ buttonNames: ['Jazz', 'Hip-Hop', 'Contemporary', 'Fusion'] }} />
