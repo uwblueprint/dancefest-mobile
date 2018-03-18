@@ -4,9 +4,6 @@ import _ from 'lodash';
 import { Audio } from 'expo';
 import Icon from './../Icon';
 
-const micIcon = require('./../../assets/ic_mic_white_24dp_2x.png');
-const redoIcon = require('./../../assets/ic_replay_black_24dp_1x.png');
-
 export default class AudioRecorder extends React.Component {
   constructor(props) {
     super(props);
