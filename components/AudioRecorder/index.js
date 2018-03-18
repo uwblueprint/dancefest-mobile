@@ -1,7 +1,8 @@
 import React from 'react';
-import { Alert, Image, Platform, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Alert, Platform, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import _ from 'lodash';
 import { Audio } from 'expo';
+import Icon from './../Icon';
 
 const micIcon = require('./../../assets/ic_mic_white_24dp_2x.png');
 const redoIcon = require('./../../assets/ic_replay_black_24dp_1x.png');
@@ -63,7 +64,7 @@ export default class AudioRecorder extends React.Component {
       } else {
         await recording.startAsync();
       }
-      uri = await this.state.recording.getURI();
+      uri = await recording.getURI();
     } catch (error) {
       console.log(error);
       return;
@@ -129,14 +130,13 @@ export default class AudioRecorder extends React.Component {
 
     return (
       <View style={styles.audioRecorder}>
-        <Image source={micIcon} />
+        <Icon name={'Microphone'} height="48" width="48" viewBox="0 0 24 24" fill="white" />
         <Text style={[styles.counter, { fontFamily }]}>{hours}:{minutes}:{seconds}</Text>
         <Text style={styles.subText}>{this.state.isRecording ? 'Recording' : ' '}</Text>
         <View style={styles.buttonContainer}>
           <TouchableHighlight
-            onPress={async () => this.stopRecordingAlert()}
-            style={styles.redoButton}>
-            <Image source={redoIcon} />
+            onPress={async () => this.stopRecordingAlert()}>
+            <Icon name={'Delete'} height="32" width="32" viewBox="0 0 24 24" fill="white" />
           </TouchableHighlight>
           <TouchableHighlight
             onPress={async () => this.toggleRecording()}

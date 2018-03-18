@@ -18,6 +18,15 @@ class DanceCritiqueFormInner extends React.Component {
     communicationMark: PropTypes.number.isRequired,
   }
 
+  static defaultProps = {
+    danceNumber: null,
+    techniqueMark: null,
+    spatialAwarenessMark: null,
+    useOfMusicTextSilenceMark: null,
+    communicationElementsMark: null,
+    communicationMark: null,
+  }
+
   mapStateToProps = state => ({
     danceNumber: state.currentCritique.danceNumber,
     techniqueMark: state.currentCritique.techniqueMark,
