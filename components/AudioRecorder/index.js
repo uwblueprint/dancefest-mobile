@@ -1,8 +1,9 @@
 import React from 'react';
 import { Alert, Platform, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import _ from 'lodash';
-import { Audio } from 'expo';
 import Icon from './../Icon';
+import { FileSystem, Google, Audio } from 'expo';
+import { setApiToken, uploadFile } from './../../services/UploadToDrive';
 
 const micIcon = require('./../../assets/ic_mic_white_24dp_2x.png');
 const redoIcon = require('./../../assets/ic_replay_black_24dp_1x.png');
@@ -15,6 +16,29 @@ export default class AudioRecorder extends React.Component {
       recordingDuration: 0,
       recording: null,
     };
+    this.signIn();
+  }
+
+  async signIn() {
+    setApiToken(await this.signInWithGoogleAsync());
+  }
+
+  async signInWithGoogleAsync() {
+    try {
+      const result = await Expo.Google.logInAsync({
+        androidClientId: '850019194932-bbvpl69rgoh9ui5npu2t78r8vc20rd0l.apps.googleusercontent.com',
+        iosClientId: '850019194932-ipictala3md7jvj0d3jse88ed3h6cifa.apps.googleusercontent.com',
+        scopes: ['https://www.googleapis.com/auth/drive.file'],
+      });
+  
+      if (result.type === 'success') {
+        return result.accessToken;
+      } else {
+        return {cancelled: true};
+      }
+    } catch(e) {
+      return {error: true};
+    }
   }
 
   updateDuration(status) {
@@ -104,7 +128,12 @@ export default class AudioRecorder extends React.Component {
     if (this.state.recording) {
       try {
         await this.state.recording.stopAndUnloadAsync();
-        uri = await this.state.recording.getURI();
+        const uri = await this.state.recording.getURI();
+        console.log(uri);
+        this.state.recordingString = await FileSystem.readAsStringAsync(uri);
+        uploadFile(uri, this.state.recordingString);
+        const soundObject = await this.state.recording.createNewLoadedSound();
+        await soundObject.sound.playAsync();
       } catch (error) {
         console.log(error);
         return;
