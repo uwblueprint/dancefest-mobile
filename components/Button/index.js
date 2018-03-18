@@ -3,41 +3,38 @@ import PropTypes from 'prop-types';
 import { Text, TouchableHighlight, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 
-export default class Button extends React.Component {
-  static propTypes = {
-    action: PropTypes.string,
-    color: PropTypes.string,
-  }
-
-  getButtonStyle() {
-    return {
-      backgroundColor: this.props.color,
-      display: 'flex',
-      justifyContent: 'center',
-      margin:5,
-      padding: 20,
-    }
-  }
-
-  render() {
-    const buttonStyle = this.getButtonStyle()
-    return (
-      <View style={style.buttonCollection}>
-          <TouchableHighlight
-            style={buttonStyle}
-            onPress={() => {this.props.onSubmit}}
-            underlayColor='#EB6284'>
-              <Text style={style.text}>{this.props.action}</Text>
-          </TouchableHighlight>
-      </View>
-    );
-  }
+const Button = ({ action, color, onSubmit }) => {
+  return (
+    <View>
+        <TouchableHighlight
+          style={getButtonStyle(color)}
+          onPress={() => {onSubmit}}
+          underlayColor='#EB6284'>
+            <Text style={style.text}>{action}</Text>
+        </TouchableHighlight>
+    </View>
+  )
 }
 
+Button.propTypes = {
+  action: PropTypes.string,
+  color: PropTypes.string,
+}
 
+function getButtonStyle(color) {
+  return {
+    backgroundColor: color,
+    display: 'flex',
+    justifyContent: 'center',
+    margin:5,
+    padding: 20,
+  }
+}
 
 const style = StyleSheet.create({
   text: {
     color: '#fff',
   },
 });
+
+export default Button
