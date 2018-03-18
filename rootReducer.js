@@ -1,8 +1,10 @@
-import { combineReducers } from 'redux'
-import { reducer as formReducer } from 'redux-form'
+import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
+
+import audioRecordings from './reducers/audioRecordings'
 
 const reducers = {
-	//place other reducers here
+  audioRecordings,
   form: formReducer
 }
 
