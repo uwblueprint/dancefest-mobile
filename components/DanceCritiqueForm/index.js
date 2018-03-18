@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
 
 import RadioButtons from '../RadioButtons';
+import AudioRecorder from '../AudioRecorder';
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
@@ -15,6 +16,15 @@ class DanceCritiqueFormInner extends React.Component {
     useOfMusicTextSilenceMark: PropTypes.number.isRequired,
     communicationElementsMark: PropTypes.number.isRequired,
     communicationMark: PropTypes.number.isRequired,
+  }
+
+  static defaultProps = {
+    danceNumber: null,
+    techniqueMark: null,
+    spatialAwarenessMark: null,
+    useOfMusicTextSilenceMark: null,
+    communicationElementsMark: null,
+    communicationMark: null,
   }
 
   mapStateToProps = state => ({
@@ -38,6 +48,7 @@ class DanceCritiqueFormInner extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <AudioRecorder />
         <Text>DanceFest!</Text>
         <Field name="test1" component={RadioButtons} props={{ buttonNames: ['1', '2', '3', '4'], mergeButtons: true }} />
         <Field name="test2" component={RadioButtons} props={{ buttonNames: ['Jazz', 'Hip-Hop', 'Contemporary', 'Fusion'] }} />
