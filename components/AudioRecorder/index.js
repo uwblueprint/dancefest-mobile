@@ -24,6 +24,7 @@ export default class AudioRecorder extends React.Component {
 
   async toggleRecording() {
     let newRecording = null;
+    let uri = '';
 
     try {
       // either create a new recording or use the one on the state
@@ -62,6 +63,7 @@ export default class AudioRecorder extends React.Component {
       } else {
         await recording.startAsync();
       }
+      uri = await this.state.recording.getURI();
     } catch (error) {
       console.log(error);
       return;
@@ -73,6 +75,9 @@ export default class AudioRecorder extends React.Component {
     };
     if (newRecording) {
       stateUpdate.recording = newRecording;
+    }
+    if (uri) {
+      // TODO:: save URI to store
     }
     this.setState(stateUpdate);
   }
@@ -87,27 +92,25 @@ export default class AudioRecorder extends React.Component {
       'This will erase your existing recording and you will have to re-record!',
       [
         { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-        { text: 'Erase Recording (cannot be undone)', onPress: () => this.stopRecording(false) },
+        { text: 'Erase Recording (cannot be undone)', onPress: () => this.stopRecording() },
       ],
       { cancelable: false },
     );
   }
 
-  async stopRecording(saveURIToStore) {
+  async stopRecording() {
     let uri = '';
     if (this.state.recording) {
       try {
         await this.state.recording.stopAndUnloadAsync();
-        if (saveURIToStore) {
-          uri = await this.state.recording.getURI();
-        }
+        uri = await this.state.recording.getURI();
       } catch (error) {
         console.log(error);
         return;
       }
 
       if (uri) {
-        // TODO: save URI to the store so that it can be uploaded to Google Drive
+        // TODO:: save URI to store
       }
       this.setState({
         isRecording: false,
