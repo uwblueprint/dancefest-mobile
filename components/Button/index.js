@@ -8,7 +8,7 @@ const Button = ({ action, color, onSubmit }) => {
     <View>
         <TouchableHighlight
           style={getButtonStyle(color)}
-          onPress={() => {onSubmit}}
+          onPress={() => {onSubmit()}}
           underlayColor='#EB6284'>
             <Text style={style.text}>{action}</Text>
         </TouchableHighlight>
