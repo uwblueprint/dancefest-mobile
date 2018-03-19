@@ -21,41 +21,41 @@ const CRITIQUE_SECTIONS = {
 }
 
 class DanceCritiqueFormInner extends React.Component {
-  static propTypes = {
-    danceNumber: PropTypes.number.isRequired,
-    techniqueMark: PropTypes.number.isRequired,
-    spatialAwarenessMark: PropTypes.number.isRequired,
-    useOfMusicTextSilenceMark: PropTypes.number.isRequired,
-    communicationElementsMark: PropTypes.number.isRequired,
-    communicationMark: PropTypes.number.isRequired,
-  }
+	static propTypes = {
+		danceNumber: PropTypes.number.isRequired,
+		techniqueMark: PropTypes.number.isRequired,
+		spatialAwarenessMark: PropTypes.number.isRequired,
+		useOfMusicTextSilenceMark: PropTypes.number.isRequired,
+		communicationElementsMark: PropTypes.number.isRequired,
+		communicationMark: PropTypes.number.isRequired,
+	}
 
-  mapStateToProps = state => ({
-    danceNumber: state.currentCritique.danceNumber,
-    techniqueMark: state.currentCritique.techniqueMark,
-    spatialAwarenessMark: state.currentCritique.spatialAwarenessMark,
-    useOfMusicTextSilenceMark: state.currentCritique.useOfMusicTextSilenceMark,
-    communicationElementsMark: state.currentCritique.communicationElementsMark,
-    communicationMark: state.currentCritique.communicationMark,
-  })
+	mapStateToProps = state => ({
+		danceNumber: state.currentCritique.danceNumber,
+		techniqueMark: state.currentCritique.techniqueMark,
+		spatialAwarenessMark: state.currentCritique.spatialAwarenessMark,
+		useOfMusicTextSilenceMark: state.currentCritique.useOfMusicTextSilenceMark,
+		communicationElementsMark: state.currentCritique.communicationElementsMark,
+		communicationMark: state.currentCritique.communicationMark,
+	})
 
 	constructor(props){
-	   super(props);
+		 super(props);
 
-	   this.state = {
-	      screen: 0,
-	   }
+		 this.state = {
+				screen: 0,
+		 }
 	}
 
 
-  onSubmit = () => {
-    if (some(this.props)(isEmpty)) {
-      console.log('yo you\'re missing some required fields');
-      // TODO: handle error better
-    } else {
-      AsyncStorage.mergeItem(this.props.danceNumber, JSON.stringify(this.props));
-    }
-  }
+	onSubmit = () => {
+		if (some(this.props)(isEmpty)) {
+			console.log('yo you\'re missing some required fields');
+			// TODO: handle error better
+		} else {
+			AsyncStorage.mergeItem(this.props.danceNumber, JSON.stringify(this.props));
+		}
+	}
 
 	navigateScreen = (screen) => {
 		this.setState({
@@ -102,7 +102,6 @@ class DanceCritiqueFormInner extends React.Component {
 
 	getCritiqueSection() {
 		if(this.state.screen === CRITIQUE_SECTIONS.default) {
-			console.log('returning default')
 			return this.getDefaultScreen()
 		} else if (this.state.screen === CRITIQUE_SECTIONS.technique) {
 			return this.getTechniqueScreen()
@@ -119,23 +118,23 @@ class DanceCritiqueFormInner extends React.Component {
 		}
 	}
 
-  render() {
-    return (
+	render() {
+		return (
 			<View style={styles.container}>
 				{this.getCritiqueSection()}
 				{this.getNavigationButtons()}
 			</View>
-    );
-  }
+		);
+	}
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+	container: {
+		flex: 1,
+		backgroundColor: '#000',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 	buttonContainer: {
 		alignItems: 'center',
 		flex: 1,
@@ -150,9 +149,9 @@ const styles = StyleSheet.create({
 });
 
 const DanceCritiqueForm = connect(
-  DanceCritiqueFormInner.mapStateToProps,
+	DanceCritiqueFormInner.mapStateToProps,
 )(DanceCritiqueFormInner);
 
 export default reduxForm({
-  form: 'danceCritique',
+	form: 'danceCritique',
 })(DanceCritiqueForm);
