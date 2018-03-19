@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
 
 import RadioButtons from '../RadioButtons';
+import AudioRecorder from '../AudioRecorder';
 import Button from '../Button';
 import CritiqueSection from '../CritiqueSection'
 import TextField from '../TextField'
@@ -22,12 +23,21 @@ const CRITIQUE_SECTIONS = {
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
-    danceNumber: PropTypes.number.isRequired,
-    techniqueMark: PropTypes.number.isRequired,
-    spatialAwarenessMark: PropTypes.number.isRequired,
-    useOfMusicTextSilenceMark: PropTypes.number.isRequired,
-    communicationElementsMark: PropTypes.number.isRequired,
-    communicationMark: PropTypes.number.isRequired,
+    danceNumber: PropTypes.string.isRequired,
+    techniqueMark: PropTypes.string.isRequired,
+    spatialAwarenessMark: PropTypes.string.isRequired,
+    useOfMusicTextSilenceMark: PropTypes.string.isRequired,
+    communicationElementsMark: PropTypes.string.isRequired,
+    communicationMark: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    danceNumber: '',
+    techniqueMark: '',
+    spatialAwarenessMark: '',
+    useOfMusicTextSilenceMark: '',
+    communicationElementsMark: '',
+    communicationMark: '',
   }
 
   mapStateToProps = state => ({
