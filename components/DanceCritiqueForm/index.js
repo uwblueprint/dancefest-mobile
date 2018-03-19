@@ -76,26 +76,61 @@ class DanceCritiqueFormInner extends React.Component {
 	getDefaultScreen() {
 		return (
 			<View style={styles.container}>
-				<Text>DanceFest!</Text>
-				<Field name="title" component={TextField} props={{value: 'Title'}} />
+				<View style={styles.section}>
+					<Text style={styles.textFieldTitle}>Dance Title</Text>
+					<Field name="title" component={TextField} props={{value: 'Title'}} />
+				</View>
+				<View style={styles.section}>
+					<Text style={styles.textFieldTitle}>Choreograhper</Text>
+					<Field name="choreographer" component={TextField} props={{value: 'Choreographer'}} />
+				</View>
+				<View style={styles.section}>
+					<Text style={styles.textFieldTitle}>School</Text>
+					<Field name="school" component={TextField} props={{value: 'School'}} />
+				</View>
 		</View>
 		)
 	}
 
-	getTechniqueScreen() {
+	getCustomizedCritiqueSection(description, name, title) {
 		return (
 			<View style={styles.container}>
 				<CritiqueSection
 					critiqueInput={RadioButtons}
 					critiqueInputProps={{buttonNames: ['1', '2', '3'], mergeButtons: true}}
-					description="Demonstrates ability to execute technical skills with a sense of discipline and purpose"
-					name="technique"
-					title="Technique"
+					description={description}
+					name={name}
+					title={title}
 				/>
 			</View>
 		)
 	}
 
+	getTechniqueScreen() {
+		return this.getCustomizedCritiqueSection('Demonstrates ability to execute technical skills with a sense of discipline and purpose', 'technique', 'Technique')
+	}
+
+	getSpatialAwarenessScreen() {
+		return this.getCustomizedCritiqueSection('Demonstrates the ability to understand how the body occupies the aesthetic space, as well as creates meaning for the intended observer. (This could include the addition of props within the aesthetic space)','spatialAwareness', 'Spatial Awareness')
+	}
+
+	getCommunicationElementsScreen() {
+		return this.getCustomizedCritiqueSection('Demonstrates the ability to explore the elements of dance and movement ideas that connect to the selected dance style.','communicationElements', 'Communication - Elements')
+	}
+
+	getCommunicationScreen() {
+		return this.getCustomizedCritiqueSection('Demonstrates the ability to explore the elements of dance and movement ideas that connect to the selected dance style.','communication', 'Communication')
+	}
+
+	getRecordingScreen() {
+		//Render Recording Component
+	}
+
+	getSubmissionScreen() {
+		return (
+			<Text style={styles.textFieldTitle}>Successfully Submitted!</Text>
+		)
+	}
 	getNavigationButtons() {
 		return(
 			<View style={styles.buttonContainer}>
@@ -145,6 +180,12 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	section: {
+		flex: 1,
+		backgroundColor: '#000',
+		flexDirection: 'column',
+    justifyContent: 'flex-start',
+	},
 	buttonContainer: {
 		alignItems: 'center',
 		flex: 1,
@@ -155,6 +196,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'space-between'
+	},
+	textFieldTitle: {
+		color: 'white'
 	}
 });
 

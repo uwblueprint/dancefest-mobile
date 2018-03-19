@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderStyle: 'dashed',
     borderColor: 'lightgrey',
+		color: 'white',
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
