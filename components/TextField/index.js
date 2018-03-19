@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   inputField: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     borderWidth: 1,
     borderRadius: 5,
     borderStyle: 'dashed',

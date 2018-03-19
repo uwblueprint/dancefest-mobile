@@ -8,15 +8,16 @@ import { some, isEmpty } from 'lodash/fp';
 import RadioButtons from '../RadioButtons';
 import Button from '../Button';
 import CritiqueSection from '../CritiqueSection'
+import TextField from '../TextField'
 
 const CRITIQUE_SECTIONS = {
-	'default': 0,
-	'technique': 1,
-	'spatialAwareness': 2,
-	'communicationElements': 3,
-	'communication': 4,
-	'recording': 5,
-	'submission': 6,
+	default: 0,
+	technique: 1,
+	spatialAwareness: 2,
+	communicationElements: 3,
+	communication: 4,
+	recording: 5,
+	submission: 6,
 }
 
 class DanceCritiqueFormInner extends React.Component {
@@ -66,9 +67,7 @@ class DanceCritiqueFormInner extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Text>DanceFest!</Text>
-				<Field name="test1" component={RadioButtons} props={{ buttonNames: ['1', '2', '3', '4'], mergeButtons: true }} />
-				<Field name="test2" component={RadioButtons} props={{ buttonNames: ['Jazz', 'Hip-Hop', 'Contemporary', 'Fusion'] }} />
-				<Field name="test3" component={Button} props={{action: 'NEXT', color: 'black', onSubmit: () => {this.navigateScreen(this.state.screen + 1)}}} />
+				<Field name="title" component={TextField} props={{value: 'Title'}} />
 		</View>
 		)
 	}
@@ -87,9 +86,23 @@ class DanceCritiqueFormInner extends React.Component {
 		)
 	}
 
+	getNavigationButtons() {
+		return(
+			<View style={styles.buttonContainer}>
+				<View style={styles.button}>
+					<Button action='BACK' color='black' onSubmit={() => {this.navigateScreen(this.state.screen - 1)}} />
+				</View>
+				<View style={styles.button}>
+					<Button action='NEXT' color='black' onSubmit={() => {this.navigateScreen(this.state.screen + 1)}} />
+				</View>
+			</View>
+		)
+	}
+
 
 	getCritiqueSection() {
 		if(this.state.screen === CRITIQUE_SECTIONS.default) {
+			console.log('returning default')
 			return this.getDefaultScreen()
 		} else if (this.state.screen === CRITIQUE_SECTIONS.technique) {
 			return this.getTechniqueScreen()
@@ -108,9 +121,9 @@ class DanceCritiqueFormInner extends React.Component {
 
   render() {
     return (
-			<View>
+			<View style={styles.container}>
 				{this.getCritiqueSection()}
-				<Button action='BACK' color='black' onSubmit={() => {this.navigateScreen(this.state.screen - 1)}} />
+				{this.getNavigationButtons()}
 			</View>
     );
   }
@@ -123,6 +136,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+	buttonContainer: {
+		alignItems: 'center',
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
+	button: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'space-between'
+	}
 });
 
 const DanceCritiqueForm = connect(
