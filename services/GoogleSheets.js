@@ -39,9 +39,9 @@ export async function uploadCritiques(critiques) {
       }),
     });
     console.log(response);
+    return response.ok;
   } catch (error) {
     console.error(error);
     return false;
   }
-  return true;
 };
