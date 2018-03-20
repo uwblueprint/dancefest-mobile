@@ -5,6 +5,21 @@ import Icon from './../Icon';
 import PropTypes from 'prop-types';
 
 
+const StatusItemList = ({statusItemData}) => {
+  if (statusItemData && statusItemData.length > 0) {
+    return (
+      <View>
+        <StatusItemListView statusItemData={statusItemData} />
+      </View>
+    )
+  } else {
+    return (
+      null
+    )
+  }
+}
+
+
 export default class StatusItemPanel extends React.Component {
 
   constructor(props) {
@@ -34,7 +49,7 @@ export default class StatusItemPanel extends React.Component {
            >
            <Icon name='Close' height="50" width="50" fill='white' viewBox="0 0 30 30" />
            </TouchableOpacity>
-          <StatusItemListView statusItemData={this.props.statusItemData} />
+          <StatusItemList statusItemData={this.props.statusItemData} />
         </View>
       </View>
     );
@@ -43,6 +58,10 @@ export default class StatusItemPanel extends React.Component {
 
 StatusItemPanel.propTypes = {
   statusItemData: PropTypes.arrayOf(PropTypes.object),
+};
+
+StatusItemPanel.defaultProps = {
+  statusItemData: [],
 };
 
 
