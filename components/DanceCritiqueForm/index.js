@@ -7,6 +7,8 @@ import { some, isEmpty } from 'lodash/fp';
 
 import RadioButtons from '../RadioButtons';
 import AudioRecorder from '../AudioRecorder';
+import StatusItemPanel from '../StatusItemPanel';
+import { DANCE_STATUS }  from '../StatusItem';
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
@@ -48,7 +50,9 @@ class DanceCritiqueFormInner extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+
         <AudioRecorder />
+        <StatusItemPanel statusItemData={[ { danceNum:103, danceStatus:DANCE_STATUS.requireInternet, danceName:'PrintTheBlue' }, ]}/>
         <Text>DanceFest!</Text>
         <Field name="test1" component={RadioButtons} props={{ buttonNames: ['1', '2', '3', '4'], mergeButtons: true }} />
         <Field name="test2" component={RadioButtons} props={{ buttonNames: ['Jazz', 'Hip-Hop', 'Contemporary', 'Fusion'] }} />
