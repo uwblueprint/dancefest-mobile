@@ -1,5 +1,6 @@
 import danceCritiques, {
   initialState,
+  INITIALIZE_DANCE_CRITIQUE,
   UPLOAD_DANCE_CRITIQUE_SUCCESS,
   UPLOAD_DANCE_CRITIQUE_FAILURE,
 } from './danceCritiques';
@@ -7,6 +8,17 @@ import danceCritiques, {
 describe('danceCritiques', () => {
   it('returns the initial state', () => {
     expect(danceCritiques(undefined, {})).toEqual(initialState());
+  });
+
+  it('handles INITIALIZE_DANCE_CRITIQUE', () => {
+    const danceId = 3;
+    const action = { type: INITIALIZE_DANCE_CRITIQUE, danceId: danceId };
+
+    const expected = expect.objectContaining({
+      currentDanceId: danceId,
+    });
+
+    expect(danceCritiques(undefined, action)).toEqual(expected);
   });
 
   it('handles UPLOAD_DANCE_CRITIQUE_SUCCESS', () => {

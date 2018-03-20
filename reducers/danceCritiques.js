@@ -31,6 +31,21 @@ export function initialState () {
 }
 
 /**
+ * Initialize Dance Critique
+ */
+
+export const INITIALIZE_DANCE_CRITIQUE = 'INITIALIZE_DANCE_CRITIQUE';
+
+export function initializeDanceCritique () {
+  // TODO: generate unique currentDanceId here LOL
+
+  return {
+    type: INITIALIZE_DANCE_CRITIQUE,
+    danceId,
+  }
+}
+
+/**
  * Submit Dance Critique
  */
 
@@ -99,6 +114,11 @@ export function uploadDanceCritique (danceCritique, audioRecordingUri) {
 
 export default function danceCritiques (state = initialState(), action = {}) {
   switch (action.type) {
+    case INITIALIZE_DANCE_CRITIQUE:
+      return {
+        ...state,
+        currentDanceId: action.danceId,
+      }
     case SUBMIT_DANCE_CRITIQUE_SUCCESS:
       return {
         ...state,
