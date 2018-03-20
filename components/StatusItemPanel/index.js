@@ -1,54 +1,50 @@
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, Button, TouchableOpacity, } from 'react-native';
-import StatusItemListView  from './../StatusItemListView';
-import Icon from './../Icon';
+import React from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+import StatusItemListView from './../StatusItemListView';
+import Icon from './../Icon';
 
 
-const StatusItemList = ({statusItemData}) => {
+const StatusItemList = ({ statusItemData }) => {
   if (statusItemData && statusItemData.length > 0) {
     return (
       <View>
         <StatusItemListView statusItemData={statusItemData} />
       </View>
-    )
-  } else {
-    return (
-      null
-    )
+    );
   }
-}
+  return (
+    null
+  );
+};
 
 
 export default class StatusItemPanel extends React.Component {
-
   constructor(props) {
-      super(props);
-      this.state = {toggle: false};
-    }
+    super(props);
+    this.state = { toggle: false };
+  }
   onPress = () => {
-   this.setState({
-     toggle: !this.state.toggle,
-   })
- }
- render() {
+    this.setState({
+      toggle: !this.state.toggle,
+    });
+  }
+  render() {
     return (
       <View style={styles.container}>
-      <View>
-      <TouchableOpacity
-         style={styles.uploadButton}
-         onPress={this.onPress}
-       >
-       <Icon name='Upload' height="50" width="50" fill='white' viewBox="0 0 30 30" />
-       </TouchableOpacity>
-      </View>
+        <View>
+          <TouchableOpacity
+            style={styles.uploadButton}
+            onPress={this.onPress} >
+            <Icon name="Upload" height="50" width="50" fill="white" viewBox="0 0 30 30" />
+          </TouchableOpacity>
+        </View>
         <View style={this.state.toggle ? styles.openSidebar : styles.closedSidebar}>
           <TouchableOpacity
-             style={styles.closeButton}
-             onPress={this.onPress}
-           >
-           <Icon name='Close' height="50" width="50" fill='white' viewBox="0 0 30 30" />
-           </TouchableOpacity>
+            style={styles.closeButton}
+            onPress={this.onPress} >
+            <Icon name="Close" height="50" width="50" fill="white" viewBox="0 0 30 30" />
+          </TouchableOpacity>
           <StatusItemList statusItemData={this.props.statusItemData} />
         </View>
       </View>
@@ -60,10 +56,17 @@ StatusItemPanel.propTypes = {
   statusItemData: PropTypes.arrayOf(PropTypes.object),
 };
 
-StatusItemPanel.defaultProps = {
+StatusItemList.defaultProps = {
   statusItemData: [],
 };
 
+StatusItemList.propTypes = {
+  statusItemData: PropTypes.arrayOf(PropTypes.object),
+};
+
+StatusItemPanel.defaultProps = {
+  statusItemData: [],
+};
 
 const styles = StyleSheet.create({
   container: {
