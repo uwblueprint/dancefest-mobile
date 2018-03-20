@@ -24,9 +24,10 @@ StatusItemListView.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: '6%',
-    width: '75%',
+    paddingTop: 0,
+/*    width: '75%',
     marginRight: '25%',
+    */
   },
 });
 
