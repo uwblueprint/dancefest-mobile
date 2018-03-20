@@ -13,12 +13,13 @@ import TextField from '../TextField'
 
 const CRITIQUE_SECTIONS = {
 	default: 0,
-	technique: 1,
-	spatialAwareness: 2,
-	communicationElements: 3,
-	communication: 4,
-	recording: 5,
-	submission: 6,
+	danceStyle: 1,
+	technique: 2,
+	spatialAwareness: 3,
+	communicationElements: 4,
+	communication: 5,
+	recording: 6,
+	submission: 7,
 }
 
 class DanceCritiqueFormInner extends React.Component {
@@ -73,12 +74,21 @@ class DanceCritiqueFormInner extends React.Component {
 		})
 	}
 
+	onChange = (val) => {
+		console.log(val)
+	}
+
 	getDefaultScreen() {
 		return (
 			<View style={styles.container}>
+				<Text style={styles.screenTitle}>Dance Details</Text>
+				<View style={styles.section}>
+					<Text style={styles.textFieldTitle}>Dance Number</Text>
+					<Field name="danceNumber" component={TextField} props={{value: 'Dance Number'}} />
+				</View>
 				<View style={styles.section}>
 					<Text style={styles.textFieldTitle}>Dance Title</Text>
-					<Field name="title" component={TextField} props={{value: 'Title'}} />
+					<Field name="title" component={TextField} props={{numberOfLines: 4, multiline: true}} />
 				</View>
 				<View style={styles.section}>
 					<Text style={styles.textFieldTitle}>Choreograhper</Text>
@@ -106,6 +116,20 @@ class DanceCritiqueFormInner extends React.Component {
 		)
 	}
 
+	getDanceStyleScreen() {
+		const danceStyles = ['Jazz', 'Lyrical', 'Ballet','Modern/Contemporary', 'Musical Theatre/LipSync', 'Musical Theatre/Live Vocals', 'Hip Hop', 'Tap', 'Cultural', 'Open/Fusion', 'CREATIVE COLLABORATION', 'Teacher Choreographed Dances']
+		return (
+			<View style={styles.container}>
+				<CritiqueSection
+					critiqueInput={RadioButtons}
+					critiqueInputProps={{buttonNames: danceStyles, mergeButtons: false}}
+					name={'currentDanceStyle'}
+					title={'Dance Style'}
+				/>
+			</View>
+		)
+	}
+
 	getTechniqueScreen() {
 		return this.getCustomizedCritiqueSection('Demonstrates ability to execute technical skills with a sense of discipline and purpose', 'technique', 'Technique')
 	}
@@ -123,7 +147,11 @@ class DanceCritiqueFormInner extends React.Component {
 	}
 
 	getRecordingScreen() {
-		//Render Recording Component
+		return(
+			<View style={styles.container}>
+				<AudioRecorder />
+			</View>
+		)
 	}
 
 	getSubmissionScreen() {
@@ -148,6 +176,8 @@ class DanceCritiqueFormInner extends React.Component {
 	getCritiqueSection() {
 		if(this.state.screen === CRITIQUE_SECTIONS.default) {
 			return this.getDefaultScreen()
+		} else if (this.state.screen === CRITIQUE_SECTIONS.danceStyle) {
+			return this.getDanceStyleScreen()
 		} else if (this.state.screen === CRITIQUE_SECTIONS.technique) {
 			return this.getTechniqueScreen()
 		} else if(this.state.screen === CRITIQUE_SECTIONS.spatialAwareness) {
@@ -177,11 +207,14 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#000',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 		justifyContent: 'center',
+		padding: 10,
+		alignSelf: 'stretch'
 	},
 	section: {
 		flex: 1,
+		alignSelf: 'stretch',
 		backgroundColor: '#000',
 		flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -190,16 +223,29 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		flex: 1,
 		flexDirection: 'row',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		position: 'absolute',
+		bottom:0,
+		left:0,
 	},
 	button: {
 		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
 	},
 	textFieldTitle: {
-		color: 'white'
-	}
+		color: 'white',
+		fontSize: 20,
+		paddingBottom: 5,
+
+	},
+	screenTitle: {
+		textAlign: 'center',
+		fontSize: 30,
+		fontWeight: 'bold',
+		color: 'white',
+		paddingVertical: 20,
+	},
 });
 
 const DanceCritiqueForm = connect(
