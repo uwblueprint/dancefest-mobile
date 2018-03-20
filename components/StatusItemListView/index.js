@@ -18,16 +18,13 @@ const StatusItemListView = ({ statusItemData }) => (
 );
 
 StatusItemListView.propTypes = {
-  statusItemData: PropTypes.arrayOf(PropTypes.object),
+  statusItemData: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 0,
-/*    width: '75%',
-    marginRight: '25%',
-    */
   },
 });
 
