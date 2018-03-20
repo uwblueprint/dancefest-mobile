@@ -1,6 +1,8 @@
 import danceCritiques, {
   initialState,
   INITIALIZE_DANCE_CRITIQUE,
+  SUBMIT_DANCE_CRITIQUE_SUCCESS,
+  SUBMIT_DANCE_CRITIQUE_FAILURE,
   UPLOAD_DANCE_CRITIQUE_SUCCESS,
   UPLOAD_DANCE_CRITIQUE_FAILURE,
 } from './danceCritiques';
@@ -16,6 +18,42 @@ describe('danceCritiques', () => {
 
     const expected = expect.objectContaining({
       currentDanceId: danceId,
+    });
+
+    expect(danceCritiques(undefined, action)).toEqual(expected);
+  });
+
+  it('handles SUBMIT_DANCE_CRITIQUE_SUCCESS', () => {
+    const danceId = 4;
+    const action = { type: SUBMIT_DANCE_CRITIQUE_SUCCESS, danceId: danceId };
+
+    const currentState = {
+      notUploadedDanceCritiques: [2, 3],
+    };
+
+    const expected = expect.objectContaining({
+      currentDanceId: '',
+      currentDanceNumber: '',
+      currentTechniqueMark: '',
+      currentSpatialAwarenessMark: '',
+      currentUseOfMusicTextSilenceMark: '',
+      currentCommunicationElementsMark: '',
+      currentCommunicationMark: '',
+      notUploadedDanceCritiques: [2, 3, 4],
+      submitDanceCritiqueError: '',
+    });
+
+    expect(danceCritiques(currentState, action)).toEqual(expected);
+  });
+
+  it('handles SUBMIT_DANCE_CRITIQUE_FAILURE', () => {
+    const action = {
+      type: SUBMIT_DANCE_CRITIQUE_FAILURE,
+      submitDanceCritiqueError: 'There was an error',
+    };
+
+    const expected = expect.objectContaining({
+      submitDanceCritiqueError: 'There was an error',
     });
 
     expect(danceCritiques(undefined, action)).toEqual(expected);
