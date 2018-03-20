@@ -7,7 +7,6 @@ import { some, isEmpty } from 'lodash/fp';
 
 import RadioButtons from '../RadioButtons';
 import AudioRecorder from '../AudioRecorder';
-import GoogleSheets from '../GoogleSheets';
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
@@ -50,7 +49,6 @@ class DanceCritiqueFormInner extends React.Component {
     return (
       <View style={styles.container}>
         <AudioRecorder />
-        <GoogleSheets />
         <Text>DanceFest!</Text>
         <Field name="test1" component={RadioButtons} props={{ buttonNames: ['1', '2', '3', '4'], mergeButtons: true }} />
         <Field name="test2" component={RadioButtons} props={{ buttonNames: ['Jazz', 'Hip-Hop', 'Contemporary', 'Fusion'] }} />
