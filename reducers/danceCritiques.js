@@ -19,6 +19,37 @@ export function initialState () {
 }
 
 /**
+ * Submit Dance Critique
+ */
+
+export const SUBMIT_DANCE_CRITIQUE_SUCCESS = 'SUBMIT_DANCE_CRITIQUE_SUCCESS';
+export const SUBMIT_DANCE_CRITIQUE_FAILURE = 'SUBMIT_DANCE_CRITIQUE_FAILURE';
+
+export function submitDanceCritique (danceCritique, audioRecordingUri) {
+  const danceId = danceCritique.id;
+  let submitDanceCritiqueError;
+
+  try {
+    AsyncStorage.setItem(danceId, JSON.stringify(danceCritique));
+  } catch (error) {
+    submitDanceCritiqueError = error;
+  }
+
+  if (submitDanceCritiqueError) {
+    return {
+      type: SUBMIT_DANCE_CRITIQUE_FAILURE,
+      submitDanceCritiqueError,
+    }
+  }
+
+  return {
+    type: SUBMIT_DANCE_CRITIQUE_SUCCESS,
+    danceId,
+    audioRecordingUri,
+  }
+}
+
+/**
  * Upload Dance Critique
  */
 
@@ -27,7 +58,7 @@ export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
 // NOTE: this should only be called if state.notUploadedDanceCritiques is not
 // empty
-export function uploadDanceCritique(danceCritique, audioRecordingUri) {
+export function uploadDanceCritique (danceCritique, audioRecordingUri) {
   const danceId = danceCritique.danceId;
   let googleDriveErrorMessage, googleSheetsErrorMessage;
 
