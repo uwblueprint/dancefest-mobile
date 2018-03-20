@@ -15,6 +15,7 @@ export function initialState () {
     notUploadedDanceCritiques: [],
     uploadDanceCritiqueError: '',
     uploadDanceAudioRecordingError: '',
+    submitDanceCritiqueError: '',
   };
 }
 
@@ -25,14 +26,14 @@ export function initialState () {
 export const SUBMIT_DANCE_CRITIQUE_SUCCESS = 'SUBMIT_DANCE_CRITIQUE_SUCCESS';
 export const SUBMIT_DANCE_CRITIQUE_FAILURE = 'SUBMIT_DANCE_CRITIQUE_FAILURE';
 
-export function submitDanceCritique (danceCritique, audioRecordingUri) {
+export function submitDanceCritique (danceCritique) {
   const danceId = danceCritique.id;
   let submitDanceCritiqueError;
 
   try {
     AsyncStorage.setItem(danceId, JSON.stringify(danceCritique));
   } catch (error) {
-    submitDanceCritiqueError = error;
+    submitDanceCritiqueError = 'There has been an error in submitting your dance critique:' + error;
   }
 
   if (submitDanceCritiqueError) {
@@ -87,6 +88,24 @@ export function uploadDanceCritique (danceCritique, audioRecordingUri) {
 
 export default function danceCritiques (state = initialState(), action = {}) {
   switch (action.type) {
+    case SUBMIT_DANCE_CRITIQUE_SUCCESS:
+      return {
+        ...state,
+        currentDanceId: '',
+        currentDanceNumber: '',
+        currentTechniqueMark: '',
+        currentSpatialAwarenessMark: '',
+        currentUseOfMusicTextSilenceMark: '',
+        currentCommunicationElementsMark: '',
+        currentCommunicationMark: '',
+        notUploadedDanceCritiques: state.notUploadedDanceCritiques.concat(action.danceId),
+        submitDanceCritiqueError: '',
+      }
+    case SUBMIT_DANCE_CRITIQUE_FAILURE:
+      return {
+        ...state,
+        submitDanceCritiqueError: action.submitDanceCritiqueError,
+      }
     case UPLOAD_DANCE_CRITIQUE_SUCCESS:
       const danceId = action.danceId;
       const index = (state.notUploadedDanceCritiques).indexOf(danceId);
