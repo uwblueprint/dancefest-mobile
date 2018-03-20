@@ -11,7 +11,12 @@ import { submitDanceCritique } from '../../reducers/danceCritiques';
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
+    danceId: PropTypes.string.isRequired,
     danceNumber: PropTypes.string.isRequired,
+    danceTitle: PropTypes.string.isRequired,
+    danceChoreographer: PropTypes.string.isRequired,
+    danceStyle: PropTypes.string.isRequired,
+    danceLevel: PropTypes.string.isRequired,
     techniqueMark: PropTypes.string.isRequired,
     spatialAwarenessMark: PropTypes.string.isRequired,
     useOfMusicTextSilenceMark: PropTypes.string.isRequired,
@@ -20,7 +25,12 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   static defaultProps = {
+    danceId: '',
     danceNumber: '',
+    danceTitle: '',
+    danceChoreographer: '',
+    danceStyle: '',
+    danceLevel: '',
     techniqueMark: '',
     spatialAwarenessMark: '',
     useOfMusicTextSilenceMark: '',
@@ -29,12 +39,17 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   mapStateToProps = state => ({
-    danceNumber: state.currentCritique.danceNumber,
-    techniqueMark: state.currentCritique.techniqueMark,
-    spatialAwarenessMark: state.currentCritique.spatialAwarenessMark,
-    useOfMusicTextSilenceMark: state.currentCritique.useOfMusicTextSilenceMark,
-    communicationElementsMark: state.currentCritique.communicationElementsMark,
-    communicationMark: state.currentCritique.communicationMark,
+    danceId: state.currentDanceId,
+    danceNumber: state.currentDanceNumber,
+    danceTitle: state.currentDanceTitle,
+    danceChoreographer: state.currentDanceChoreographer,
+    danceStyle: state.currentDanceStyle,
+    danceLevel: state.currentDanceLevel,
+    techniqueMark: state.currentTechniqueMark,
+    spatialAwarenessMark: state.currentSpatialAwarenessMark,
+    useOfMusicTextSilenceMark: state.currentUseOfMusicTextSilenceMark,
+    communicationElementsMark: state.currentCommunicationElementsMark,
+    communicationMark: state.currentCommunicationMark,
   })
 
   onSubmit = () => {
