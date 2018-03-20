@@ -10,7 +10,18 @@ const deleteItemAtIndex = index => arr => [...arr.slice(0, index), ...arr.slice(
 
 export function initialState () {
   return {
-    // TODO: these initial arrays should populate with values from past instance of app
+    currentDanceId: '',
+    currentDanceNumber: '',
+    currentDanceTitle: '',
+    currentDanceChoreographer: '',
+    currentDanceStyle: '',
+    currentDanceLevel: '',
+    currentTechniqueMark: '',
+    currentSpatialAwarenessMark: '',
+    currentUseOfMusicTextSilenceMark: '',
+    currentCommunicationElementsMark: '',
+    currentCommunicationMark: '',
+    // TODO: these initial arrays should populate with values from past instance of app:
     uploadedDanceCritiques: [],
     notUploadedDanceCritiques: [],
     uploadDanceCritiqueError: '',
