@@ -84,15 +84,15 @@ class DanceCritiqueFormInner extends React.Component {
 				<Text style={styles.screenTitle}>Dance Details</Text>
 				<View style={styles.section}>
 					<Text style={styles.textFieldTitle}>Dance Number</Text>
-					<Field name="danceNumber" component={TextField} props={{value: 'Dance Number'}} />
+					<Field name="currentDanceId" component={TextField} props={{value: 'Dance Id'}} />
 				</View>
 				<View style={styles.section}>
 					<Text style={styles.textFieldTitle}>Dance Title</Text>
-					<Field name="title" component={TextField} props={{numberOfLines: 4, multiline: true}} />
+					<Field name="currentDanceTitle" component={TextField} props={{numberOfLines: 4, multiline: true}} />
 				</View>
 				<View style={styles.section}>
 					<Text style={styles.textFieldTitle}>Choreograhper</Text>
-					<Field name="choreographer" component={TextField} props={{value: 'Choreographer'}} />
+					<Field name="currentDanceChoreographer" component={TextField} props={{value: 'Choreographer'}} />
 				</View>
 				<View style={styles.section}>
 					<Text style={styles.textFieldTitle}>School</Text>
@@ -131,19 +131,19 @@ class DanceCritiqueFormInner extends React.Component {
 	}
 
 	getTechniqueScreen() {
-		return this.getCustomizedCritiqueSection('Demonstrates ability to execute technical skills with a sense of discipline and purpose', 'technique', 'Technique')
+		return this.getCustomizedCritiqueSection('Demonstrates ability to execute technical skills with a sense of discipline and purpose', 'currentTechniqueMark', 'Technique')
 	}
 
 	getSpatialAwarenessScreen() {
-		return this.getCustomizedCritiqueSection('Demonstrates the ability to understand how the body occupies the aesthetic space, as well as creates meaning for the intended observer. (This could include the addition of props within the aesthetic space)','spatialAwareness', 'Spatial Awareness')
+		return this.getCustomizedCritiqueSection('Demonstrates the ability to understand how the body occupies the aesthetic space, as well as creates meaning for the intended observer. (This could include the addition of props within the aesthetic space)','currentSpatialAwarenessMark', 'Spatial Awareness')
 	}
 
 	getCommunicationElementsScreen() {
-		return this.getCustomizedCritiqueSection('Demonstrates the ability to explore the elements of dance and movement ideas that connect to the selected dance style.','communicationElements', 'Communication - Elements')
+		return this.getCustomizedCritiqueSection('Demonstrates the ability to explore the elements of dance and movement ideas that connect to the selected dance style.','currentCommunicationElementsMark', 'Communication - Elements')
 	}
 
 	getCommunicationScreen() {
-		return this.getCustomizedCritiqueSection('Demonstrates the ability to explore the elements of dance and movement ideas that connect to the selected dance style.','communication', 'Communication')
+		return this.getCustomizedCritiqueSection('Demonstrates the ability to explore the elements of dance and movement ideas that connect to the selected dance style.','currentCommunicationMark', 'Communication')
 	}
 
 	getRecordingScreen() {
@@ -156,7 +156,7 @@ class DanceCritiqueFormInner extends React.Component {
 
 	getSubmissionScreen() {
 		return (
-			<Text style={styles.textFieldTitle}>Successfully Submitted!</Text>
+			<Text style={styles.textFieldTitle}>Wooo Successfully Submitted!</Text>
 		)
 	}
 	getNavigationButtons() {
