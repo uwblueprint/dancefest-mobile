@@ -18,7 +18,7 @@ const StatusItemListView = ({ statusItemData }) => (
 );
 
 StatusItemListView.propTypes = {
-  statusItemData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  statusItemData: PropTypes.arrayOf(PropTypes.object),
 };
 
 const styles = StyleSheet.create({
