@@ -22,20 +22,30 @@ export function initialState () {
  * Actions
  */
 
-export const UPLOAD_DANCE_CRITIQUE_REQUEST = 'UPLOAD_DANCE_CRITIQUE_REQUEST';
 export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
-// NOTE: this should only be called if state.notUploadedDanceCritiques is not empty
-export function uploadDanceCritique(danceCritique) {
-  // TODO: send to Google Sheet here
-  // TODO: send to Google Drive here
-
+// NOTE: this should only be called if state.notUploadedDanceCritiques is not
+// empty
+export function uploadDanceCritique(danceCritique, audioRecordingUri) {
   const danceId = danceCritique.danceId;
+  let googleDriveErrorMessage, googleSheetsErrorMessage;
+
+  // TODO: send to Google Sheet here -- takes danceCritique
+  // TODO: send to Google Drive here -- takes audioRecordingUri
+  // if an error is returned on any of the above, then set them on
+  // googleDriveErrorMessage or googleSheetsErrorMessage
+
+  if (googleDriveErrorMessage || googleSheetsErrorMessage) {
+    return {
+      type: UPLOAD_DANCE_CRITIQUE_FAILURE,
+      googleDriveErrorMessage,
+      googleSheetsErrorMessage,
+    };
+  }
 
   return {
-    types: [UPLOAD_DANCE_CRITIQUE_REQUEST, UPLOAD_DANCE_CRITIQUE_SUCCESS, UPLOAD_DANCE_CRITIQUE_FAILURE],
-    errorMessage: 'Something went wrong, please try again.',
+    type: UPLOAD_DANCE_CRITIQUE_SUCCESS,
     danceId,
   };
 }
@@ -46,28 +56,22 @@ export function uploadDanceCritique(danceCritique) {
 
 export default function danceCritiques (state = initialState(), action = {}) {
   switch (action.type) {
-    case UPLOAD_DANCE_CRITIQUE_REQUEST:
-      return {
-        ...state,
-        isUploadingDanceCritique: true,
-        uploadDanceCritiqueError: '',
-      }
     case UPLOAD_DANCE_CRITIQUE_SUCCESS:
       const danceId = action.danceId;
       const index = (state.notUploadedDanceCritiques).indexOf(danceId);
 
       return {
         ...state,
-        isUploadingDanceCritique: false,
         uploadDanceCritiqueError: '',
+        uploadDanceAudioRecordingError: '',
         notUploadedDanceCritiques: deleteItemAtIndex(index)(state.notUploadedDanceCritiques),
         uploadedDanceCritiques: state.uploadedDanceCritiques.concat(danceId),
       }
     case UPLOAD_DANCE_CRITIQUE_FAILURE:
       return {
         ...state,
-        isUploadingDanceCritique: false,
-        uploadDanceCritiqueError: action.errorMessage,
+        uploadDanceCritiqueError: action.googleSheetsErrorMessage,
+        uploadDanceAudioRecordingError: action.googleDriveErrorMessage,
       }
     default:
       return state;
