@@ -7,6 +7,7 @@ import { some, isEmpty } from 'lodash/fp';
 
 import RadioButtons from '../RadioButtons';
 import AudioRecorder from '../AudioRecorder';
+import { submitDanceCritique } from '../../reducers/danceCritiques';
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
@@ -41,7 +42,7 @@ class DanceCritiqueFormInner extends React.Component {
       console.log('yo you\'re missing some required fields');
       // TODO: handle error better
     } else {
-      AsyncStorage.mergeItem(this.props.danceNumber, JSON.stringify(this.props));
+      submitDanceCritique(this.props);
     }
   }
 
