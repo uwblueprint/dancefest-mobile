@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Button, TouchableOpacity, } from 'react-native';
 import StatusItemListView  from './../StatusItemListView';
 import Icon from './../Icon';
+import PropTypes from 'prop-types';
 
 
 export default class StatusItemPanel extends React.Component {
@@ -40,6 +41,9 @@ export default class StatusItemPanel extends React.Component {
   }
 }
 
+StatusItemPanel.propTypes = {
+  statusItemData: PropTypes.arrayOf(PropTypes.object),
+};
 
 
 const styles = StyleSheet.create({
