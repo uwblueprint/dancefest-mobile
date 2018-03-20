@@ -12,14 +12,14 @@ export function initialState () {
   return {
     // TODO: these initial arrays should populate with values from past instance of app
     uploadedDanceCritiques: [],
-    notUplodaedDanceCritiques: [],
-    isUploadingDanceCritique: false,
+    notUploadedDanceCritiques: [],
     uploadDanceCritiqueError: '',
+    uploadDanceAudioRecordingError: '',
   };
 }
 
 /**
- * Actions
+ * Upload Dance Critique
  */
 
 export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
