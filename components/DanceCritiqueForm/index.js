@@ -11,7 +11,7 @@ import { submitDanceCritique } from '../../reducers/danceCritiques';
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
-    danceId: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     danceNumber: PropTypes.string.isRequired,
     danceTitle: PropTypes.string.isRequired,
     danceChoreographer: PropTypes.string.isRequired,
@@ -25,7 +25,7 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   static defaultProps = {
-    danceId: '',
+    id: '',
     danceNumber: '',
     danceTitle: '',
     danceChoreographer: '',
@@ -39,7 +39,7 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   mapStateToProps = state => ({
-    danceId: state.currentDanceId,
+    id: state.currentDanceId,
     danceNumber: state.currentDanceNumber,
     danceTitle: state.currentDanceTitle,
     danceChoreographer: state.currentDanceChoreographer,
