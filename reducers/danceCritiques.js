@@ -26,6 +26,7 @@ export const UPLOAD_DANCE_CRITIQUE_REQUEST = 'UPLOAD_DANCE_CRITIQUE_REQUEST';
 export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
+// NOTE: this should only be called if state.notUploadedDanceCritiques is not empty
 export function uploadDanceCritique(danceCritique) {
   // TODO: send to Google Sheet here
   // TODO: send to Google Drive here
@@ -50,8 +51,6 @@ export default function danceCritiques (state = initialState(), action = {}) {
         ...state,
         isUploadingDanceCritique: true,
         uploadDanceCritiqueError: '',
-        notUploadedDanceCritiques: state.notUploadedDanceCritiques,
-        uploadedDanceCritiques: state.uploadedDanceCritiques,
       }
     case UPLOAD_DANCE_CRITIQUE_SUCCESS:
       const danceId = action.danceId;
@@ -62,15 +61,13 @@ export default function danceCritiques (state = initialState(), action = {}) {
         isUploadingDanceCritique: false,
         uploadDanceCritiqueError: '',
         notUploadedDanceCritiques: deleteItemAtIndex(index)(state.notUploadedDanceCritiques),
-        uploadedDanceCritiques: state.uploadedDanceCritiques.concat(danceId);
+        uploadedDanceCritiques: state.uploadedDanceCritiques.concat(danceId),
       }
     case UPLOAD_DANCE_CRITIQUE_FAILURE:
       return {
         ...state,
         isUploadingDanceCritique: false,
         uploadDanceCritiqueError: action.errorMessage,
-        notUploadedDanceCritiques: state.notUploadedDanceCritiques,
-        uploadedDanceCritiques: state.uploadedDanceCritiques,
       }
     default:
       return state;
