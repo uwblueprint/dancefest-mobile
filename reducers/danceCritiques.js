@@ -21,7 +21,8 @@ export function initialState () {
     currentUseOfMusicTextSilenceMark: '',
     currentCommunicationElementsMark: '',
     currentCommunicationMark: '',
-    // TODO: these initial arrays should populate with values from past instance of app:
+    // TODO: these initial arrays should populate with values from past instance
+    // of app (issue #59):
     uploadedDanceCritiques: [],
     notUploadedDanceCritiques: [],
     uploadDanceCritiqueError: '',
@@ -37,7 +38,7 @@ export function initialState () {
 export const INITIALIZE_DANCE_CRITIQUE = 'INITIALIZE_DANCE_CRITIQUE';
 
 export function initializeDanceCritique () {
-  // TODO: generate unique currentDanceId here LOL
+  // TODO: generate unique currentDanceId here (issue #62)
 
   return {
     type: INITIALIZE_DANCE_CRITIQUE,
@@ -83,14 +84,15 @@ export function submitDanceCritique (danceCritique) {
 export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
+// TODO: create async process that calls uploadDanceCritique (issue #61)
 // NOTE: this should only be called if state.notUploadedDanceCritiques is not
 // empty
 export function uploadDanceCritique (danceCritique, audioRecordingUri) {
   const danceId = danceCritique.danceId;
   let googleDriveErrorMessage, googleSheetsErrorMessage;
 
-  // TODO: send to Google Sheet here -- takes danceCritique
-  // TODO: send to Google Drive here -- takes audioRecordingUri
+  // TODO: send to Google Sheet here -- takes danceCritique (issue #55)
+  // TODO: send to Google Drive here -- takes audioRecordingUri (issue #40)
   // if an error is returned on any of the above, then set them on
   // googleDriveErrorMessage or googleSheetsErrorMessage
 
