@@ -107,15 +107,14 @@ export default function danceCritiques (state = initialState(), action = {}) {
         submitDanceCritiqueError: action.submitDanceCritiqueError,
       }
     case UPLOAD_DANCE_CRITIQUE_SUCCESS:
-      const danceId = action.danceId;
-      const index = (state.notUploadedDanceCritiques).indexOf(danceId);
+      const index = (state.notUploadedDanceCritiques).indexOf(action.danceId);
 
       return {
         ...state,
         uploadDanceCritiqueError: '',
         uploadDanceAudioRecordingError: '',
         notUploadedDanceCritiques: deleteItemAtIndex(index)(state.notUploadedDanceCritiques),
-        uploadedDanceCritiques: state.uploadedDanceCritiques.concat(danceId),
+        uploadedDanceCritiques: state.uploadedDanceCritiques.concat(action.danceId),
       }
     case UPLOAD_DANCE_CRITIQUE_FAILURE:
       return {
