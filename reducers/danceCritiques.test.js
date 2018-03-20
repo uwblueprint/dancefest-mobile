@@ -35,9 +35,10 @@ describe('danceCritiques', () => {
     };
 
     const expected = expect.objectContaining({
-      isUploadingDanceCritique: false,
-      googleDriveErrorMessage: 'Something went wrong with uploading the audio.',
-      googleSheetsErrorMessage: 'Something went wrong with uploading the critique',
+      uploadDanceAudioRecordingError: 'Something went wrong with uploading the audio.',
+      uploadDanceCritiqueError: 'Something went wrong with uploading the critique.',
     });
+
+    expect(danceCritiques(undefined, action)).toEqual(expected);
   });
 });
