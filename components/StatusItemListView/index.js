@@ -10,10 +10,12 @@ const StatusItemListView = ({ statusItemData }) => (
       data={statusItemData}
       renderItem={({ item }) => (
         <StatusItem
-          danceNum={item.danceNum}
-          danceStatus={item.danceStatus}
-          danceName={item.danceName} />)}
-      keyExtractor={item => item.danceNum} />
+          danceNumber={item.danceNumber}
+          danceTitle={item.danceTitle}
+          uploadDanceCritiqueError={item.uploadDanceCritiqueError}
+          uploadDanceAudioRecordingError={item.uploadDanceAudioRecordingError}
+           />)}
+      keyExtractor={item => item.id} />
   </View>
 );
 
