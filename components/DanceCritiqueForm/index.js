@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
-import { getFormValues } from 'redux-form'
+import { getFormValues } from 'redux-form';
 
 import RadioButtons from '../RadioButtons';
 import AudioRecorder from '../AudioRecorder';
-import Button from '../Button';
 import CritiqueSection from '../CritiqueSection'
 import TextField from '../TextField'
 import Icon from '../Icon'
+import { normalize } from '../../util/Scale';
 
 const CRITIQUE_SECTIONS = {
   welcome: 0,
@@ -174,11 +174,11 @@ class DanceCritiqueFormInner extends React.Component {
 
   getButtonText(state) {
     if (state === CRITIQUE_SECTIONS.welcome) {
-      return 'START >'
+      return 'Start >'
     } else if (state === CRITIQUE_SECTIONS.recording) {
-      return 'SUBMIT'
+      return 'Submit'
     } else {
-      return 'NEXT'
+      return 'Next'
     }
   }
 
@@ -187,7 +187,7 @@ class DanceCritiqueFormInner extends React.Component {
       return(
         <View style={styles.button}>
           <Button
-          action='START ANOTHER CRITIQUE >'
+          action='Start Another Critique >'
           color='black'
           onSubmit={() => {}} />
         </View>
@@ -198,7 +198,7 @@ class DanceCritiqueFormInner extends React.Component {
         {this.state.screen !== CRITIQUE_SECTIONS.welcome ?
           (<View style={styles.button}>
             <Button
-            action='BACK'
+            action='Back'
             color='black'
             onSubmit={() => {this.navigateScreen(this.state.screen - 1)}} />
           </View>) :
@@ -266,28 +266,22 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   buttonContainer: {
+    display: 'flex',
     alignItems: 'center',
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     position: 'absolute',
-    bottom:0,
-    left:0,
-  },
-  button: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    bottom: 0,
   },
   textFieldTitle: {
     color: 'white',
-    fontSize: 24,
     fontWeight: 'bold',
     marginVertical: 8,
+    fontSize: normalize(20),
+    paddingBottom: 5,
   },
   screenTitle: {
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: normalize(30),
     fontWeight: 'bold',
     color: 'white',
     paddingVertical: 20,

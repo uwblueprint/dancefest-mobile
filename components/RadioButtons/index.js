@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { normalize } from '../../util/Scale';
 
 /**
  * Component
@@ -69,11 +70,11 @@ const style = StyleSheet.create({
     width: '100%',
   },
   button: {
-    borderRadius: 5,
+    borderRadius: normalize(5),
     borderColor: '#BBBBBB',
     borderWidth: 1,
     margin: 5,
-    padding: 10,
+    padding: 20,
     backgroundColor: '#fff',
   },
   mergedButton: {
@@ -87,13 +88,13 @@ const style = StyleSheet.create({
     backgroundColor: '#fff',
   },
   leftMergedButton: {
-    borderTopLeftRadius: 6,
-    borderBottomLeftRadius: 6,
+    borderTopLeftRadius: normalize(6),
+    borderBottomLeftRadius: normalize(6),
     borderLeftWidth: 1,
   },
   rightMergedButton: {
-    borderTopRightRadius: 6,
-    borderBottomRightRadius: 6,
+    borderTopRightRadius: normalize(6),
+    borderBottomRightRadius: normalize(6),
     borderRightWidth: 1,
   },
   selectedButton: {
@@ -103,6 +104,7 @@ const style = StyleSheet.create({
   text: {
     textAlign: 'center',
     fontWeight: '600',
+    fontSize: normalize(16),
   },
   selectedText: {
     color: '#fff',
