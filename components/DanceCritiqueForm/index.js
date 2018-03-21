@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { StyleSheet, Text, View, AsyncStorage, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
 import { getFormValues } from 'redux-form'
 
