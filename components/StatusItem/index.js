@@ -4,6 +4,17 @@ import PropTypes from 'prop-types';
 import Icon from './../Icon';
 
 const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadDanceAudioRecordingError }) => {
+  if (danceNumber===-1) {
+    return (
+      <View style={style.items}>
+        <View style={style.information}>
+          <Text style={style.danceNumberFiller}>#{danceNumber}</Text>
+          <Text style={style.danceTitleFiller}>{danceTitle}</Text>
+        </View>
+        <Icon name="Checkmark" height="50" width="50" fill="black" viewBox="0 0 30 30" />
+      </View>
+    );
+  }
   const showAlert = () => {
       Alert.alert(
         "Errors:",
@@ -89,7 +100,18 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     backgroundColor: 'yellow',
-  }
+  },
+  danceNumberFiller: {
+    alignItems: 'flex-start',
+    fontSize: 18,
+    fontWeight: '300',
+    color: 'black',
+  },
+  danceTitleFiller: {
+    alignItems: 'flex-end',
+    fontSize: 24,
+    color: 'black',
+  },
 });
 
 export default StatusItem;

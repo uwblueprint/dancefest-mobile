@@ -6,10 +6,10 @@ import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
+import StatusItemPanel from '../StatusItemPanel';
 import RadioButtons from '../RadioButtons';
 import Button from '../Button';
 import AudioRecorder from '../AudioRecorder';
-import StatusItemPanel from '../StatusItemPanel';
 import CritiqueSection from '../CritiqueSection';
 import TextField from '../TextField';
 import Icon from '../Icon';
@@ -30,7 +30,6 @@ const CRITIQUE_SECTIONS = {
   recording: 11,
   submission: 12,
 }
-
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
@@ -110,8 +109,6 @@ class DanceCritiqueFormInner extends React.Component {
 
   getCustomizedCritiqueSection(description, name, title) {
     return (
-    <View style={styles.form}>
-
       <View style={styles.container}>
         <CritiqueSection
           critiqueInput={RadioButtons}
@@ -255,31 +252,32 @@ class DanceCritiqueFormInner extends React.Component {
   render() {
     return (
       <View style={styles.form}>
+
       <View style={styles.container}>
         {this.getCritiqueSection()}
         {this.getNavigationButtons()}
       </View>
-
       <View style={styles.panel}>
-      <StatusItemPanel statusItemData={[
-                                      { id: 1, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' },
-                                      { id: 2, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'Could not upload the critique', uploadDanceAudioRecordingError:'Recording was invalid'},
-                                      { id: 3, danceNumber:11, danceTitle:'The insanely super super long name that goes on forever', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'Could not upload recording' },
-                                      { id: 4, danceNumber:1101, danceTitle:'Plz review me' },
-                      ]}/>
+      <StatusItemPanel statusItemData={[ { id: 1, danceNumber:-1, danceTitle:'Filler' }, { id: 2, danceNumber:-1, danceTitle:'Filler' },
+                                         { id: 3, danceNumber:-1, danceTitle:'Filler' }, { id: 4, danceNumber:-1, danceTitle:'Filler' },
+                                         { id: 5, danceNumber:-1, danceTitle:'Filler' }, { id: 6, danceNumber:-1, danceTitle:'Filler' },
+                                         { id: 7, danceNumber:-1, danceTitle:'Filler' }, { id: 8, danceNumber:-1, danceTitle:'Filler' },
+                                         { id: 9, danceNumber:-1, danceTitle:'Filler' }, { id: 10, danceNumber:-1, danceTitle:'Filler' },]}/>
       </View>
 
-    </View>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  panel: {
-    position: 'absolute',
-  },
   form: {
     flex: 1,
+//    flexDirection: 'row',
+  },
+  panel: {
+    position: 'absolute',
+
   },
   container: {
     flex: 1,

@@ -8,9 +8,7 @@ import Icon from './../Icon';
 const StatusItemList = ({ statusItemData }) => {
   if (statusItemData && statusItemData.length > 0) {
     return (
-      <View style={styles.full}>
         <StatusItemListView statusItemData={statusItemData} />
-      </View>
     );
   }
   return (
