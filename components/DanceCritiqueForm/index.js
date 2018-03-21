@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
-import { getFormValues } from 'redux-form'
+import { getFormValues } from 'redux-form';
 
 import RadioButtons from '../RadioButtons';
 import AudioRecorder from '../AudioRecorder';
@@ -25,6 +25,8 @@ const CRITIQUE_SECTIONS = {
   recording: 7,
   submission: 8,
 }
+
+const CRITIQUE_UPLOAD_INTERVAL = 1 * 60 * 1000;
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
@@ -55,14 +57,27 @@ class DanceCritiqueFormInner extends React.Component {
     communicationMark: '',
   }
 
-  constructor(props){
-     super(props);
+  constructor(props) {
+    super(props);
 
-     this.state = {
-        screen: 0,
-     }
+    this.state = {
+      screen: 0,
+    }
   }
 
+  uploadCritiques() {
+
+  }
+
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      this.uploadCritiques();
+    }, CRITIQUE_UPLOAD_INTERVAL);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
 
   onSubmit = () => {
     if (some(this.props)(isEmpty)) {
