@@ -32,7 +32,9 @@ const CRITIQUE_SECTIONS = {
   communication: 10,
   recording: 11,
   submission: 12,
-}
+};
+
+const CRITIQUE_UPLOAD_INTERVAL = 1 * 60 * 1000;
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
