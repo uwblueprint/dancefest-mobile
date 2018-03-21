@@ -60,10 +60,10 @@ class DanceCritiqueFormInner extends React.Component {
 
       <View style={styles.panel}>
       <StatusItemPanel statusItemData={[
-                                      { danceNum:103, danceStatus:DANCE_STATUS.requireInternet, danceName:'PrintTheBlue' },
-                                      { danceNum:107, danceStatus:DANCE_STATUS.loading, danceName:'DancefestDab' },
-                                      { danceNum:11, danceStatus:DANCE_STATUS.requireInternet, danceName:'The insanely super super long name that goes on forever' },
-                                      { danceNum:1101, danceStatus:DANCE_STATUS.uploaded, danceName:'Plz review me' },
+                                      { id: 1, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' },
+                                      { id: 2, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'Could not upload the critique', uploadDanceAudioRecordingError:'Recording was invalid'},
+                                      { id: 3, danceNumber:11, danceTitle:'The insanely super super long name that goes on forever', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'Could not upload recording' },
+                                      { id: 4, danceNumber:1101, danceTitle:'Plz review me' },
                       ]}/>
       </View>
 
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
   },
   panel: {
     position: 'absolute',
-    backgroundColor: 'yellow'
   },
   form: {
     flex: 1,
