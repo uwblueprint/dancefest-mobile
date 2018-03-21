@@ -5,6 +5,15 @@ import StatusItemListView from './../StatusItemListView';
 import Icon from './../Icon';
 
 
+const filler = [{ id: 1, danceNumber:1, danceTitle:'Fillertemp' }, { id: 2, danceNumber:-1, danceTitle:'Filler' },
+                { id: 3, danceNumber:-1, danceTitle:'Filler' }, { id: 4, danceNumber:-1, danceTitle:'Filler' },
+                { id: 5, danceNumber:-1, danceTitle:'Filler' }, { id: 6, danceNumber:-1, danceTitle:'Filler' },
+                { id: 7, danceNumber:-1, danceTitle:'Filler' }, { id: 8, danceNumber:-1, danceTitle:'Filler' },
+                { id: 9, danceNumber:-1, danceTitle:'Filler' }, { id: 10, danceNumber:-1, danceTitle:'Filler' },
+                { id: 11, danceNumber:-1, danceTitle:'Filler' }, { id: 12, danceNumber:-1, danceTitle:'Filler' },
+                { id: 13, danceNumber:-1, danceTitle:'Filler' }, { id: 14, danceNumber:-1, danceTitle:'Filler' },];
+
+
 const StatusItemList = ({ statusItemData }) => {
   if (statusItemData && statusItemData.length > 0) {
     return (
@@ -17,7 +26,7 @@ const StatusItemList = ({ statusItemData }) => {
 };
 
 
-export default class StatusItemPanel extends React.Component {
+class StatusItemPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = { toggle: false };
@@ -104,3 +113,5 @@ const styles = StyleSheet.create({
     width: '25%',
   },
 });
+
+export {StatusItemPanel, filler};

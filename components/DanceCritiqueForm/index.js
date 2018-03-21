@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
+import { dispatch } from 'redux';
+import { reduxForm, Field, reset } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
@@ -14,6 +15,8 @@ import CritiqueSection from '../CritiqueSection';
 import TextField from '../TextField';
 import Icon from '../Icon';
 import { normalize } from '../../util/Scale';
+
+import { initializeDanceCritique, submitDanceCritique, uploadDanceCritique, uploadDanceAudioRecording } from '../../reducers/danceCritiques';
 
 const CRITIQUE_SECTIONS = {
   welcome: 0,
@@ -39,6 +42,8 @@ class DanceCritiqueFormInner extends React.Component {
     useOfMusicTextSilenceMark: PropTypes.string.isRequired,
     communicationElementsMark: PropTypes.string.isRequired,
     communicationMark: PropTypes.string.isRequired,
+    audioRecordingUri: PropTypes.string.isRequired,
+    notUploadedDanceCritiques: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   static defaultProps = {
@@ -48,23 +53,45 @@ class DanceCritiqueFormInner extends React.Component {
     useOfMusicTextSilenceMark: '',
     communicationElementsMark: '',
     communicationMark: '',
+    audioRecordingUri: '',
+    notUploadedDanceCritiques: [],
   }
 
-  constructor(props){
-     super(props);
+  constructor(props) {
+    super(props);
 
-     this.state = {
-        screen: 0,
-     }
+    this.state = {
+      screen: 0,
+    }
   }
+
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      this.uploadDanceCritiquesAndRecording();
+    }, CRITIQUE_UPLOAD_INTERVAL);
+
 
 
   onSubmit = () => {
+    const danceCritique = {
+      danceId: this.props.id,
+      danceNumber: this.props.danceNumber,
+      danceTitle: this.props.danceTitle,
+      danceChoreographer: this.props.danceChoreographer,
+      danceStyle: this.props.danceStyle,
+      danceLevel: this.props.danceLevel,
+      techniqueMark: this.props.techniqueMark,
+      spatialAwarenessMark: this.props.spatialAwarenessMark,
+      useOfMusicTextSilenceMark: this.props.useOfMusicTextSilenceMark,
+      communicationElementsMark: this.props.communicationElementsMark,
+    };
+
     if (some(this.props)(isEmpty)) {
       console.log('yo you\'re missing some required fields');
       // TODO: handle error better
     } else {
-      AsyncStorage.mergeItem(this.props.danceNumber, JSON.stringify(this.props));
+      this.props.onSubmitDanceCritique(danceCritique, this.props.audioRecordingUri);
+      this.navigateScreen(CRITIQUE_SECTIONS.welcome)
     }
   }
 
@@ -166,7 +193,7 @@ class DanceCritiqueFormInner extends React.Component {
   getSubmissionScreen() {
     return (
       <View style={styles.container, {alignItems: 'center'}}>
-        <View style={{paddingLeft: '15%'}}>
+        <View style={{paddingLeft: '15%'}} >
           <Icon name='Submission' height="200" width="200" fill='#EB6284' viewBox="0 0 30 30" />
         </View>
         <Text style={{color: 'white'}}>Successfully Uploaded!</Text>
@@ -184,6 +211,17 @@ class DanceCritiqueFormInner extends React.Component {
     }
   }
 
+  startDanceCritiqueSection() {
+    this.props.onInitialize()
+  }
+
+  onNavButtonPress() {
+    if (this.state.screen === CRITIQUE_SECTIONS.welcome) {
+      this.startDanceCritiqueSection()
+    }
+    this.navigateScreen(this.state.screen + 1)
+  }
+
   getNavigationButtons() {
     if (this.state.screen === CRITIQUE_SECTIONS.submission) {
       return(
@@ -191,7 +229,7 @@ class DanceCritiqueFormInner extends React.Component {
           <Button
           action='Start Another Critique >'
           color='black'
-          onSubmit={() => {}} />
+          onSubmit={() => {this.onSubmit()}} />
         </View>
       )
     } else {
@@ -210,7 +248,7 @@ class DanceCritiqueFormInner extends React.Component {
             <Button
               action={this.getButtonText(this.state.screen)}
               color='black'
-              onSubmit={() => {this.navigateScreen(this.state.screen + 1)}}
+              onSubmit={() => {this.onNavButtonPress()}}
             />
           </View>
         </View>
@@ -319,17 +357,33 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   const formValues = getFormValues('danceCritique')(state)
   return {
+    id: state.danceCritiques.currentDanceId,
     danceNumber: formValues.currentDanceNumber,
     techniqueMark: formValues.currentTechniqueMark,
     spatialAwarenessMark: formValues.currentSpatialAwarenessMark,
     useOfMusicTextSilenceMark: formValues.currentUseOfMusicTextSilenceMark,
     communicationElementsMark: formValues.currentCommunicationElementsMark,
     communicationMark: formValues.currentCommunicationMark,
+    audioRecordingUri: state.currentAudioRecordingUri,
+    notUploadedDanceCritiques: state.notUploadedDanceCritiques,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onInitialize: () => {
+      dispatch(initializeDanceCritique())
+    },
+    onSubmitDanceCritique: (props) => {
+      dispatch(submitDanceCritique(props))
+      dispatch(reset('danceCritique'))
+    },
   }
 }
 
 const DanceCritiqueForm = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(DanceCritiqueFormInner);
 
 export default reduxForm({

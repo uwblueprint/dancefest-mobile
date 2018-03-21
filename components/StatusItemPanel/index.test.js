@@ -1,5 +1,5 @@
 import React from 'react';
-import StatusItemPanel from './index';
+import { StatusItemPanel } from './index';
 import renderer from 'react-test-renderer';
 
 it('Renders red exclamation without crashing', () => {
