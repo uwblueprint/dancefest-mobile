@@ -7,7 +7,7 @@ import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
-import StatusItemPanel from '../StatusItemPanel';
+import { StatusItemPanel, filler } from '../StatusItemPanel';
 import RadioButtons from '../RadioButtons';
 import Button from '../Button';
 import AudioRecorder from '../AudioRecorder';
@@ -44,6 +44,7 @@ class DanceCritiqueFormInner extends React.Component {
     communicationMark: PropTypes.string.isRequired,
     audioRecordingUri: PropTypes.string.isRequired,
     notUploadedDanceCritiques: PropTypes.arrayOf(PropTypes.object).isRequired,
+    uploadedDanceCritiques: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   static defaultProps = {
@@ -55,6 +56,7 @@ class DanceCritiqueFormInner extends React.Component {
     communicationMark: '',
     audioRecordingUri: '',
     notUploadedDanceCritiques: [],
+    uploadedDanceCritiques: [],
   }
 
   constructor(props) {
@@ -69,8 +71,7 @@ class DanceCritiqueFormInner extends React.Component {
     this.timer = setInterval(() => {
       this.uploadDanceCritiquesAndRecording();
     }, CRITIQUE_UPLOAD_INTERVAL);
-
-
+  }
 
   onSubmit = () => {
     const danceCritique = {
@@ -98,7 +99,7 @@ class DanceCritiqueFormInner extends React.Component {
   navigateScreen = (screen) => {
     this.setState({
       screen: screen
-    })
+    });
   }
 
   getWelcomeScreen() {
@@ -296,13 +297,7 @@ class DanceCritiqueFormInner extends React.Component {
         {this.getNavigationButtons()}
       </View>
       <View style={styles.panel}>
-      <StatusItemPanel statusItemData={[ { id: 1, danceNumber:1, danceTitle:'Filler' }, { id: 2, danceNumber:-1, danceTitle:'Filler' },
-                                         { id: 3, danceNumber:-1, danceTitle:'Filler' }, { id: 4, danceNumber:-1, danceTitle:'Filler' },
-                                         { id: 5, danceNumber:-1, danceTitle:'Filler' }, { id: 6, danceNumber:-1, danceTitle:'Filler' },
-                                         { id: 7, danceNumber:-1, danceTitle:'Filler' }, { id: 8, danceNumber:-1, danceTitle:'Filler' },
-                                         { id: 9, danceNumber:-1, danceTitle:'Filler' }, { id: 10, danceNumber:-1, danceTitle:'Filler' },
-                                         { id: 11, danceNumber:-1, danceTitle:'Filler' }, { id: 12, danceNumber:-1, danceTitle:'Filler' },
-                                         { id: 13, danceNumber:-1, danceTitle:'Filler' }, { id: 14, danceNumber:-1, danceTitle:'Filler' },]}/>
+        <StatusItemPanel statusItemData={this.props.uploadedDanceCritiques.concat(this.props.notUploadedDanceCritiques.concat(filler))}/>
       </View>
 
       </View>
@@ -366,6 +361,7 @@ const mapStateToProps = state => {
     communicationMark: formValues.currentCommunicationMark,
     audioRecordingUri: state.currentAudioRecordingUri,
     notUploadedDanceCritiques: state.notUploadedDanceCritiques,
+    uploadedDanceCritiques: state.uploadedDanceCritiques,
   }
 }
 
