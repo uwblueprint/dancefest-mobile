@@ -4,6 +4,16 @@
 
 const deleteItemAtIndex = index => arr => [...arr.slice(0, index), ...arr.slice(index + 1)];
 
+const replaceItemAtIndex = (index, item) => arr => [
+  ...arr.slice(0, index),
+  item,
+  ...arr.slice(index + 1),
+];
+
+const getDanceCritiqueById = id => danceCritiques => (
+  find(danceCritique => danceCritique.id === id)(danceCritiques)
+);
+
 /**
  * Initial state
  */
@@ -21,13 +31,11 @@ export function initialState () {
     currentUseOfMusicTextSilenceMark: '',
     currentCommunicationElementsMark: '',
     currentCommunicationMark: '',
+    submitDanceCritiqueError: '',
     // TODO: these initial arrays should populate with values from past instance
     // of app (issue #59):
     uploadedDanceCritiques: [],
     notUploadedDanceCritiques: [],
-    uploadDanceCritiqueError: '',
-    uploadDanceAudioRecordingError: '',
-    submitDanceCritiqueError: '',
   };
 }
 
@@ -54,7 +62,7 @@ export const SUBMIT_DANCE_CRITIQUE_SUCCESS = 'SUBMIT_DANCE_CRITIQUE_SUCCESS';
 export const SUBMIT_DANCE_CRITIQUE_FAILURE = 'SUBMIT_DANCE_CRITIQUE_FAILURE';
 
 export function submitDanceCritique (danceCritique) {
-  const danceId = danceCritique.id;
+  const { id: danceId, danceNumber, danceTitle } = danceCritique;
   let submitDanceCritiqueError;
 
   try {
@@ -66,6 +74,9 @@ export function submitDanceCritique (danceCritique) {
   if (submitDanceCritiqueError) {
     return {
       type: SUBMIT_DANCE_CRITIQUE_FAILURE,
+      danceId,
+      danceNumber,
+      danceTitle,
       submitDanceCritiqueError,
     }
   }
@@ -73,7 +84,8 @@ export function submitDanceCritique (danceCritique) {
   return {
     type: SUBMIT_DANCE_CRITIQUE_SUCCESS,
     danceId,
-    audioRecordingUri,
+    danceNumber,
+    danceTitle,
   }
 }
 
@@ -85,8 +97,7 @@ export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
 // TODO: create async process that calls uploadDanceCritique (issue #61)
-// NOTE: this should only be called if state.notUploadedDanceCritiques is not
-// empty
+// NOTE: this should only be called if state.notUploadedDanceCritiques is not empty
 export function uploadDanceCritique (danceCritique, audioRecordingUri) {
   const danceId = danceCritique.danceId;
   let googleDriveErrorMessage, googleSheetsErrorMessage;
@@ -115,6 +126,8 @@ export function uploadDanceCritique (danceCritique, audioRecordingUri) {
  */
 
 export default function danceCritiques (state = initialState(), action = {}) {
+  let index, abridgedDanceCritique;
+
   switch (action.type) {
     case INITIALIZE_DANCE_CRITIQUE:
       return {
@@ -122,17 +135,28 @@ export default function danceCritiques (state = initialState(), action = {}) {
         currentDanceId: action.danceId,
       }
     case SUBMIT_DANCE_CRITIQUE_SUCCESS:
+      abridgedDanceCritique = {
+        id: action.danceId,
+        danceNumber: action.danceNumber,
+        danceTitle: action.danceTitle,
+        uploadDanceCritiqueError: '',
+        uploadDanceAudioRecordingError: '',
+      };
+
       return {
         ...state,
         currentDanceId: '',
         currentDanceNumber: '',
+        currentDanceTitle: '',
+        currentDanceChoreographer: '',
+        currentDanceStyle: '',
+        currentDanceLevel: '',
         currentTechniqueMark: '',
         currentSpatialAwarenessMark: '',
         currentUseOfMusicTextSilenceMark: '',
         currentCommunicationElementsMark: '',
         currentCommunicationMark: '',
-        notUploadedDanceCritiques: state.notUploadedDanceCritiques.concat(action.danceId),
-        submitDanceCritiqueError: '',
+        notUploadedDanceCritiques: state.notUploadedDanceCritiques.concat(abridgedDanceCritique),
       }
     case SUBMIT_DANCE_CRITIQUE_FAILURE:
       return {
@@ -140,20 +164,34 @@ export default function danceCritiques (state = initialState(), action = {}) {
         submitDanceCritiqueError: action.submitDanceCritiqueError,
       }
     case UPLOAD_DANCE_CRITIQUE_SUCCESS:
-      const index = (state.notUploadedDanceCritiques).indexOf(action.danceId);
+      index = (state.notUploadedDanceCritiques).indexOf(action.danceId);
+
+      abridgedDanceCritique = {
+        id: action.danceId,
+        danceNumber: action.danceNumber,
+        danceTitle: action.danceTitle,
+      };
 
       return {
         ...state,
-        uploadDanceCritiqueError: '',
-        uploadDanceAudioRecordingError: '',
         notUploadedDanceCritiques: deleteItemAtIndex(index)(state.notUploadedDanceCritiques),
-        uploadedDanceCritiques: state.uploadedDanceCritiques.concat(action.danceId),
+        uploadedDanceCritiques: state.uploadedDanceCritiques.concat(abridgedDanceCritique),
       }
     case UPLOAD_DANCE_CRITIQUE_FAILURE:
+      const currentAbridgedDanceCritique = getDanceCritiqueById(action.danceId)(state.notUploadedDanceCritiques);
+      index = (state.notUploadedDanceCritiques).indexOf(action.danceId);
+
+      if (action.googleSheetsErrorMessage) {
+        currentAbridgedDanceCritique['uploadDanceCritiqueError'] = action.googleSheetsErrorMessage;
+      }
+
+      if (action.googleDriveErrorMessage) {
+        currentAbridgedDanceCritique['uploadDanceAudioRecordingError'] = action.googleDriveErrorMessage;
+      }
+
       return {
         ...state,
-        uploadDanceCritiqueError: action.googleSheetsErrorMessage,
-        uploadDanceAudioRecordingError: action.googleDriveErrorMessage,
+        notUploadedDanceCritiques: replaceItemAtIndex(index)(state.notUploadedDanceCritiques),
       }
     default:
       return state;
