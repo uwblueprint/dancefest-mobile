@@ -51,6 +51,8 @@ export function initialState () {
 export const INITIALIZE_DANCE_CRITIQUE = 'INITIALIZE_DANCE_CRITIQUE';
 
 export function initializeDanceCritique () {
+  // Get the unique time and store that as the danceId
+  let danceId = new Date().getTime().toString()
   return {
     type: INITIALIZE_DANCE_CRITIQUE,
     danceId,
@@ -145,7 +147,6 @@ export async function uploadDanceCritique (danceCritiqueId, audioRecordingUri) {
 
 export default function danceCritiques (state = initialState(), action = {}) {
   let index, abridgedDanceCritique;
-
   switch (action.type) {
     case INITIALIZE_DANCE_CRITIQUE:
       return {
