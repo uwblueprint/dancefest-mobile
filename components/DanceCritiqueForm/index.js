@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Dispatch } from "redux";
+import { dispatch } from 'redux';
 import { reduxForm, Field, reset } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
 import { some, isEmpty, forEach } from 'lodash/fp';
@@ -48,6 +48,7 @@ class DanceCritiqueFormInner extends React.Component {
     useOfMusicTextSilenceMark: PropTypes.string.isRequired,
     communicationElementsMark: PropTypes.string.isRequired,
     communicationMark: PropTypes.string.isRequired,
+    audioRecordingUri: PropTypes.string.isRequired,
     notUploadedDanceCritiques: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
@@ -63,6 +64,7 @@ class DanceCritiqueFormInner extends React.Component {
     useOfMusicTextSilenceMark: '',
     communicationElementsMark: '',
     communicationMark: '',
+    audioRecordingUri: '',
     notUploadedDanceCritiques: [],
   }
 
@@ -93,11 +95,24 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   onSubmit = () => {
+    const danceCritique = {
+      danceId: this.props.id,
+      danceNumber: this.props.danceNumber,
+      danceTitle: this.props.danceTitle,
+      danceChoreographer: this.props.danceChoreographer,
+      danceStyle: this.props.danceStyle,
+      danceLevel: this.props.danceLevel,
+      techniqueMark: this.props.techniqueMark,
+      spatialAwarenessMark: this.props.spatialAwarenessMark,
+      useOfMusicTextSilenceMark: this.props.useOfMusicTextSilenceMark,
+      communicationElementsMark: this.props.communicationElementsMark,
+    };
+
     if (some(this.props)(isEmpty)) {
       console.log('yo you\'re missing some required fields');
       // TODO: handle error better
     } else {
-      this.props.onSubmitDanceCritique(this.props);
+      this.props.onSubmitDanceCritique(danceCritique, this.props.audioRecordingUri);
       this.navigateScreen(CRITIQUE_SECTIONS.welcome)
     }
   }
@@ -350,6 +365,7 @@ const mapStateToProps = state => {
     useOfMusicTextSilenceMark: formValues.currentUseOfMusicTextSilenceMark,
     communicationElementsMark: formValues.currentCommunicationElementsMark,
     communicationMark: formValues.currentCommunicationMark,
+    audioRecordingUri: state.currentAudioRecordingUri,
     notUploadedDanceCritiques: state.notUploadedDanceCritiques,
   }
 }
