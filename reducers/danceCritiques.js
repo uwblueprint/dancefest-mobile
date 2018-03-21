@@ -51,8 +51,6 @@ export function initialState () {
 export const INITIALIZE_DANCE_CRITIQUE = 'INITIALIZE_DANCE_CRITIQUE';
 
 export function initializeDanceCritique () {
-  // TODO: generate unique currentDanceId here (issue #62)
-
   return {
     type: INITIALIZE_DANCE_CRITIQUE,
     danceId,
@@ -106,7 +104,7 @@ export async function uploadDanceCritique (danceCritiqueId, audioRecordingUri) {
   if (danceCritiqueId !== null) {
     try {
       const critique = await AsyncStorage.getItem(danceCritiqueId);
-      const { success, message: googleSheetsErrorMessage } = await uploadCritiquesToGoogleSheets(googleSheetsErrorMessage);
+      const { success, message: googleSheetsErrorMessage } = await uploadCritiquesToGoogleSheets([critique]);
       if (success) {
         googleSheetsErrorMessage = '';
       }

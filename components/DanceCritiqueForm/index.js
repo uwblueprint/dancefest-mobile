@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect, dispatch } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
-import { some, isEmpty, forEach, cloneWith } from 'lodash/fp';
+import { some, isEmpty, forEach, clone } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
 import RadioButtons from '../RadioButtons';
@@ -32,7 +32,7 @@ const CRITIQUE_SECTIONS = {
   submission: 12,
 }
 
-const CRITIQUE_UPLOAD_INTERVAL = 1 * 60 * 1000;
+const CRITIQUE_UPLOAD_INTERVAL = 1 * 5 * 1000;
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
@@ -48,7 +48,7 @@ class DanceCritiqueFormInner extends React.Component {
     communicationElementsMark: PropTypes.string.isRequired,
     communicationMark: PropTypes.string.isRequired,
     notUploadedDanceCritiques: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }
+  };
 
   static defaultProps = {
     id: '',
@@ -63,21 +63,22 @@ class DanceCritiqueFormInner extends React.Component {
     communicationElementsMark: '',
     communicationMark: '',
     notUploadedDanceCritiques: [],
-  }
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
       screen: 0,
-    }
+    };
   }
 
   async uploadDanceCritiquesAndRecording() {
-    const curNotUploaded = cloneWith(this.state.notUploadedDanceCritiques);
+    const curNotUploaded = clone(this.props.notUploadedDanceCritiques);
     forEach(curNotUploaded, async (critique) => {
       const critiqueId = critique.uploadDanceCritiqueError ? critique.id : null;
       const recordingUri = critique.recordingUri ? critique.id : null;
+      console.log('dispatching: ', critiqueId)
       dispatch(await uploadDanceCritique(critiqueId, recordingUri));
     });
   }
@@ -85,7 +86,7 @@ class DanceCritiqueFormInner extends React.Component {
   componentDidMount() {
     this.timer = setInterval(async () => {
       console.log('attempting uploads');
-      this.uploadDanceCritiquesAndRecording();
+      await this.uploadDanceCritiquesAndRecording();
     }, CRITIQUE_UPLOAD_INTERVAL);
   }
 
