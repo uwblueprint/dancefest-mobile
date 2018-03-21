@@ -3,17 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
-import { some, isEmpty } from 'lodash/fp';
+import { some, isEmpty, forEach } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
 import StatusItemPanel from '../StatusItemPanel';
 import RadioButtons from '../RadioButtons';
-import Button from '../Button';
 import AudioRecorder from '../AudioRecorder';
+import Button from '../Button';
 import CritiqueSection from '../CritiqueSection';
 import TextField from '../TextField';
-import Icon from '../Icon';
+import Icon from '../Icon'
 import { normalize } from '../../util/Scale';
+
+import { submitDanceCritique, uploadDanceCritique, uploadDanceAudioRecording } from '../../reducers/danceCritiques';
 
 const CRITIQUE_SECTIONS = {
   welcome: 0,
@@ -31,40 +33,72 @@ const CRITIQUE_SECTIONS = {
   submission: 12,
 }
 
+const CRITIQUE_UPLOAD_INTERVAL = 1 * 60 * 1000;
+
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
+    id: PropTypes.string.isRequired,
     danceNumber: PropTypes.string.isRequired,
+    danceTitle: PropTypes.string.isRequired,
+    danceChoreographer: PropTypes.string.isRequired,
+    danceStyle: PropTypes.string.isRequired,
+    danceLevel: PropTypes.string.isRequired,
     techniqueMark: PropTypes.string.isRequired,
     spatialAwarenessMark: PropTypes.string.isRequired,
     useOfMusicTextSilenceMark: PropTypes.string.isRequired,
     communicationElementsMark: PropTypes.string.isRequired,
     communicationMark: PropTypes.string.isRequired,
+    notUploadedDanceCritiques: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   static defaultProps = {
+    id: '',
     danceNumber: '',
+    danceTitle: '',
+    danceChoreographer: '',
+    danceStyle: '',
+    danceLevel: '',
     techniqueMark: '',
     spatialAwarenessMark: '',
     useOfMusicTextSilenceMark: '',
     communicationElementsMark: '',
     communicationMark: '',
+    notUploadedDanceCritiques: [],
   }
 
-  constructor(props){
-     super(props);
+  constructor(props) {
+    super(props);
 
-     this.state = {
-        screen: 0,
-     }
+    this.state = {
+      screen: 0,
+    }
   }
 
+  uploadDanceCritiquesAndRecording() {
+    forEach(this.state.notUploadedDanceCritiques, (critique) => {
+      const critiqueId = critique.uploadDanceCritiqueError ? critique.id : null;
+      const recordingUri = critique.recordingUri ? critique.id : null;
+      uploadDanceCritique(critiqueId, recordingUri);
+    });
+  }
+
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      console.log('attempting uploads');
+      this.uploadDanceCritiquesAndRecording();
+    }, CRITIQUE_UPLOAD_INTERVAL);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
 
   onSubmit = () => {
     if (some(this.props)(isEmpty)) {
       console.log('yo you\'re missing some required fields');
       // TODO: handle error better
     } else {
-      AsyncStorage.mergeItem(this.props.danceNumber, JSON.stringify(this.props));
+      submitDanceCritique(this.props);
     }
   }
 
@@ -323,6 +357,7 @@ const mapStateToProps = state => {
     useOfMusicTextSilenceMark: formValues.currentUseOfMusicTextSilenceMark,
     communicationElementsMark: formValues.currentCommunicationElementsMark,
     communicationMark: formValues.currentCommunicationMark,
+    notUploadedDanceCritiques: state.notUploadedDanceCritiques,
   }
 }
 

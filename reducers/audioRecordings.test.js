@@ -10,7 +10,7 @@ describe('audioRecordings', () => {
     const action = { type: SET_AUDIO_URI, uri: uri };
 
     const expected = expect.objectContaining({
-      uri: uri,
+      currentAudioUri: uri,
     });
 
     expect(audioRecordings(undefined, action)).toEqual(expected);
