@@ -1,4 +1,4 @@
-import { findIndex } from 'lodash/fp';
+import { findIndex, find } from 'lodash/fp';
 import { uploadCritiques as uploadCritiquesToGoogleSheets } from '../services/GoogleSheets';
 
 /**
@@ -121,6 +121,7 @@ export async function uploadDanceCritique (danceCritiqueId, audioRecordingUri) {
   if (googleDriveErrorMessage || googleSheetsErrorMessage) {
     return {
       type: UPLOAD_DANCE_CRITIQUE_FAILURE,
+      danceId,
       googleDriveErrorMessage,
       googleSheetsErrorMessage,
     };
@@ -199,8 +200,8 @@ export default function danceCritiques (state = initialState(), action = {}) {
         uploadedDanceCritiques: state.uploadedDanceCritiques.concat(abridgedDanceCritique),
       }
     case UPLOAD_DANCE_CRITIQUE_FAILURE:
-      const currentAbridgedDanceCritique = getDanceCritiqueById(action.danceId)(state.notUploadedDanceCritiques);
       index = getDanceCritiqueIndexById(action.danceId)(state.notUploadedDanceCritiques);
+      const currentAbridgedDanceCritique = state.notUploadedDanceCritiques[index];
 
       if (action.googleSheetsErrorMessage) {
         currentAbridgedDanceCritique['uploadDanceCritiqueError'] = action.googleSheetsErrorMessage;
@@ -212,7 +213,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
 
       return {
         ...state,
-        notUploadedDanceCritiques: replaceItemAtIndex(index)(state.notUploadedDanceCritiques),
+        notUploadedDanceCritiques: replaceItemAtIndex(index, currentAbridgedDanceCritique)(state.notUploadedDanceCritiques),
       }
     default:
       return state;
