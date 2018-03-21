@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { normalize } from '../../util/Scale';
 
 /**
  * Component
@@ -73,7 +74,7 @@ const style = StyleSheet.create({
     borderColor: '#BBBBBB',
     borderWidth: 1,
     margin: 5,
-    padding: 10,
+    padding: 20,
     backgroundColor: '#fff',
   },
   mergedButton: {
@@ -103,6 +104,7 @@ const style = StyleSheet.create({
   text: {
     textAlign: 'center',
     fontWeight: '600',
+    fontSize: normalize(16),
   },
   selectedText: {
     color: '#fff',

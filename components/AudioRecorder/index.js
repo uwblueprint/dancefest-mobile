@@ -1,8 +1,9 @@
 import React from 'react';
 import { Alert, Platform, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import _ from 'lodash';
-import { Audio } from 'expo';
+import { Audio, Permissions } from 'expo';
 import Icon from './../Icon';
+import { normalize } from '../../util/Scale';
 
 export default class AudioRecorder extends React.Component {
   constructor(props) {
@@ -28,6 +29,12 @@ export default class AudioRecorder extends React.Component {
       // either create a new recording or use the one on the state
       let recording = null;
       if (!this.state.recording) {
+        // get audio recording permission if needed
+        const { status } = await Permissions.getAsync(Permissions.AUDIO_RECORDING);
+        if (status !== 'granted') {
+          let { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+        }
+
         newRecording = new Audio.Recording();
 
         // set audio mode to allow recording
@@ -127,13 +134,13 @@ export default class AudioRecorder extends React.Component {
 
     return (
       <View style={styles.audioRecorder}>
-        <Icon name={'Microphone'} height="48" width="48" viewBox="0 0 24 24" fill="white" />
+        <Icon name={'Microphone'} height={normalize(48)} width={normalize(48)} viewBox="0 0 24 24" fill="white" />
         <Text style={[styles.counter, { fontFamily }]}>{hours}:{minutes}:{seconds}</Text>
         <Text style={styles.subText}>{this.state.isRecording ? 'Recording' : ' '}</Text>
         <View style={styles.buttonContainer}>
           <TouchableHighlight
             onPress={async () => this.stopRecordingAlert()}>
-            <Icon name={'Delete'} height="32" width="32" viewBox="0 0 24 24" fill="white" />
+            <Icon name={'Delete'} height={normalize(32)} width={normalize(32)} viewBox="0 0 24 24" fill="white" />
           </TouchableHighlight>
           <TouchableHighlight
             onPress={async () => this.toggleRecording()}
@@ -153,12 +160,13 @@ const styles = StyleSheet.create({
   },
   counter: {
     color: 'white',
-    fontSize: 36,
+    fontSize: normalize(36),
     letterSpacing: 2,
     marginVertical: 8,
   },
   subText: {
     color: '#838383',
+    fontSize: normalize(14),
     marginBottom: 20,
   },
   buttonContainer: {
@@ -166,34 +174,27 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   recordButtonOutline: {
-    width: 60,
-    height: 60,
-    marginLeft: 25,
-    marginRight: 57,
-    borderRadius: 30,
-    borderWidth: 5,
+    width: normalize(60),
+    height: normalize(60),
+    marginLeft: normalize(25),
+    marginRight: normalize(57),
+    borderRadius: normalize(30),
+    borderWidth: normalize(10),
     borderColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
   },
   recordButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: normalize(45),
+    height: normalize(45),
+    borderRadius: normalize(22.5),
     backgroundColor: '#FF2464',
   },
   stopButton: {
-    width: 30,
-    height: 30,
-    borderRadius: 3,
+    width: normalize(30),
+    height: normalize(30),
+    borderRadius: normalize(3),
     backgroundColor: '#FF2464',
   },
-  redoButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
+ 

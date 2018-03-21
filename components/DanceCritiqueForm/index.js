@@ -9,6 +9,7 @@ import { getFormValues } from 'redux-form'
 import RadioButtons from '../RadioButtons';
 import Button from '../Button';
 import AudioRecorder from '../AudioRecorder';
+<<<<<<< Updated upstream
 import Button from '../Button';
 import CritiqueSection from '../CritiqueSection'
 import TextField from '../TextField'
@@ -24,6 +25,10 @@ const CRITIQUE_SECTIONS = {
   recording: 7,
   submission: 8,
 }
+=======
+import CritiqueSection from '../CritiqueSection';
+import TextField from '../TextField';
+>>>>>>> Stashed changes
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
