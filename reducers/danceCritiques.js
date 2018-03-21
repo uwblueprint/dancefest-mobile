@@ -74,9 +74,6 @@ export function submitDanceCritique (danceCritique) {
   if (submitDanceCritiqueError) {
     return {
       type: SUBMIT_DANCE_CRITIQUE_FAILURE,
-      danceId,
-      danceNumber,
-      danceTitle,
       submitDanceCritiqueError,
     }
   }
