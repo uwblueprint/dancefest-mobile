@@ -1,3 +1,5 @@
+import { findIndex } from 'lodash/fp';
+
 /**
  * Helpers
  */
@@ -13,6 +15,8 @@ const replaceItemAtIndex = (index, item) => arr => [
 const getDanceCritiqueById = id => danceCritiques => (
   find(danceCritique => danceCritique.id === id)(danceCritiques)
 );
+
+const getDanceCritiqueIndexById = id => findIndex(danceCritique => danceCritique.id === id);
 
 /**
  * Initial state
@@ -61,7 +65,7 @@ export function initializeDanceCritique () {
 export const SUBMIT_DANCE_CRITIQUE_SUCCESS = 'SUBMIT_DANCE_CRITIQUE_SUCCESS';
 export const SUBMIT_DANCE_CRITIQUE_FAILURE = 'SUBMIT_DANCE_CRITIQUE_FAILURE';
 
-export function submitDanceCritique (danceCritique) {
+export function submitDanceCritique (danceCritique, audioRecordingUri) {
   const { id: danceId, danceNumber, danceTitle } = danceCritique;
   let submitDanceCritiqueError;
 
@@ -74,9 +78,6 @@ export function submitDanceCritique (danceCritique) {
   if (submitDanceCritiqueError) {
     return {
       type: SUBMIT_DANCE_CRITIQUE_FAILURE,
-      danceId,
-      danceNumber,
-      danceTitle,
       submitDanceCritiqueError,
     }
   }
@@ -86,6 +87,7 @@ export function submitDanceCritique (danceCritique) {
     danceId,
     danceNumber,
     danceTitle,
+    audioRecordingUri,
   }
 }
 
@@ -96,8 +98,6 @@ export function submitDanceCritique (danceCritique) {
 export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
-// TODO: create async process that calls uploadDanceCritique (issue #61)
-// NOTE: this should only be called if state.notUploadedDanceCritiques is not empty
 export function uploadDanceCritique (danceCritique, audioRecordingUri) {
   const danceId = danceCritique.danceId;
   let googleDriveErrorMessage, googleSheetsErrorMessage;
@@ -118,6 +118,8 @@ export function uploadDanceCritique (danceCritique, audioRecordingUri) {
   return {
     type: UPLOAD_DANCE_CRITIQUE_SUCCESS,
     danceId,
+    danceNumber,
+    danceTitle,
   };
 }
 
@@ -139,6 +141,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
         id: action.danceId,
         danceNumber: action.danceNumber,
         danceTitle: action.danceTitle,
+        audioRecordingUri: action.audioRecordingUri,
         uploadDanceCritiqueError: '',
         uploadDanceAudioRecordingError: '',
       };
@@ -165,7 +168,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
         submitDanceCritiqueError: action.submitDanceCritiqueError,
       }
     case UPLOAD_DANCE_CRITIQUE_SUCCESS:
-      index = (state.notUploadedDanceCritiques).indexOf(action.danceId);
+      index = getDanceCritiqueIndexById(action.danceId)(state.notUploadedDanceCritiques);
 
       abridgedDanceCritique = {
         id: action.danceId,
@@ -180,7 +183,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
       }
     case UPLOAD_DANCE_CRITIQUE_FAILURE:
       const currentAbridgedDanceCritique = getDanceCritiqueById(action.danceId)(state.notUploadedDanceCritiques);
-      index = (state.notUploadedDanceCritiques).indexOf(action.danceId);
+      index = getDanceCritiqueIndexById(action.danceId)(state.notUploadedDanceCritiques);
 
       if (action.googleSheetsErrorMessage) {
         currentAbridgedDanceCritique['uploadDanceCritiqueError'] = action.googleSheetsErrorMessage;

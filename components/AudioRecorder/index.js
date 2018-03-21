@@ -1,8 +1,9 @@
 import React from 'react';
 import { Alert, Platform, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import _ from 'lodash';
-import { Audio } from 'expo';
+import { Audio, Permissions } from 'expo';
 import Icon from './../Icon';
+import { normalize } from '../../util/Scale';
 
 export default class AudioRecorder extends React.Component {
   constructor(props) {
@@ -20,6 +21,28 @@ export default class AudioRecorder extends React.Component {
     });
   }
 
+  async checkForExistingRecording() {
+    // if isRecording = false but there is recording instance on the state, this means
+    // that we have completed a recording. To start another recording, the user must
+    // first clear existing completed recording.
+    if (!this.state.isRecording && this.state.recording) {
+      Alert.alert(
+        'Warning',
+        'There is an existing recording! Recording will overwrite this existing recording.',
+        [
+          { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+          { text: 'Overwrite existing recording (cannot be undone)', onPress: () => {
+            this.stopRecording(true);
+            this.toggleRecording();
+          } },
+        ],
+        { cancelable: false },
+      );
+    } else {
+      this.toggleRecording();
+    }
+  }
+
   async toggleRecording() {
     let newRecording = null;
     let uri = '';
@@ -27,7 +50,13 @@ export default class AudioRecorder extends React.Component {
     try {
       // either create a new recording or use the one on the state
       let recording = null;
-      if (!this.state.recording) {
+      if (!this.state.isRecording) {
+        // get audio recording permission if needed
+        const { status } = await Permissions.getAsync(Permissions.AUDIO_RECORDING);
+        if (status !== 'granted') {
+          let { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+        }
+
         newRecording = new Audio.Recording();
 
         // set audio mode to allow recording
@@ -90,31 +119,40 @@ export default class AudioRecorder extends React.Component {
       'This will erase your existing recording and you will have to re-record!',
       [
         { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-        { text: 'Erase Recording (cannot be undone)', onPress: () => this.stopRecording() },
+        { text: 'Erase Recording (cannot be undone)', onPress: () => this.stopRecording(true) },
       ],
       { cancelable: false },
     );
   }
 
-  async stopRecording() {
+  async stopRecording(clear) {
     let uri = '';
     if (this.state.recording) {
-      try {
-        await this.state.recording.stopAndUnloadAsync();
-        uri = await this.state.recording.getURI();
-      } catch (error) {
-        console.log(error);
-        return;
+      // if isRecording = false, then the current recording has already been unloaded so
+      // we don't need to unload again or Expo will throw an error
+      if (this.state.isRecording) {
+        try {
+          await this.state.recording.stopAndUnloadAsync();
+          uri = await this.state.recording.getURI();
+          console.log(uri);
+        } catch (error) {
+          console.log(error);
+          return;
+        }
       }
 
-      if (uri) {
+      if (uri && !clear) {
         // TODO:: save URI to store
       }
-      this.setState({
+
+      const stateUpdate = {
         isRecording: false,
-        recordingDuration: 0,
-        recording: null,
-      });
+      }
+      if (clear) {
+        stateUpdate.recording = null;
+        stateUpdate.recordingDuration = 0;
+      }
+      this.setState(stateUpdate);
     }
   }
 
@@ -127,18 +165,22 @@ export default class AudioRecorder extends React.Component {
 
     return (
       <View style={styles.audioRecorder}>
-        <Icon name={'Microphone'} height="48" width="48" viewBox="0 0 24 24" fill="white" />
+        <Icon name={'Microphone'} height={normalize(48)} width={normalize(48)} viewBox="0 0 24 24" fill="white" />
         <Text style={[styles.counter, { fontFamily }]}>{hours}:{minutes}:{seconds}</Text>
         <Text style={styles.subText}>{this.state.isRecording ? 'Recording' : ' '}</Text>
         <View style={styles.buttonContainer}>
           <TouchableHighlight
             onPress={async () => this.stopRecordingAlert()}>
-            <Icon name={'Delete'} height="32" width="32" viewBox="0 0 24 24" fill="white" />
+            <Icon name={'Delete'} height={normalize(32)} width={normalize(32)} viewBox="0 0 24 24" fill="white" />
           </TouchableHighlight>
           <TouchableHighlight
-            onPress={async () => this.toggleRecording()}
+            onPress={async () => this.checkForExistingRecording()}
             style={styles.recordButtonOutline}>
             <View style={this.state.isRecording ? styles.stopButton : styles.recordButton} />
+          </TouchableHighlight>
+          <TouchableHighlight
+            onPress={async () => this.stopRecording(false)}>
+            <Text style={styles.doneText}>Done</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -153,47 +195,46 @@ const styles = StyleSheet.create({
   },
   counter: {
     color: 'white',
-    fontSize: 36,
+    fontSize: normalize(36),
     letterSpacing: 2,
     marginVertical: 8,
   },
   subText: {
     color: '#838383',
+    fontSize: normalize(14),
     marginBottom: 20,
+  },
+  doneText: {
+    color: 'white',
+    fontSize: normalize(14),
+    marginBottom: 10,
+    marginRight: 15,
   },
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
   recordButtonOutline: {
-    width: 60,
-    height: 60,
-    marginLeft: 25,
-    marginRight: 57,
-    borderRadius: 30,
-    borderWidth: 5,
+    width: normalize(60),
+    height: normalize(60),
+    marginLeft: normalize(25),
+    marginRight: normalize(16),
+    borderRadius: normalize(30),
+    borderWidth: normalize(8),
     borderColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
   },
   recordButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: normalize(45),
+    height: normalize(45),
+    borderRadius: normalize(22.5),
     backgroundColor: '#FF2464',
   },
   stopButton: {
-    width: 30,
-    height: 30,
-    borderRadius: 3,
+    width: normalize(30),
+    height: normalize(30),
+    borderRadius: normalize(3),
     backgroundColor: '#FF2464',
-  },
-  redoButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

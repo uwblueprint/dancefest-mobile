@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 import { Field } from 'redux-form';
+import { normalize } from '../../util/Scale';
 
 const CritiqueSection = ({ critiqueInput, critiqueInputProps, description, name, title }) => (
   <View style={styles.fieldView}>
@@ -25,13 +26,14 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: 'white',
-    fontSize: 24,
+    fontSize: normalize(24),
     fontWeight: 'bold',
     marginVertical: 8,
   },
   descText: {
     color: '#838383',
     marginBottom: 15,
+    fontSize: normalize(14),
   },
 });
 
