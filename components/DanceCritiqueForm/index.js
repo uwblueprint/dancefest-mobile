@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
 
 import RadioButtons from '../RadioButtons';
+import Button from '../Button';
 import AudioRecorder from '../AudioRecorder';
 
 class DanceCritiqueFormInner extends React.Component {
@@ -52,6 +53,8 @@ class DanceCritiqueFormInner extends React.Component {
         <Text>DanceFest!</Text>
         <Field name="test1" component={RadioButtons} props={{ buttonNames: ['1', '2', '3', '4'], mergeButtons: true }} />
         <Field name="test2" component={RadioButtons} props={{ buttonNames: ['Jazz', 'Hip-Hop', 'Contemporary', 'Fusion'] }} />
+        <Field name="test3" component={Button} props={{action: 'NEXT', color: 'black', onSubmit: () => {console.log('hi')}}} />
+
       </View>
     );
   }
