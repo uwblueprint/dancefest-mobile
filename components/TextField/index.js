@@ -41,20 +41,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderStyle: 'dashed',
     borderColor: 'lightgrey',
-<<<<<<< Updated upstream
     color: 'white',
-    //paddingHorizontal: 10,
-    //paddingVertical: 5,
-    fontSize: 30,
-=======
-    paddingHorizontal: 10,
-    paddingVertical: 5,
     fontSize: normalize(14),
->>>>>>> Stashed changes
   },
   largeInputField: {
     textAlignVertical: 'top',
-    //paddingVertical: 10,
   },
 });
 

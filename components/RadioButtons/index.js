@@ -70,7 +70,7 @@ const style = StyleSheet.create({
     width: '100%',
   },
   button: {
-    borderRadius: 5,
+    borderRadius: normalize(5),
     borderColor: '#BBBBBB',
     borderWidth: 1,
     margin: 5,
@@ -88,13 +88,13 @@ const style = StyleSheet.create({
     backgroundColor: '#fff',
   },
   leftMergedButton: {
-    borderTopLeftRadius: 6,
-    borderBottomLeftRadius: 6,
+    borderTopLeftRadius: normalize(6),
+    borderBottomLeftRadius: normalize(6),
     borderLeftWidth: 1,
   },
   rightMergedButton: {
-    borderTopRightRadius: 6,
-    borderBottomRightRadius: 6,
+    borderTopRightRadius: normalize(6),
+    borderBottomRightRadius: normalize(6),
     borderRightWidth: 1,
   },
   selectedButton: {

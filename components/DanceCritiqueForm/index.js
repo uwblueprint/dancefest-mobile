@@ -4,15 +4,14 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
-import { getFormValues } from 'redux-form'
+import { getFormValues } from 'redux-form';
 
 import RadioButtons from '../RadioButtons';
 import Button from '../Button';
 import AudioRecorder from '../AudioRecorder';
-<<<<<<< Updated upstream
-import Button from '../Button';
 import CritiqueSection from '../CritiqueSection'
 import TextField from '../TextField'
+import { normalize } from '../../util/Scale';
 
 const CRITIQUE_SECTIONS = {
   default: 0,
@@ -25,10 +24,6 @@ const CRITIQUE_SECTIONS = {
   recording: 7,
   submission: 8,
 }
-=======
-import CritiqueSection from '../CritiqueSection';
-import TextField from '../TextField';
->>>>>>> Stashed changes
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
@@ -79,19 +74,19 @@ class DanceCritiqueFormInner extends React.Component {
         <Text style={styles.screenTitle}>Dance Details</Text>
         <View style={styles.section}>
           <Text style={styles.textFieldTitle}>Dance Number</Text>
-          <Field name="currentDanceNumber" component={TextField} props={{value: 'Dance Id'}} />
+          <Field name="currentDanceNumber" component={TextField} />
         </View>
         <View style={styles.section}>
           <Text style={styles.textFieldTitle}>Dance Title</Text>
-          <Field name="currentDanceTitle" component={TextField} props={{numberOfLines: 4, multiline: true}} />
+          <Field name="currentDanceTitle" component={TextField} />
         </View>
         <View style={styles.section}>
-          <Text style={styles.textFieldTitle}>Choreograhper</Text>
-          <Field name="danceChoreographer" component={TextField} props={{value: 'Choreographer'}} />
+          <Text style={styles.textFieldTitle}>Choreographer</Text>
+          <Field name="danceChoreographer" component={TextField} />
         </View>
         <View style={styles.section}>
           <Text style={styles.textFieldTitle}>School</Text>
-          <Field name="danceSchool" component={TextField} props={{value: 'School'}} />
+          <Field name="danceSchool" component={TextField} />
         </View>
     </View>
     )
@@ -162,18 +157,14 @@ class DanceCritiqueFormInner extends React.Component {
     if(this.state.screen === CRITIQUE_SECTIONS.submission) {
       return (
         <View style={styles.button}>
-          <Button action='SUBMIT' color='black' onSubmit={this.onSubmit()} />
+          <Button action='Submit' color='black' onSubmit={this.onSubmit()} />
         </View>
       )
     } else {
       return(
         <View style={styles.buttonContainer}>
-          <View style={styles.button}>
-            <Button action='BACK' color='black' onSubmit={() => {this.navigateScreen(this.state.screen - 1)}} />
-          </View>
-          <View style={styles.button}>
-            <Button action='NEXT' color='black' onSubmit={() => {this.navigateScreen(this.state.screen + 1)}} />
-          </View>
+          <Button action='Back' color='black' onSubmit={() => {this.navigateScreen(this.state.screen - 1)}} />
+          <Button action='Next' color='black' onSubmit={() => {this.navigateScreen(this.state.screen + 1)}} />
         </View>
       )
     }
@@ -232,28 +223,20 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   buttonContainer: {
+    display: 'flex',
     alignItems: 'center',
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     position: 'absolute',
-    bottom:0,
-    left:0,
-  },
-  button: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    bottom: 0,
   },
   textFieldTitle: {
     color: 'white',
-    fontSize: 20,
+    fontSize: normalize(20),
     paddingBottom: 5,
-
   },
   screenTitle: {
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: normalize(30),
     fontWeight: 'bold',
     color: 'white',
     paddingVertical: 20,
