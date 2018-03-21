@@ -8,7 +8,7 @@ import Icon from './../Icon';
 const StatusItemList = ({ statusItemData }) => {
   if (statusItemData && statusItemData.length > 0) {
     return (
-      <View>
+      <View style={styles.full}>
         <StatusItemListView statusItemData={statusItemData} />
       </View>
     );
@@ -22,7 +22,7 @@ const StatusItemList = ({ statusItemData }) => {
 export default class StatusItemPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { toggle: false };
+    this.state = { toggle: true };
   }
   onPress = () => {
     this.setState({
@@ -70,19 +70,19 @@ StatusItemPanel.defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingTop: '6.5%',
   },
   openSidebar: {
     flex: 1,
     width: '75%',
     marginRight: '25%',
-    backgroundColor: 'black',
+    backgroundColor: 'red',
     left: 0,
     marginTop: '-16%',
   },
   closedSidebar: {
     flex: 1,
-    paddingTop: '6.5%',
     width: '75%',
     marginRight: '25%',
     backgroundColor: 'black',
@@ -90,10 +90,10 @@ const styles = StyleSheet.create({
     marginTop: '-16%',
   },
   closeButton: {
-    alignItems: 'flex-end',
+    alignItems: 'center',
     backgroundColor: 'black',
     paddingTop: 10,
-    marginLeft: '85%',
+    marginLeft: '78%',
     width: '25%',
   },
   uploadButton: {
