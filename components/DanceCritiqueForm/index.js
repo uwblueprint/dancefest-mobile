@@ -49,14 +49,25 @@ class DanceCritiqueFormInner extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+    <View style={styles.form}>
 
+      <View style={styles.container}>
         <AudioRecorder />
-        <StatusItemPanel statusItemData={[ { danceNum:103, danceStatus:DANCE_STATUS.requireInternet, danceName:'PrintTheBlue' }, ]}/>
         <Text>DanceFest!</Text>
         <Field name="test1" component={RadioButtons} props={{ buttonNames: ['1', '2', '3', '4'], mergeButtons: true }} />
         <Field name="test2" component={RadioButtons} props={{ buttonNames: ['Jazz', 'Hip-Hop', 'Contemporary', 'Fusion'] }} />
       </View>
+
+      <View style={styles.panel}>
+      <StatusItemPanel statusItemData={[
+                                      { danceNum:103, danceStatus:DANCE_STATUS.requireInternet, danceName:'PrintTheBlue' },
+                                      { danceNum:107, danceStatus:DANCE_STATUS.loading, danceName:'DancefestDab' },
+                                      { danceNum:11, danceStatus:DANCE_STATUS.requireInternet, danceName:'The insanely super super long name that goes on forever' },
+                                      { danceNum:1101, danceStatus:DANCE_STATUS.uploaded, danceName:'Plz review me' },
+                      ]}/>
+      </View>
+
+    </View>
     );
   }
 }
@@ -64,9 +75,16 @@ class DanceCritiqueFormInner extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#000',
+  },
+  panel: {
+    position: 'absolute',
+    backgroundColor: 'yellow'
+  },
+  form: {
+    flex: 1,
   },
 });
 
