@@ -266,6 +266,11 @@ const styles = StyleSheet.create({
     padding: 10,
     alignSelf: 'stretch',
   },
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   buttonContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -286,9 +291,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     paddingVertical: 20,
-  },
-  image: {
-  flex: 1,
   },
 });
 
