@@ -14,7 +14,7 @@ import TextField from '../TextField';
 import Icon from '../Icon'
 import { normalize } from '../../util/Scale';
 
-import { submitDanceCritique, uploadDanceCritique, uploadDanceAudioRecording } from '../../reducers/danceCritiques';
+import { submitDanceCritique, uploadDanceCritique } from '../../reducers/danceCritiques';
 
 const CRITIQUE_SECTIONS = {
   welcome: 0,
@@ -73,16 +73,16 @@ class DanceCritiqueFormInner extends React.Component {
     }
   }
 
-  uploadDanceCritiquesAndRecording() {
-    forEach(this.state.notUploadedDanceCritiques, (critique) => {
+  async uploadDanceCritiquesAndRecording() {
+    forEach(this.state.notUploadedDanceCritiques, async (critique) => {
       const critiqueId = critique.uploadDanceCritiqueError ? critique.id : null;
       const recordingUri = critique.recordingUri ? critique.id : null;
-      uploadDanceCritique(critiqueId, recordingUri);
+      await uploadDanceCritique(critiqueId, recordingUri);
     });
   }
 
   componentDidMount() {
-    this.timer = setInterval(() => {
+    this.timer = setInterval(async () => {
       console.log('attempting uploads');
       this.uploadDanceCritiquesAndRecording();
     }, CRITIQUE_UPLOAD_INTERVAL);
@@ -92,12 +92,12 @@ class DanceCritiqueFormInner extends React.Component {
     clearTimeout(this.timer);
   }
 
-  onSubmit = () => {
+  onSubmit = async () => {
     if (some(this.props)(isEmpty)) {
       console.log('yo you\'re missing some required fields');
       // TODO: handle error better
     } else {
-      submitDanceCritique(this.props);
+      await submitDanceCritique(this.props);
     }
   }
 

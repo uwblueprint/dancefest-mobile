@@ -1,4 +1,5 @@
 import { findIndex } from 'lodash/fp';
+import { uploadCritiques as uploadCritiquesToGoogleSheets } from '../services/GoogleSheets';
 
 /**
  * Helpers
@@ -65,12 +66,12 @@ export function initializeDanceCritique () {
 export const SUBMIT_DANCE_CRITIQUE_SUCCESS = 'SUBMIT_DANCE_CRITIQUE_SUCCESS';
 export const SUBMIT_DANCE_CRITIQUE_FAILURE = 'SUBMIT_DANCE_CRITIQUE_FAILURE';
 
-export function submitDanceCritique (danceCritique, audioRecordingUri) {
+export async function submitDanceCritique (danceCritique, audioRecordingUri) {
   const { id: danceId, danceNumber, danceTitle } = danceCritique;
   let submitDanceCritiqueError;
 
   try {
-    AsyncStorage.setItem(danceId, JSON.stringify(danceCritique));
+    await AsyncStorage.setItem(danceId, JSON.stringify(danceCritique));
   } catch (error) {
     submitDanceCritiqueError = 'There has been an error in submitting your dance critique:' + error;
   }
@@ -98,15 +99,23 @@ export function submitDanceCritique (danceCritique, audioRecordingUri) {
 export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
-export function uploadDanceCritique (danceCritiqueId, audioRecordingUri) {
+export async function uploadDanceCritique (danceCritiqueId, audioRecordingUri) {
   let googleDriveErrorMessage = '';
   let googleSheetsErrorMessage = '';
 
   if (danceCritiqueId !== null) {
-  // TODO: send to Google Sheet here -- takes danceCritique (issue #55)
+    try {
+      const critique = await AsyncStorage.getItem(danceCritiqueId);
+      const { success, message: googleSheetsErrorMessage } = await uploadCritiquesToGoogleSheets(googleSheetsErrorMessage);
+      if (success) {
+        googleSheetsErrorMessage = '';
+      }
+    } catch (error) {
+      googleSheetsErrorMessage = 'Error getting critique ' + danceCritiqueId + ' from AsyncStorage!';
+    }
   }
   if (audioRecordingUri !== null) {
-  // TODO: send to Google Drive here -- takes audioRecordingUri (issue #40)
+    // TODO: send to Google Drive here -- takes audioRecordingUri (issue #40)
   }
 
   if (googleDriveErrorMessage || googleSheetsErrorMessage) {

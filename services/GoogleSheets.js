@@ -23,7 +23,7 @@ export async function uploadCritiques(critiques) {
 
   const token = await signInWithGoogleAsync();
   if (!token) {
-    return false;
+    return { success: false, message: 'Google sign in failed'};
   }
 
   try {
@@ -39,9 +39,9 @@ export async function uploadCritiques(critiques) {
       }),
     });
     console.log(response);
-    return response.ok;
+    return { successs: response.ok, message: 'uploaded successfully' };
   } catch (error) {
     console.error(error);
-    return false;
+    return { success: false, message: error};
   }
 };
