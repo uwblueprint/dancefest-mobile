@@ -1,8 +1,12 @@
-import { combineReducers } from 'redux'
-import { reducer as formReducer } from 'redux-form'
+import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
+
+import audioRecordings from './reducers/audioRecordings';
+import danceCritiques from './reducers/danceCritiques';
 
 const reducers = {
-	//place other reducers here
+  danceCritiques,
+  audioRecordings,
   form: formReducer
 }
 

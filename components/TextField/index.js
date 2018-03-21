@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, TextInput } from 'react-native';
+import { normalize } from '../../util/Scale';
 
 /**
  * Component
@@ -35,17 +36,16 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   inputField: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     borderWidth: 1,
     borderRadius: 5,
     borderStyle: 'dashed',
     borderColor: 'lightgrey',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    color: 'white',
+    fontSize: normalize(14),
   },
   largeInputField: {
     textAlignVertical: 'top',
-    paddingVertical: 10,
   },
 });
 
