@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, dispatch } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
-import { some, isEmpty, forEach } from 'lodash/fp';
+import { some, isEmpty, forEach, cloneWith } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
 import RadioButtons from '../RadioButtons';
@@ -74,10 +74,11 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   async uploadDanceCritiquesAndRecording() {
-    forEach(this.state.notUploadedDanceCritiques, async (critique) => {
+    const curNotUploaded = cloneWith(this.state.notUploadedDanceCritiques);
+    forEach(curNotUploaded, async (critique) => {
       const critiqueId = critique.uploadDanceCritiqueError ? critique.id : null;
       const recordingUri = critique.recordingUri ? critique.id : null;
-      await uploadDanceCritique(critiqueId, recordingUri);
+      dispatch(await uploadDanceCritique(critiqueId, recordingUri));
     });
   }
 

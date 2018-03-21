@@ -126,6 +126,12 @@ export async function uploadDanceCritique (danceCritiqueId, audioRecordingUri) {
     };
   }
 
+  try {
+    await AsyncStorage.removeItem(danceCritiqueId);
+  } catch (error) {
+    // TODO:: handle this error properly. Right now if removing the item fails
+    // then we just let the dance critique stay in the store
+  }
   return {
     type: UPLOAD_DANCE_CRITIQUE_SUCCESS,
     danceId,
