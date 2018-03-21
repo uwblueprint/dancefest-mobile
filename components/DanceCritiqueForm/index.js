@@ -7,10 +7,11 @@ import { some, isEmpty } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
 import RadioButtons from '../RadioButtons';
+import Button from '../Button';
 import AudioRecorder from '../AudioRecorder';
-import CritiqueSection from '../CritiqueSection'
-import TextField from '../TextField'
-import Icon from '../Icon'
+import CritiqueSection from '../CritiqueSection';
+import TextField from '../TextField';
+import Icon from '../Icon';
 import { normalize } from '../../util/Scale';
 
 const CRITIQUE_SECTIONS = {
