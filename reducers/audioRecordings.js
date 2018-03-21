@@ -30,7 +30,7 @@ export default function audioRecordings (state = initialState(), action = {}) {
     case SET_AUDIO_URI:
       return {
         ...state,
-        currentAudioUri: action.uri,
+        currentAudioRecordingUri: action.uri,
       };
     default:
       return state;
