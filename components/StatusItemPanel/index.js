@@ -20,7 +20,7 @@ const StatusItemList = ({ statusItemData }) => {
 export default class StatusItemPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { toggle: true };
+    this.state = { toggle: false };
   }
   onPress = () => {
     this.setState({
@@ -34,14 +34,14 @@ export default class StatusItemPanel extends React.Component {
           <TouchableOpacity
             style={styles.uploadButton}
             onPress={this.onPress} >
-            <Icon name="Upload" height="50" width="50" fill="white" viewBox="0 0 30 30" />
+            <Icon name="Upload" height="85" width="120" fill="white" viewBox="0 0 20 20" />
           </TouchableOpacity>
         </View>
         <View style={this.state.toggle ? styles.openSidebar : styles.closedSidebar}>
           <TouchableOpacity
             style={styles.closeButton}
             onPress={this.onPress} >
-            <Icon name="Close" height="50" width="50" fill="white" viewBox="0 0 30 30" />
+            <Icon name="Close" height="60" width="60" fill="white" viewBox="0 0 20 20" />
           </TouchableOpacity>
           <StatusItemList statusItemData={this.props.statusItemData} />
         </View>
@@ -73,32 +73,34 @@ const styles = StyleSheet.create({
   },
   openSidebar: {
     flex: 1,
-    width: '75%',
-    marginRight: '25%',
+    width: '65%',
+    marginRight: '35%',
     backgroundColor: 'black',
     left: 0,
     marginTop: '-16%',
+    paddingTop: '6.5%',
   },
   closedSidebar: {
     flex: 1,
     width: '75%',
     marginRight: '25%',
     backgroundColor: 'black',
-    left: -300,
+    left: -600,
     marginTop: '-16%',
+    paddingTop: '6.5%',
   },
   closeButton: {
-    alignItems: 'center',
+    alignItems: 'flex-end',
     backgroundColor: 'black',
     paddingTop: 10,
-    marginLeft: '78%',
+    paddingBottom: 10,
+    marginLeft: '74%',
     width: '25%',
   },
   uploadButton: {
-    alignItems: 'flex-end',
+    alignItems: 'center',
     backgroundColor: 'black',
-    paddingTop: '2%',
     marginRight: '75%',
-    width: '20%',
+    width: '25%',
   },
 });

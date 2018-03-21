@@ -11,7 +11,7 @@ const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadD
           <Text style={style.danceNumberFiller}>#{danceNumber}</Text>
           <Text style={style.danceTitleFiller}>{danceTitle}</Text>
         </View>
-        <Icon name="Checkmark" height="50" width="50" fill="black" viewBox="0 0 30 30" />
+        <Icon name="Checkmark" height="65" width="65" fill="black" viewBox="0 0 25 25" />
       </View>
     );
   }
@@ -41,7 +41,7 @@ const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadD
         </View>
         <TouchableOpacity
           onPress={showAlert} >
-        <Icon name={iconName} height="50" width="50" fill={fillColor} viewBox="0 0 30 30" />
+        <Icon name={iconName} height="65" width="65" fill={fillColor} viewBox="0 0 25 25" />
         </TouchableOpacity>
       </View>
     );
@@ -52,7 +52,7 @@ const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadD
         <Text style={style.danceNumber}>#{danceNumber}</Text>
         <Text style={style.danceTitle}>{danceTitle}</Text>
       </View>
-      <Icon name={iconName} height="50" width="50" fill={fillColor} viewBox="0 0 30 30" />
+      <Icon name={iconName} height="65" width="65" fill={fillColor} viewBox="0 0 25 25" />
     </View>
   );
 };
@@ -81,13 +81,13 @@ const style = StyleSheet.create({
   },
   danceNumber: {
     alignItems: 'flex-start',
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: '300',
     color: 'grey',
   },
   danceTitle: {
     alignItems: 'flex-end',
-    fontSize: 24,
+    fontSize: 30,
     color: 'white',
   },
   information: {
@@ -103,13 +103,13 @@ const style = StyleSheet.create({
   },
   danceNumberFiller: {
     alignItems: 'flex-start',
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: '300',
     color: 'black',
   },
   danceTitleFiller: {
     alignItems: 'flex-end',
-    fontSize: 24,
+    fontSize: 30,
     color: 'black',
   },
 });
