@@ -35,17 +35,19 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   inputField: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     borderWidth: 1,
     borderRadius: 5,
     borderStyle: 'dashed',
     borderColor: 'lightgrey',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    color: 'white',
+    //paddingHorizontal: 10,
+    //paddingVertical: 5,
+    fontSize: 30,
   },
   largeInputField: {
     textAlignVertical: 'top',
-    paddingVertical: 10,
+    //paddingVertical: 10,
   },
 });
 
