@@ -7,6 +7,7 @@ import { some, isEmpty } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
 import RadioButtons from '../RadioButtons';
+import Button from '../Button';
 import AudioRecorder from '../AudioRecorder';
 import Button from '../Button';
 import CritiqueSection from '../CritiqueSection';
