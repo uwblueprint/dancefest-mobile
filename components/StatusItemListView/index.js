@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { StatusItem } from './../StatusItem';
+import StatusItem from './../StatusItem';
 
 
 const StatusItemListView = ({ statusItemData }) => (

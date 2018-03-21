@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '75%',
     marginRight: '25%',
-    backgroundColor: 'red',
+    backgroundColor: 'black',
     left: 0,
     marginTop: '-16%',
   },

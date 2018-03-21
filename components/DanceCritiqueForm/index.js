@@ -8,7 +8,6 @@ import { some, isEmpty } from 'lodash/fp';
 import RadioButtons from '../RadioButtons';
 import AudioRecorder from '../AudioRecorder';
 import StatusItemPanel from '../StatusItemPanel';
-import { DANCE_STATUS }  from '../StatusItem';
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {

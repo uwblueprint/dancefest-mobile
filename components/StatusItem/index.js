@@ -3,12 +3,6 @@ import { Alert, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from './../Icon';
 
-const DANCE_STATUS = {
-  uploaded: 0,
-  loading: 1,
-  requireInternet: 2,
-};
-
 const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadDanceAudioRecordingError }) => {
   const showAlert = () => {
       Alert.alert(
@@ -31,8 +25,8 @@ const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadD
     return (
       <View style={style.items}>
         <View style={style.information}>
-          <Text style={style.danceNum}>#{danceNumber}</Text>
-          <Text style={style.danceName}>{danceTitle}</Text>
+          <Text style={style.danceNumber}>#{danceNumber}</Text>
+          <Text style={style.danceTitle}>{danceTitle}</Text>
         </View>
         <TouchableOpacity
           onPress={showAlert} >
@@ -44,9 +38,8 @@ const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadD
   return (
     <View style={style.items}>
       <View style={style.information}>
-        <Text style={style.danceNum}>#{danceNumber}</Text>
-        <Text style={style.danceName}>{danceTitle}</Text>
-        <Text style={style.danceName}>{uploadDanceCritiqueError}</Text>
+        <Text style={style.danceNumber}>#{danceNumber}</Text>
+        <Text style={style.danceTitle}>{danceTitle}</Text>
       </View>
       <Icon name={iconName} height="50" width="50" fill={fillColor} viewBox="0 0 30 30" />
     </View>
@@ -75,13 +68,13 @@ const style = StyleSheet.create({
     height: 'auto',
     backgroundColor: 'black',
   },
-  danceNum: {
+  danceNumber: {
     alignItems: 'flex-start',
     fontSize: 18,
     fontWeight: '300',
     color: 'grey',
   },
-  danceName: {
+  danceTitle: {
     alignItems: 'flex-end',
     fontSize: 24,
     color: 'white',
@@ -99,4 +92,4 @@ const style = StyleSheet.create({
   }
 });
 
-export { StatusItem, DANCE_STATUS };
+export default StatusItem;

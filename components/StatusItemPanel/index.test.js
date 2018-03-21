@@ -1,56 +1,51 @@
 import React from 'react';
-import { DANCE_STATUS }  from './../StatusItem/index';
 import StatusItemPanel from './index';
 import renderer from 'react-test-renderer';
 
-it('Renders empty list without crashing', () => {
-  const rendered = renderer.create(<StatusItemPanel />).toJSON();
-  expect(rendered).toBeTruthy();
-})
-
-it('Renders exclamation without crashing', () => {
-  const rendered = renderer.create(<StatusItemPanel statusItemData={[ { danceNum:103, danceStatus:DANCE_STATUS.requireInternet, danceName:'PrintTheBlue' }, ]}/>).toJSON();
+it('Renders red exclamation without crashing', () => {
+  const rendered = renderer.create(<StatusItemPanel statusItemData={[ { id: 1, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'Could not upload recording'}, ]}/>).toJSON();
   expect(rendered).toBeTruthy();
 });
 
 it('Renders checkmark without crashing', () => {
-  const rendered = renderer.create(<StatusItemPanel statusItemData={[ { danceNum:101, danceStatus:DANCE_STATUS.uploaded, danceName:'Plz review me' }, ]}/>).toJSON();
+  const rendered = renderer.create(<StatusItemPanel statusItemData={[ { id: 1, danceNumber:101, danceTitle:'Plz review me' }, ]}/>).toJSON();
   expect(rendered).toBeTruthy();
 });
 
-it('Renders loop without crashing', () => {
-  const rendered = renderer.create(<StatusItemPanel statusItemData={[ { danceNum:107, danceStatus:DANCE_STATUS.loading, danceName:'DancefestDab' }, ]}/>).toJSON();
+it('Renders grey exclamation without crashing', () => {
+  const rendered = renderer.create(<StatusItemPanel statusItemData={[ { id: 1, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' }, ]}/>).toJSON();
   expect(rendered).toBeTruthy();
 });
 
 it('Renders mixed list without crashing', () => {
   const rendered = renderer.create(<StatusItemPanel statusItemData={[
-                                  { danceNum:103, danceStatus:DANCE_STATUS.requireInternet, danceName:'PrintTheBlue' },
-                                  { danceNum:107, danceStatus:DANCE_STATUS.loading, danceName:'DancefestDab' },
-                                  { danceNum:1, danceStatus:DANCE_STATUS.requireInternet, danceName:'The insanely super super long name that goes on forever' },
-                                  { danceNum:101, danceStatus:DANCE_STATUS.uploaded, danceName:'Plz review me' },
-                                  { danceNum:1209, danceStatus:DANCE_STATUS.loading, danceName:'the boogie'},
+                                  { id: 1, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'Could not upload recording'},
+                                  { id: 2, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' },
+                                  { id: 3, danceNumber:1, danceTitle:'The insanely super super long name that goes on forever', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'' },
+                                  { id: 4, danceNumber:101, danceTitle:'Plz review me' },
                   ]}/>).toJSON();
   expect(rendered).toBeTruthy();
 });
 
 it('Renders mixed list longer than screen without crashing', () => {
   const rendered = renderer.create(<StatusItemPanel statusItemData={[
-                                  { danceNum:103, danceStatus:DANCE_STATUS.requireInternet, danceName:'PrintTheBlue' },
-                                  { danceNum:107, danceStatus:DANCE_STATUS.loading, danceName:'DancefestDab' },
-                                  { danceNum:1, danceStatus:DANCE_STATUS.requireInternet, danceName:'The insanely super super long name that goes on forever' },
-                                  { danceNum:101, danceStatus:DANCE_STATUS.uploaded, danceName:'Plz review me' },
-                                  { danceNum:1209, danceStatus:DANCE_STATUS.loading, danceName:'the boogie'},
-                                  { danceNum:1103, danceStatus:DANCE_STATUS.requireInternet, danceName:'PrintTheBlue' },
-                                  { danceNum:1107, danceStatus:DANCE_STATUS.loading, danceName:'DancefestDab' },
-                                  { danceNum:11, danceStatus:DANCE_STATUS.requireInternet, danceName:'The insanely super super long name that goes on forever' },
-                                  { danceNum:1101, danceStatus:DANCE_STATUS.uploaded, danceName:'Plz review me' },
-                                  { danceNum:11209, danceStatus:DANCE_STATUS.loading, danceName:'the boogie'},
-                                  { danceNum:203, danceStatus:DANCE_STATUS.requireInternet, danceName:'PrintTheBlue' },
-                                  { danceNum:207, danceStatus:DANCE_STATUS.loading, danceName:'DancefestDab' },
-                                  { danceNum:2, danceStatus:DANCE_STATUS.requireInternet, danceName:'The insanely super super long name that goes on forever' },
-                                  { danceNum:201, danceStatus:DANCE_STATUS.uploaded, danceName:'Plz review me' },
-                                  { danceNum:2209, danceStatus:DANCE_STATUS.loading, danceName:'the boogie'},
+                                  { id: 1, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'Could not upload recording'},
+                                  { id: 2, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' },
+                                  { id: 3, danceNumber:1, danceTitle:'The insanely super super long name that goes on forever', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'' },
+                                  { id: 4, danceNumber:101, danceTitle:'Plz review me' },
+                                  { id: 5, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'Could not upload recording'},
+                                  { id: 6, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' },
+                                  { id: 7, danceNumber:1, danceTitle:'The insanely super super long name that goes on forever', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'' },
+                                  { id: 8, danceNumber:101, danceTitle:'Plz review me' },
+                                  { id: 9, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'Could not upload recording'},
+                                  { id: 10, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' },
+                                  { id: 11, danceNumber:1, danceTitle:'The insanely super super long name that goes on forever', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'' },
+                                  { id: 12, danceNumber:101, danceTitle:'Plz review me' },
+                                  { id: 13, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'Could not upload recording'},
+                                  { id: 14, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' },
+                                  { id: 15, danceNumber:1, danceTitle:'The insanely super super long name that goes on forever', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'' },
+                                  { id: 16, danceNumber:101, danceTitle:'Plz review me' },
+
                   ]}/>).toJSON();
   expect(rendered).toBeTruthy();
 });
