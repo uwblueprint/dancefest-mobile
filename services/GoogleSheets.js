@@ -2,8 +2,19 @@ import React from 'react';
 import _ from 'lodash';
 import { signInWithGoogleAsync } from './GoogleApi';
 
-const orderedColNames = ['schoolName', 'judgeName', 'style', 'levelOfCompetition'];
-const spreadsheetId = '12FR7iWDNvUk6zvGMu74kzc7Iu6TX3JJzJ-SkKwHP6oM';
+const orderedColNames = [
+  'danceNumber',
+  'danceTitle',
+  'danceChoreographer',
+  'danceStyle',
+  'danceLevel',
+  'techniqueMark',
+  'spatialAwarenessMark',
+  'useOfMusicTextSilenceMark',
+  'communicationElementsMark',
+  'communicationMark'
+];
+const spreadsheetId = '1Ga35NSevZnTb96VEIe_txoSoHgI-rPsB29hjf5_x_o4';
 const range = 'Sheet1!A1%3A' + String.fromCharCode('A'.charCodeAt() + orderedColNames.length) + '1';
 const apiUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + spreadsheetId + '/values/' + range + ':append';
 const pathArgs = '?valueInputOption=USER_ENTERED';
