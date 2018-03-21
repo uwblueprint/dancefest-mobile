@@ -157,6 +157,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
         currentCommunicationElementsMark: '',
         currentCommunicationMark: '',
         notUploadedDanceCritiques: state.notUploadedDanceCritiques.concat(abridgedDanceCritique),
+        submitDanceCritiqueError: '',
       }
     case SUBMIT_DANCE_CRITIQUE_FAILURE:
       return {
