@@ -1,4 +1,4 @@
-import { findIndex } from 'lodash/fp';
+import { findIndex, find } from 'lodash/fp';
 
 /**
  * Helpers
@@ -98,20 +98,19 @@ export function submitDanceCritique (danceCritique, audioRecordingUri) {
 export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
-export function uploadDanceCritique (danceCritiqueId, audioRecordingUri) {
-  let googleDriveErrorMessage = '';
-  let googleSheetsErrorMessage = '';
+export function uploadDanceCritique (danceCritique, audioRecordingUri) {
+  const danceId = danceCritique.danceId;
+  let googleDriveErrorMessage, googleSheetsErrorMessage;
 
-  if (danceCritiqueId !== null) {
   // TODO: send to Google Sheet here -- takes danceCritique (issue #55)
-  }
-  if (audioRecordingUri !== null) {
   // TODO: send to Google Drive here -- takes audioRecordingUri (issue #40)
-  }
+  // if an error is returned on any of the above, then set them on
+  // googleDriveErrorMessage or googleSheetsErrorMessage
 
   if (googleDriveErrorMessage || googleSheetsErrorMessage) {
     return {
       type: UPLOAD_DANCE_CRITIQUE_FAILURE,
+      danceId,
       googleDriveErrorMessage,
       googleSheetsErrorMessage,
     };
@@ -184,8 +183,8 @@ export default function danceCritiques (state = initialState(), action = {}) {
         uploadedDanceCritiques: state.uploadedDanceCritiques.concat(abridgedDanceCritique),
       }
     case UPLOAD_DANCE_CRITIQUE_FAILURE:
-      const currentAbridgedDanceCritique = getDanceCritiqueById(action.danceId)(state.notUploadedDanceCritiques);
       index = getDanceCritiqueIndexById(action.danceId)(state.notUploadedDanceCritiques);
+      const currentAbridgedDanceCritique = state.notUploadedDanceCritiques[index];
 
       if (action.googleSheetsErrorMessage) {
         currentAbridgedDanceCritique['uploadDanceCritiqueError'] = action.googleSheetsErrorMessage;
@@ -197,7 +196,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
 
       return {
         ...state,
-        notUploadedDanceCritiques: replaceItemAtIndex(index)(state.notUploadedDanceCritiques),
+        notUploadedDanceCritiques: replaceItemAtIndex(index, currentAbridgedDanceCritique)(state.notUploadedDanceCritiques),
       }
     default:
       return state;
