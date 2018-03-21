@@ -65,7 +65,7 @@ export function initializeDanceCritique () {
 export const SUBMIT_DANCE_CRITIQUE_SUCCESS = 'SUBMIT_DANCE_CRITIQUE_SUCCESS';
 export const SUBMIT_DANCE_CRITIQUE_FAILURE = 'SUBMIT_DANCE_CRITIQUE_FAILURE';
 
-export function submitDanceCritique (danceCritique) {
+export function submitDanceCritique (danceCritique, audioRecordingUri) {
   const { id: danceId, danceNumber, danceTitle } = danceCritique;
   let submitDanceCritiqueError;
 
@@ -87,6 +87,7 @@ export function submitDanceCritique (danceCritique) {
     danceId,
     danceNumber,
     danceTitle,
+    audioRecordingUri,
   }
 }
 
@@ -97,8 +98,6 @@ export function submitDanceCritique (danceCritique) {
 export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
-// TODO: create async process that calls uploadDanceCritique (issue #61)
-// NOTE: this should only be called if state.notUploadedDanceCritiques is not empty
 export function uploadDanceCritique (danceCritique, audioRecordingUri) {
   const danceId = danceCritique.danceId;
   let googleDriveErrorMessage, googleSheetsErrorMessage;
@@ -119,6 +118,8 @@ export function uploadDanceCritique (danceCritique, audioRecordingUri) {
   return {
     type: UPLOAD_DANCE_CRITIQUE_SUCCESS,
     danceId,
+    danceNumber,
+    danceTitle,
   };
 }
 
@@ -140,6 +141,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
         id: action.danceId,
         danceNumber: action.danceNumber,
         danceTitle: action.danceTitle,
+        audioRecordingUri: action.audioRecordingUri,
         uploadDanceCritiqueError: '',
         uploadDanceAudioRecordingError: '',
       };
