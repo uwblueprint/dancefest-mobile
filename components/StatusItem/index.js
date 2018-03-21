@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Alert, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from './../Icon';
 
@@ -9,24 +9,44 @@ const DANCE_STATUS = {
   requireInternet: 2,
 };
 
-const StatusItem = ({ danceNum, danceName, danceStatus }) => {
+const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadDanceAudioRecordingError }) => {
+  const showAlert = () => {
+      Alert.alert(
+        "Errors:",
+         JSON.stringify(uploadDanceCritiqueError).replace('"', '').replace('"', '') + " " +
+         JSON.stringify(uploadDanceAudioRecordingError).replace('"', '').replace('"', ''),
+      )
+   }
   let iconName;
   let fillColor;
-  if (danceStatus === DANCE_STATUS.uploaded) {
+  if ((uploadDanceCritiqueError === 'thisWasUploaded') && (uploadDanceAudioRecordingError === 'thisWasUploaded')) {
     iconName = 'Checkmark';
     fillColor = 'grey';
-  } else if (danceStatus === DANCE_STATUS.loading) {
-    iconName = 'Loop';
-    fillColor = 'white';
-  } else if (danceStatus === DANCE_STATUS.requireInternet) {
+  } else if ((uploadDanceCritiqueError === '') && (uploadDanceAudioRecordingError === '')) {
+    iconName = 'Exclamation';
+    fillColor = 'grey';
+  } else {
     iconName = 'Exclamation';
     fillColor = 'red';
+    return (
+      <View style={style.items}>
+        <View style={style.information}>
+          <Text style={style.danceNum}>#{danceNumber}</Text>
+          <Text style={style.danceName}>{danceTitle}</Text>
+        </View>
+        <TouchableOpacity
+          onPress={showAlert} >
+        <Icon name={iconName} height="50" width="50" fill={fillColor} viewBox="0 0 30 30" />
+        </TouchableOpacity>
+      </View>
+    );
   }
   return (
     <View style={style.items}>
       <View style={style.information}>
-        <Text style={style.danceNum}>#{danceNum}</Text>
-        <Text style={style.danceName}>{danceName}</Text>
+        <Text style={style.danceNum}>#{danceNumber}</Text>
+        <Text style={style.danceName}>{danceTitle}</Text>
+        <Text style={style.danceName}>{uploadDanceCritiqueError}</Text>
       </View>
       <Icon name={iconName} height="50" width="50" fill={fillColor} viewBox="0 0 30 30" />
     </View>
@@ -35,9 +55,15 @@ const StatusItem = ({ danceNum, danceName, danceStatus }) => {
 
 
 StatusItem.propTypes = {
-  danceNum: PropTypes.number.isRequired,
-  danceStatus: PropTypes.number.isRequired,
-  danceName: PropTypes.string.isRequired,
+  danceNumber: PropTypes.number.isRequired,
+  danceTitle: PropTypes.string.isRequired,
+  uploadDanceCritiqueError: PropTypes.string,
+  uploadDanceAudioRecordingError: PropTypes.string,
+};
+
+StatusItem.defaultProps = {
+  uploadDanceCritiqueError: 'thisWasUploaded',
+  uploadDanceAudioRecordingError: 'thisWasUploaded',
 };
 
 const style = StyleSheet.create({
@@ -64,6 +90,13 @@ const style = StyleSheet.create({
     width: '75%',
     height: 'auto',
   },
+  square: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    backgroundColor: 'yellow',
+  }
 });
 
 export { StatusItem, DANCE_STATUS };
