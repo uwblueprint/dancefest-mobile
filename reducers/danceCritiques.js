@@ -98,14 +98,16 @@ export function submitDanceCritique (danceCritique, audioRecordingUri) {
 export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
-export function uploadDanceCritique (danceCritique, audioRecordingUri) {
-  const danceId = danceCritique.danceId;
-  let googleDriveErrorMessage, googleSheetsErrorMessage;
+export function uploadDanceCritique (danceCritiqueId, audioRecordingUri) {
+  let googleDriveErrorMessage = '';
+  let googleSheetsErrorMessage = '';
 
+  if (danceCritiqueId !== null) {
   // TODO: send to Google Sheet here -- takes danceCritique (issue #55)
+  }
+  if (audioRecordingUri !== null) {
   // TODO: send to Google Drive here -- takes audioRecordingUri (issue #40)
-  // if an error is returned on any of the above, then set them on
-  // googleDriveErrorMessage or googleSheetsErrorMessage
+  }
 
   if (googleDriveErrorMessage || googleSheetsErrorMessage) {
     return {

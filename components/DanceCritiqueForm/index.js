@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
-import { some, isEmpty } from 'lodash/fp';
+import { some, isEmpty, forEach } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
 import RadioButtons from '../RadioButtons';
@@ -14,7 +14,7 @@ import TextField from '../TextField';
 import Icon from '../Icon'
 import { normalize } from '../../util/Scale';
 
-import { submitDanceCritique } from '../../reducers/danceCritiques';
+import { submitDanceCritique, uploadDanceCritique, uploadDanceAudioRecording } from '../../reducers/danceCritiques';
 
 const CRITIQUE_SECTIONS = {
   welcome: 0,
@@ -47,6 +47,7 @@ class DanceCritiqueFormInner extends React.Component {
     useOfMusicTextSilenceMark: PropTypes.string.isRequired,
     communicationElementsMark: PropTypes.string.isRequired,
     communicationMark: PropTypes.string.isRequired,
+    notUploadedDanceCritiques: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   static defaultProps = {
@@ -61,6 +62,7 @@ class DanceCritiqueFormInner extends React.Component {
     useOfMusicTextSilenceMark: '',
     communicationElementsMark: '',
     communicationMark: '',
+    notUploadedDanceCritiques: [],
   }
 
   constructor(props) {
@@ -71,13 +73,18 @@ class DanceCritiqueFormInner extends React.Component {
     }
   }
 
-  uploadCritiques() {
-
+  uploadDanceCritiquesAndRecording() {
+    forEach(this.state.notUploadedDanceCritiques, (critique) => {
+      const critiqueId = critique.uploadDanceCritiqueError ? critique.id : null;
+      const recordingUri = critique.recordingUri ? critique.id : null;
+      uploadDanceCritique(critiqueId, recordingUri);
+    });
   }
 
   componentDidMount() {
     this.timer = setInterval(() => {
-      this.uploadCritiques();
+      console.log('attempting uploads');
+      this.uploadDanceCritiquesAndRecording();
     }, CRITIQUE_UPLOAD_INTERVAL);
   }
 
@@ -330,6 +337,7 @@ const mapStateToProps = state => {
     useOfMusicTextSilenceMark: formValues.currentUseOfMusicTextSilenceMark,
     communicationElementsMark: formValues.currentCommunicationElementsMark,
     communicationMark: formValues.currentCommunicationMark,
+    notUploadedDanceCritiques: state.notUploadedDanceCritiques,
   }
 }
 
