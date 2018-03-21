@@ -2,27 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
 import { some, isEmpty } from 'lodash/fp';
 import { getFormValues } from 'redux-form'
 
 import RadioButtons from '../RadioButtons';
-import Button from '../Button';
 import AudioRecorder from '../AudioRecorder';
 import Button from '../Button';
 import CritiqueSection from '../CritiqueSection'
 import TextField from '../TextField'
+import Icon from '../Icon'
 
 const CRITIQUE_SECTIONS = {
-  default: 0,
-  danceStyle: 1,
-  technique: 2,
-  spatialAwareness: 3,
-  useOfMusicTextSilence: 4,
-  communicationElements: 5,
-  communication: 6,
-  recording: 7,
-  submission: 8,
+  welcome: 0,
+  danceNumber: 1,
+  danceTitle: 2,
+  danceSchool: 3,
+  danceChoreographer: 4,
+  danceStyle: 5,
+  technique: 6,
+  spatialAwareness: 7,
+  useOfMusicTextSilence: 8,
+  communicationElements: 9,
+  communication: 10,
+  recording: 11,
+  submission: 12,
 }
 
 class DanceCritiqueFormInner extends React.Component {
@@ -68,27 +72,36 @@ class DanceCritiqueFormInner extends React.Component {
     })
   }
 
-  getDefaultScreen() {
+  getWelcomeScreen() {
     return (
       <View style={styles.container}>
-        <Text style={styles.screenTitle}>Dance Details</Text>
-        <View style={styles.section}>
-          <Text style={styles.textFieldTitle}>Dance Number</Text>
-          <Field name="currentDanceNumber" component={TextField} props={{value: 'Dance Id'}} />
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.textFieldTitle}>Dance Title</Text>
-          <Field name="currentDanceTitle" component={TextField} props={{numberOfLines: 4, multiline: true}} />
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.textFieldTitle}>Choreograhper</Text>
-          <Field name="danceChoreographer" component={TextField} props={{value: 'Choreographer'}} />
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.textFieldTitle}>School</Text>
-          <Field name="danceSchool" component={TextField} props={{value: 'School'}} />
-        </View>
-    </View>
+        <Image resizeMode="contain" style={{width: '100%', height: '100%'}} source={{uri: 'http://ontariosecondaryschooldancefest.ca/images/DanceFestlogo.png'}} />
+      </View>
+    )
+  }
+
+  getDanceNumberScreen() {
+    return this.getDanceDetailsScreen('currentDanceNumber', 'Dance Number')
+  }
+
+  getDanceTitleScreen() {
+    return this.getDanceDetailsScreen('currentDanceTitle', 'Title')
+  }
+
+  getDanceSchoolScreen() {
+    return this.getDanceDetailsScreen('currentDanceSchool', 'School')
+  }
+
+  getDanceChoreographerScreen() {
+    return this.getDanceDetailsScreen('currentDanceChoreographer', 'Choreographer')
+  }
+
+  getDanceDetailsScreen(name, title) {
+    return(
+      <View style={styles.container}>
+        <Text style={styles.textFieldTitle}>{title}</Text>
+        <Field name={name} component={TextField} />
+      </View>
     )
   }
 
@@ -150,24 +163,53 @@ class DanceCritiqueFormInner extends React.Component {
 
   getSubmissionScreen() {
     return (
-      <Text style={styles.textFieldTitle}>Wooo Successfully Submitted!</Text>
+      <View style={styles.container, {alignItems: 'center'}}>
+        <View style={{paddingLeft: '15%'}}>
+          <Icon name='Submission' height="200" width="200" fill='#EB6284' viewBox="0 0 30 30" />
+        </View>
+        <Text style={{color: 'white'}}>Successfully Uploaded!</Text>
+      </View>
     )
   }
+
+  getButtonText(state) {
+    if (state === CRITIQUE_SECTIONS.welcome) {
+      return 'START >'
+    } else if (state === CRITIQUE_SECTIONS.recording) {
+      return 'SUBMIT'
+    } else {
+      return 'NEXT'
+    }
+  }
+
   getNavigationButtons() {
-    if(this.state.screen === CRITIQUE_SECTIONS.submission) {
-      return (
+    if (this.state.screen === CRITIQUE_SECTIONS.submission) {
+      return(
         <View style={styles.button}>
-          <Button action='SUBMIT' color='black' onSubmit={this.onSubmit()} />
+          <Button
+          action='START ANOTHER CRITIQUE >'
+          color='black'
+          onSubmit={() => {}} />
         </View>
       )
     } else {
       return(
         <View style={styles.buttonContainer}>
+        {this.state.screen !== CRITIQUE_SECTIONS.welcome ?
+          (<View style={styles.button}>
+            <Button
+            action='BACK'
+            color='black'
+            onSubmit={() => {this.navigateScreen(this.state.screen - 1)}} />
+          </View>) :
+          null
+        }
           <View style={styles.button}>
-            <Button action='BACK' color='black' onSubmit={() => {this.navigateScreen(this.state.screen - 1)}} />
-          </View>
-          <View style={styles.button}>
-            <Button action='NEXT' color='black' onSubmit={() => {this.navigateScreen(this.state.screen + 1)}} />
+            <Button
+              action={this.getButtonText(this.state.screen)}
+              color='black'
+              onSubmit={() => {this.navigateScreen(this.state.screen + 1)}}
+            />
           </View>
         </View>
       )
@@ -176,8 +218,16 @@ class DanceCritiqueFormInner extends React.Component {
 
 
   getCritiqueSection() {
-    if(this.state.screen === CRITIQUE_SECTIONS.default) {
-      return this.getDefaultScreen()
+    if(this.state.screen === CRITIQUE_SECTIONS.welcome) {
+      return this.getWelcomeScreen()
+    } else if (this.state.screen === CRITIQUE_SECTIONS.danceNumber) {
+      return this.getDanceNumberScreen()
+    } else if (this.state.screen === CRITIQUE_SECTIONS.danceSchool) {
+      return this.getDanceSchoolScreen()
+    } else if (this.state.screen === CRITIQUE_SECTIONS.danceChoreographer) {
+      return this.getDanceChoreographerScreen()
+    } else if (this.state.screen === CRITIQUE_SECTIONS.danceTitle) {
+      return this.getDanceTitleScreen()
     } else if (this.state.screen === CRITIQUE_SECTIONS.danceStyle) {
       return this.getDanceStyleScreen()
     } else if (this.state.screen === CRITIQUE_SECTIONS.technique) {
@@ -208,23 +258,12 @@ class DanceCritiqueFormInner extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    height: '100%'
-  },
   container: {
     flex: 1,
     backgroundColor: '#000',
     justifyContent: 'center',
     padding: 10,
-    alignSelf: 'stretch'
-  },
-  section: {
-    flex: 1,
     alignSelf: 'stretch',
-    backgroundColor: '#000',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
   },
   buttonContainer: {
     alignItems: 'center',
@@ -242,9 +281,9 @@ const styles = StyleSheet.create({
   },
   textFieldTitle: {
     color: 'white',
-    fontSize: 20,
-    paddingBottom: 5,
-
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginVertical: 8,
   },
   screenTitle: {
     textAlign: 'center',
@@ -252,6 +291,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     paddingVertical: 20,
+  },
+  image: {
+  flex: 1,
   },
 });
 
