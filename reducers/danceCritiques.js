@@ -1,4 +1,5 @@
 import { findIndex, find } from 'lodash/fp';
+import { uploadAudioAsync } from '../services/UploadRecording';
 
 /**
  * Helpers
@@ -99,11 +100,23 @@ export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
 export function uploadDanceCritique (danceCritique, audioRecordingUri) {
+  console.log("IN UPLOAD DANCECRITIQUE FUNCTION");
   const danceId = danceCritique.danceId;
   let googleDriveErrorMessage, googleSheetsErrorMessage;
 
   // TODO: send to Google Sheet here -- takes danceCritique (issue #55)
   // TODO: send to Google Drive here -- takes audioRecordingUri (issue #40)
+  try {
+    uploadAudioAsync(audioRecordingUri).then(response => {
+      if (response.ok) {
+        // move dancecritique from not uploaded to uploaded
+        const { location } = JSON.parse(response.body);
+        console.log("location: " + location);
+      }
+    });
+  } catch (e) {
+    googleDriveErrorMessage = e;
+  }
   // if an error is returned on any of the above, then set them on
   // googleDriveErrorMessage or googleSheetsErrorMessage
 
