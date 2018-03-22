@@ -446,7 +446,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInitialize: () => {
+    onInitialize: async () => {
       dispatch(await initializeDanceCritique());
     },
     onSubmitDanceCritique: async (danceCritique, audioRecordingUri) => {

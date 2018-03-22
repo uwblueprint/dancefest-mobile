@@ -78,7 +78,7 @@ describe('danceCritiques', () => {
 
     const expected = expect.objectContaining({
       currentDanceId: danceId,
-      notUploadedCritiques: [1, 2, 3],
+      notUploadedDanceCritiques: [1, 2, 3],
     });
 
     expect(danceCritiques(undefined, action)).toEqual(expected);
