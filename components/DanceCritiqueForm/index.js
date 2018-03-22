@@ -448,8 +448,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInitialize: () => {
-      dispatch(initializeDanceCritique());
+    onInitialize: async () => {
+      dispatch(await initializeDanceCritique());
     },
     onSubmitDanceCritique: async (danceCritique, audioRecordingUri) => {
       dispatch(await submitDanceCritique(danceCritique, audioRecordingUri));

@@ -70,10 +70,15 @@ describe('danceCritiques', () => {
 
   it('handles INITIALIZE_DANCE_CRITIQUE', () => {
     const danceId = 3;
-    const action = { type: INITIALIZE_DANCE_CRITIQUE, danceId: danceId };
+    const action = {
+      type: INITIALIZE_DANCE_CRITIQUE,
+      danceId: danceId,
+      notUploadedCritiques: [1, 2, 3],
+    };
 
     const expected = expect.objectContaining({
       currentDanceId: danceId,
+      notUploadedDanceCritiques: [1, 2, 3],
     });
 
     expect(danceCritiques(undefined, action)).toEqual(expected);

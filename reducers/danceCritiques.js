@@ -1,4 +1,4 @@
-import { findIndex, find } from 'lodash/fp';
+import { findIndex, find, map } from 'lodash/fp';
 import { uploadCritiques as uploadCritiquesToGoogleSheets, token as googleApiToken } from '../services/GoogleSheets';
 import { AsyncStorage } from 'react-native';
 
@@ -38,8 +38,6 @@ export function initialState () {
     currentCommunicationElementsMark: '',
     currentCommunicationMark: '',
     submitDanceCritiqueError: '',
-    // TODO: these initial arrays should populate with values from past instance
-    // of app (issue #59):
     uploadedDanceCritiques: [],
     notUploadedDanceCritiques: [],
   };
@@ -51,12 +49,18 @@ export function initialState () {
 
 export const INITIALIZE_DANCE_CRITIQUE = 'INITIALIZE_DANCE_CRITIQUE';
 
-export function initializeDanceCritique () {
+export async function initializeDanceCritique () {
   // Get the unique time and store that as the danceId
   let danceId = new Date().getTime().toString()
+
+  const notUploadedCritiqueIds = await AsyncStorage.getAllKeys();
+  const notUploadedCritiqueStrings = await AsyncStorage.multiGet(notUploadedCritiqueIds);
+  const notUploadedCritiques = map(notUploadedCritiqueStrings, string => JSON.parse(string));
+
   return {
     type: INITIALIZE_DANCE_CRITIQUE,
     danceId,
+    notUploadedCritiques,
   }
 }
 
@@ -164,6 +168,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
       return {
         ...state,
         currentDanceId: action.danceId,
+        notUploadedDanceCritiques: action.notUploadedCritiques,
       }
     case SUBMIT_DANCE_CRITIQUE_SUCCESS:
       abridgedDanceCritique = {
@@ -204,7 +209,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
         danceNumber: action.danceNumber,
         danceTitle: action.danceTitle,
       };
-      console.log("upload success ???", index);
+
       return {
         ...state,
         notUploadedDanceCritiques: deleteItemAtIndex(index)(state.notUploadedDanceCritiques),
