@@ -1,13 +1,13 @@
-export default async function uploadAudioAsync(uri) {
+export default async function uploadAudioAsync(uri, name) {
     console.log("Uploading " + uri);
-    let apiUrl = 'https://uwblueprint-dancefest.herokuapp.com/upload';
+    let apiUrl = 'https://malachite-kitty.glitch.me/upload';
     let uriParts = uri.split('.');
     let fileType = uriParts[uriParts.length - 1];
   
     let formData = new FormData();
     formData.append('file', {
       uri,
-      name: `recording.${fileType}`,
+      name,
       type: `audio/x-${fileType}`,
     });
   

@@ -107,7 +107,7 @@ export function uploadDanceCritique (danceCritique, audioRecordingUri) {
   // TODO: send to Google Sheet here -- takes danceCritique (issue #55)
   // TODO: send to Google Drive here -- takes audioRecordingUri (issue #40)
   try {
-    uploadAudioAsync(audioRecordingUri).then(response => {
+    uploadAudioAsync(audioRecordingUri, danceId).then(response => {
       if (response.ok) {
         // move dancecritique from not uploaded to uploaded
         const { location } = JSON.parse(response.body);
