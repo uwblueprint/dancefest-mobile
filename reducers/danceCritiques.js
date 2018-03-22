@@ -184,7 +184,8 @@ export default function danceCritiques (state = initialState(), action = {}) {
         currentUseOfMusicTextSilenceMark: '',
         currentCommunicationElementsMark: '',
         currentCommunicationMark: '',
-        notUploadedDanceCritiques: getDanceCritiqueById(action.danceId)(state.notUploadedDanceCritiques) ? state.notUploadedDanceCritiques.concat(abridgedDanceCritique) : state.notUploadedDanceCritiques,
+        // notUploadedDanceCritiques:
+        notUploadedDanceCritiques: getDanceCritiqueById(action.danceId)(state.notUploadedDanceCritiques) ? state.notUploadedDanceCritiques : state.notUploadedDanceCritiques.concat(abridgedDanceCritique),
         submitDanceCritiqueError: '',
       }
     case SUBMIT_DANCE_CRITIQUE_FAILURE:
