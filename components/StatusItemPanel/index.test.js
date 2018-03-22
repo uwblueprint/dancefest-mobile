@@ -1,24 +1,24 @@
 import React from 'react';
-import StatusItemListView from './index';
+import { StatusItemPanel } from './index';
 import renderer from 'react-test-renderer';
 
 it('Renders red exclamation without crashing', () => {
-  const rendered = renderer.create(<StatusItemListView statusItemData={[ { id: 1, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'Could not upload recording'}, ]}/>).toJSON();
+  const rendered = renderer.create(<StatusItemPanel statusItemData={[ { id: 1, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'Could not upload recording'}, ]}/>).toJSON();
   expect(rendered).toBeTruthy();
 });
 
 it('Renders checkmark without crashing', () => {
-  const rendered = renderer.create(<StatusItemListView statusItemData={[ { id: 1, danceNumber:101, danceTitle:'Plz review me' }, ]}/>).toJSON();
+  const rendered = renderer.create(<StatusItemPanel statusItemData={[ { id: 1, danceNumber:101, danceTitle:'Plz review me' }, ]}/>).toJSON();
   expect(rendered).toBeTruthy();
 });
 
 it('Renders grey exclamation without crashing', () => {
-  const rendered = renderer.create(<StatusItemListView statusItemData={[ { id: 1, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' }, ]}/>).toJSON();
+  const rendered = renderer.create(<StatusItemPanel statusItemData={[ { id: 1, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' }, ]}/>).toJSON();
   expect(rendered).toBeTruthy();
 });
 
 it('Renders mixed list without crashing', () => {
-  const rendered = renderer.create(<StatusItemListView statusItemData={[
+  const rendered = renderer.create(<StatusItemPanel statusItemData={[
                                   { id: 1, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'Could not upload recording'},
                                   { id: 2, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' },
                                   { id: 3, danceNumber:1, danceTitle:'The insanely super super long name that goes on forever', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'' },
@@ -28,7 +28,7 @@ it('Renders mixed list without crashing', () => {
 });
 
 it('Renders mixed list longer than screen without crashing', () => {
-  const rendered = renderer.create(<StatusItemListView statusItemData={[
+  const rendered = renderer.create(<StatusItemPanel statusItemData={[
                                   { id: 1, danceNumber:103, danceTitle:'PrintTheBlue', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'Could not upload recording'},
                                   { id: 2, danceNumber:107, danceTitle:'DancefestDab', uploadDanceCritiqueError:'', uploadDanceAudioRecordingError:'' },
                                   { id: 3, danceNumber:1, danceTitle:'The insanely super super long name that goes on forever', uploadDanceCritiqueError:'Could not upload critique', uploadDanceAudioRecordingError:'' },
