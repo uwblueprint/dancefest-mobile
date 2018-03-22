@@ -166,7 +166,7 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   getDanceStyleScreen() {
-    const danceStyles = ['Jazz', 'Lyrical', 'Ballet','Modern/Contemporary', 'Musical Theatre/LipSync', 'Musical Theatre/Live Vocals', 'Hip Hop', 'Tap', 'Cultural', 'Open/Fusion', 'CREATIVE COLLABORATION', 'Teacher Choreographed Dances']
+    const danceStyles = ['Jazz', 'Lyrical', 'Ballet', 'Tap', 'Modern/Contemporary', 'Musical Theatre/LipSync', 'Musical Theatre/Live Vocals', 'Hip Hop', 'Cultural', 'Open/Fusion', 'CREATIVE COLLABORATION', 'Teacher Choreographed Dances']
     return (
       <View style={styles.container}>
         <CritiqueSection
@@ -245,7 +245,7 @@ class DanceCritiqueFormInner extends React.Component {
         <View style={styles.button}>
           <Button
           action='Start Another Critique >'
-          color='black'
+          color='green'
           onSubmit={() => {this.onSubmit()}} />
         </View>
       )
