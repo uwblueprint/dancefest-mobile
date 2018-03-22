@@ -3,6 +3,7 @@
     "name": "DanceFest Adjudication App",
     "icon": "./dancefest-icon.png",
     "version": "1.0.0",
+    "slug": "uwblueprint-dancefest",
     "sdkVersion": "25.0.0",
     "ios": {
       "bundleIdentifier": "com.uwblueprint.dancefest"
