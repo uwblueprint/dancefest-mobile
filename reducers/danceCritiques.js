@@ -49,7 +49,7 @@ export function initialState () {
 
 export const INITIALIZE_DANCE_CRITIQUE = 'INITIALIZE_DANCE_CRITIQUE';
 
-export function initializeDanceCritique () {
+export async function initializeDanceCritique () {
   // Get the unique time and store that as the danceId
   let danceId = new Date().getTime().toString()
 
