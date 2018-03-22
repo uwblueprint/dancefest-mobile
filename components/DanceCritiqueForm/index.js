@@ -191,8 +191,8 @@ class DanceCritiqueFormInner extends React.Component {
     return (
       <View style={styles.container}>
         <CritiqueSection
-          critiqueInput={RadioButtons}
-          critiqueInputProps={{buttonNames: ['1', '2', '3'], mergeButtons: true}}
+          critiqueInput={TextField}
+          critiqueInputProps={{keyboardType: 'numeric'}}
           description={description}
           name={name}
           title={title}
