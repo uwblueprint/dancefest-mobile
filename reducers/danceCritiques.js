@@ -111,8 +111,12 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
       const critique = JSON.parse(critiqueString);
       danceNumber = critique.danceNumber;
       danceTitle = critique.danceTitle;
-      const { success, message: googleSheetsErrorMessage } = await uploadCritiquesToGoogleSheets([critique], googleApiToken);
+
+      const response =  await uploadCritiquesToGoogleSheets([critique], googleApiToken);
+      const success = response.success;
+      googleSheetsErrorMessage = response.message;
       console.log('upload result: ', success, googleSheetsErrorMessage);
+
       if (success) {
         googleSheetsErrorMessage = '';
       }
