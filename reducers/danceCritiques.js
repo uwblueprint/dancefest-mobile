@@ -127,12 +127,12 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
   }
   if (audioRecordingUri !== null) {
     try {
-      uploadAudioAsync(audioRecordingUri, danceNumber).then(response => {
-        if (response.ok) {
-          // move dancecritique from not uploaded to uploaded
-          console.log("s3 upload response: " + JSON.stringify(response));
-        }
-      });
+      const response = await uploadAudioAsync(audioRecordingUri, danceNumber);
+      if (response.status === 200) {
+        console.log("s3 upload response: " + JSON.stringify(response));
+      } else {
+        googleDriveErrorMessage = 's3 upload error for ' + danceId + '; ' + (await response.json());
+      }
     } catch (e) {
       googleDriveErrorMessage = 'Error uploading critique ' + danceId + ' to s3 bucket: ' + error;
     }
