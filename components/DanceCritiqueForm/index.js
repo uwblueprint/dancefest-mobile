@@ -366,6 +366,7 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   render() {
+    console.disableYellowBox = true;
     return (
       <View style={styles.form}>
 
