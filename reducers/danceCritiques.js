@@ -128,7 +128,7 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
   }
   if (audioRecordingUri !== null) {
     try {
-      const response = await uploadAudioAsync(audioRecordingUri, danceNumber);
+      const response = await uploadAudioAsync(audioRecordingUri, danceId + " " + danceNumber);
       if (response.status === 200) {
         console.log("s3 upload response: " + JSON.stringify(response));
       } else {
