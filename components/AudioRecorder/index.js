@@ -114,6 +114,21 @@ class AudioRecorderInner extends React.Component {
     );
   }
 
+  async completeRecordingAlert() {
+    Alert.alert(
+      'Warning',
+      'This will complete your recording and you will no longer be able to record on top of it!',
+      [
+        { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+        { text: 'Continue', onPress: () => {
+          this.stopRecording(false);
+          this.props.navigateScreen(8);
+        }},
+      ],
+      { cancelable: false },
+    );
+  }
+
   async stopRecording(clear) {
     let uri = '';
     if (this.state.recording) {
@@ -175,11 +190,7 @@ class AudioRecorderInner extends React.Component {
             <Button
               action={'Next'}
               color='black'
-              onSubmit={async () => {
-                this.stopRecording(false);
-                this.props.navigateScreen(8);
-              }}
-            />
+              onSubmit={async () => this.completeRecordingAlert()} />
           </View>
         </View>
       </View>
