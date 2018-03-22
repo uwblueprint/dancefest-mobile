@@ -210,10 +210,11 @@ class DanceCritiqueFormInner extends React.Component {
   getSubmissionScreen() {
     return (
       <View style={styles.container, {alignItems: 'center'}}>
-        <View style={{paddingLeft: '15%'}} >
+        <View style={{paddingLeft: '10%'}} >
           <Icon name='Submission' height="200" width="200" fill='#EB6284' viewBox="0 0 30 30" />
         </View>
-        <Text style={{color: 'white'}}>Successfully Uploaded!</Text>
+        <Text style={{color: 'white', fontSize: 26, }}>Submitted Successfully!</Text>
+        <Text style={{color: 'white', fontSize: 22, }}>Check Status In Sidebar</Text>
       </View>
     )
   }
@@ -242,11 +243,13 @@ class DanceCritiqueFormInner extends React.Component {
   getNavigationButtons() {
     if (this.state.screen === CRITIQUE_SECTIONS.submission) {
       return(
-        <View style={styles.button}>
-          <Button
-          action='Start Another Critique >'
-          color='green'
-          onSubmit={() => {this.onSubmit()}} />
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Button
+            action='Start Another Critique >'
+            color='black'
+            onSubmit={() => {this.onSubmit()}} />
+          </View>
         </View>
       )
     } else {
