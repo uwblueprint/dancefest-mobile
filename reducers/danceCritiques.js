@@ -133,7 +133,7 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
       } else {
         googleDriveErrorMessage = 's3 upload error for ' + danceId + '; ' + (await response.json());
       }
-    } catch (e) {
+    } catch (error) {
       googleDriveErrorMessage = 'Error uploading critique ' + danceId + ' to s3 bucket: ' + error;
     }
   }
