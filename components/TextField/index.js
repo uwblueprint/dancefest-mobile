@@ -7,9 +7,10 @@ import { normalize } from '../../util/Scale';
  * Component
  */
 
-const TextField = ({ numberOfLines, input: { onChange, value } }) => (
+const TextField = ({ keyboardType, numberOfLines, input: { onChange, value } }) => (
   <View style={styles.textField}>
     <TextInput
+      keyboardType={keyboardType}
       multiline={numberOfLines > 1}
       numberOfLines={numberOfLines}
       onChangeText={text => onChange(text)}
