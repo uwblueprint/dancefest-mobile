@@ -2,13 +2,26 @@ import React from 'react';
 import _ from 'lodash';
 import { signInWithGoogleAsync } from './GoogleApi';
 
-const orderedColNames = ['schoolName', 'judgeName', 'style', 'levelOfCompetition'];
-const spreadsheetId = '12FR7iWDNvUk6zvGMu74kzc7Iu6TX3JJzJ-SkKwHP6oM';
-const range = 'Sheet1!A1%3A' + String.fromCharCode('A'.charCodeAt() + orderedColNames.length) + '1';
+const orderedColNames = [
+  'danceNumber',
+  'danceTitle',
+  'danceChoreographer',
+  'danceStyle',
+  'danceLevel',
+  'techniqueMark',
+  'spatialAwarenessMark',
+  'useOfMusicTextSilenceMark',
+  'communicationElementsMark',
+  'communicationMark',
+];
+const spreadsheetId = '1Ga35NSevZnTb96VEIe_txoSoHgI-rPsB29hjf5_x_o4';
+const range = 'Sheet1!A1%3AJ1';
 const apiUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + spreadsheetId + '/values/' + range + ':append';
 const pathArgs = '?valueInputOption=USER_ENTERED';
+export let token = '';
 
-export async function uploadCritiques(critiques) {
+export async function uploadCritiques(critiques, token) {
+  console.log('critiques: ', critiques);
   // convert array of objects into array of arrays
   const cellData = [];
   _.forEach(critiques, () => {
@@ -21,9 +34,11 @@ export async function uploadCritiques(critiques) {
     });
   });
 
-  const token = await signInWithGoogleAsync();
   if (!token) {
-    return false;
+    token = await signInWithGoogleAsync();
+  }
+  if (!token) {
+    return { success: false, message: 'Google sign in failed'};
   }
 
   try {
@@ -38,10 +53,12 @@ export async function uploadCritiques(critiques) {
         values: cellData,
       }),
     });
-    console.log(response);
-    return response.ok;
+    if (response.status == 200) {
+      return { success: true, message: 'uploaded successfully' };
+    }
+    return { success: false, message: 'error uploading' + (await response.json()) };
   } catch (error) {
     console.error(error);
-    return false;
+    return { success: false, message: error};
   }
 };

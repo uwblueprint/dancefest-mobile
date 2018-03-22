@@ -4,7 +4,7 @@
 
 export function initialState () {
   return {
-    currentAudioUri: '',
+    currentAudioRecordingUri: '',
   };
 }
 
