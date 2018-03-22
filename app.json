@@ -1,5 +1,14 @@
 {
-  "expo": {
-    "sdkVersion": "25.0.0"
-  }
-}
+   "expo": {
+    "name": "DanceFest Adjudication App",
+    "icon": "./dancefest-icon.png",
+    "version": "1.0.0",
+    "sdkVersion": "25.0.0",
+    "ios": {
+      "bundleIdentifier": "com.uwblueprint.dancefest"
+    },
+    "android": {
+      "package": "com.uwblueprint.dancefest"
+    }
+   }
+ }
