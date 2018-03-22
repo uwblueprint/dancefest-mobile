@@ -2,7 +2,7 @@ import { findIndex, find } from 'lodash/fp';
 import uploadAudioAsync from '../services/UploadRecording';
 import { uploadCritiques as uploadCritiquesToGoogleSheets, token as googleApiToken } from '../services/GoogleSheets';
 import { AsyncStorage } from 'react-native';
-
+import { downloadAndUploadGrades } from '../services/UploadGradesS3'
 /**
  * Helpers
  */
@@ -113,8 +113,10 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
       danceNumber = critique.danceNumber;
       danceTitle = critique.danceTitle;
       critique.audioRecordingUri = audioRecordingUri;
-
-      const response =  await uploadCritiquesToGoogleSheets([critique], googleApiToken);
+      console.log('The critique in Update is')
+      console.log(critique)
+      //const response =  await uploadCritiquesToGoogleSheets([critique], googleApiToken);
+      const response = await downloadAndUploadGrades(critique)
       const success = response.success;
       googleSheetsErrorMessage = response.message;
       console.log('upload result: ', success, googleSheetsErrorMessage);

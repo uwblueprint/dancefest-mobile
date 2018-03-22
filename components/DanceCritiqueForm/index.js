@@ -130,6 +130,9 @@ class DanceCritiqueFormInner extends React.Component {
     };
 
     // TODO:: do validation
+    console.log('IN ON SUBMITTTT')
+    console.log(danceCritique)
+    //this.props.onSubmitDanceCritique(danceCritique, this.props.audioRecordingUri);
     await this.props.onSubmitDanceCritique(danceCritique, this.props.audioRecordingUri);
   }
 
