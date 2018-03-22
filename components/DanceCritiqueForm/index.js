@@ -252,7 +252,7 @@ class DanceCritiqueFormInner extends React.Component {
   getRecordingScreen() {
     return(
       <View style={styles.container}>
-        <AudioRecorder />
+        <AudioRecorder navigateScreen={this.navigateScreen} />
       </View>
     )
   }
@@ -306,6 +306,8 @@ class DanceCritiqueFormInner extends React.Component {
           </View>
         </View>
       )
+    } else if (this.state.screen === CRITIQUE_SECTIONS.recording) {
+      return null;
     } else {
       return(
         <View style={styles.buttonContainer}>

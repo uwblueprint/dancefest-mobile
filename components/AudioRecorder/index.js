@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { Audio, Permissions } from 'expo';
 import Icon from './../Icon';
 import { normalize } from '../../util/Scale';
+import Button from '../Button';
 
 import { setAudioUri } from '../../reducers/audioRecordings';
 
@@ -31,28 +32,6 @@ class AudioRecorderInner extends React.Component {
     return true;
   }
 
-  async checkForExistingRecording() {
-    // if isRecording = false but there is recording instance on the state, this means
-    // that we have completed a recording. To start another recording, the user must
-    // first clear existing completed recording.
-    if (!this.state.isRecording && this.state.recording) {
-      Alert.alert(
-        'Warning',
-        'There is an existing recording! Recording will overwrite this existing recording.',
-        [
-          { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-          { text: 'Overwrite existing recording (cannot be undone)', onPress: () => {
-            this.stopRecording(true);
-            this.toggleRecording();
-          } },
-        ],
-        { cancelable: false },
-      );
-    } else {
-      this.toggleRecording();
-    }
-  }
-
   async toggleRecording() {
     let newRecording = null;
     let uri = '';
@@ -60,7 +39,7 @@ class AudioRecorderInner extends React.Component {
     try {
       // either create a new recording or use the one on the state
       let recording = null;
-      if (!this.state.isRecording) {
+      if (!this.state.recording) {
         // get audio recording permission if needed
         const { status } = await Permissions.getAsync(Permissions.AUDIO_RECORDING);
         if (status !== 'granted') {
@@ -138,17 +117,13 @@ class AudioRecorderInner extends React.Component {
   async stopRecording(clear) {
     let uri = '';
     if (this.state.recording) {
-      // if isRecording = false, then the current recording has already been unloaded so
-      // we don't need to unload again or Expo will throw an error
-      if (this.state.isRecording) {
-        try {
-          await this.state.recording.stopAndUnloadAsync();
-          uri = await this.state.recording.getURI();
-          console.log(uri);
-        } catch (error) {
-          console.log(error);
-          return;
-        }
+      try {
+        await this.state.recording.stopAndUnloadAsync();
+        uri = await this.state.recording.getURI();
+        console.log(uri);
+      } catch (error) {
+        console.log(error);
+        return;
       }
 
       if (uri && !clear) {
@@ -184,14 +159,28 @@ class AudioRecorderInner extends React.Component {
             <Icon name={'Delete'} height={normalize(32)} width={normalize(32)} viewBox="0 0 24 24" fill="white" />
           </TouchableHighlight>
           <TouchableHighlight
-            onPress={async () => this.checkForExistingRecording()}
+            onPress={async () => this.toggleRecording()}
             style={styles.recordButtonOutline}>
             <View style={this.state.isRecording ? styles.stopButton : styles.recordButton} />
           </TouchableHighlight>
-          <TouchableHighlight
-            onPress={async () => this.stopRecording(false)}>
-            <Text style={styles.doneText}>Done</Text>
-          </TouchableHighlight>
+        </View>
+        <View style={styles.navButtonContainer}>
+          <View style={styles.button}>
+            <Button
+            action='Back'
+            color='black'
+            onSubmit={() => {this.props.navigateScreen(6)}} />
+          </View>
+          <View style={styles.button}>
+            <Button
+              action={'Next'}
+              color='black'
+              onSubmit={async () => {
+                this.stopRecording(false);
+                this.props.navigateScreen(8);
+              }}
+            />
+          </View>
         </View>
       </View>
     );
@@ -203,6 +192,10 @@ const AudioRecorder = connect()(AudioRecorderInner);
 const styles = StyleSheet.create({
   audioRecorder: {
     alignItems: 'center',
+    flex: 1,
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    padding: 10,
     alignSelf: 'stretch',
   },
   counter: {
@@ -230,7 +223,7 @@ const styles = StyleSheet.create({
     width: normalize(60),
     height: normalize(60),
     marginLeft: normalize(25),
-    marginRight: normalize(16),
+    marginRight: normalize(57),
     borderRadius: normalize(30),
     borderWidth: normalize(8),
     borderColor: 'white',
@@ -248,6 +241,18 @@ const styles = StyleSheet.create({
     height: normalize(30),
     borderRadius: normalize(3),
     backgroundColor: '#FF2464',
+  },
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  navButtonContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 0,
   },
 });
 
