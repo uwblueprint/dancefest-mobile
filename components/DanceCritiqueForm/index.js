@@ -131,7 +131,7 @@ class DanceCritiqueFormInner extends React.Component {
         <CritiqueSection
           critiqueInput={RadioButtons}
           critiqueInputProps={{buttonNames: schoolNames, mergeButtons: false}}
-          name={'danceSchool'}
+          name={'currentDanceSchool'}
           title={'School'}
         />
       </View>
