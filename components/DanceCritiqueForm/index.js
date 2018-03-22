@@ -125,7 +125,17 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   getDanceSchoolScreen() {
-    return this.getDanceDetailsScreen('currentDanceSchool', 'School')
+    const schoolNames = ['BCI','CCC', 'CCH', 'CCI', 'CHC', 'CKS', 'CMB', 'DB', 'ECI', 'ETS', 'FJB', 'GAH', 'HNH', 'LAJ', 'LAD',  'MAC', 'NPD', 'PDA', 'SJV', 'STA', 'STJ', 'STV', 'TVA', 'WAP', 'WCI']
+    return (
+      <View style={styles.container}>
+        <CritiqueSection
+          critiqueInput={RadioButtons}
+          critiqueInputProps={{buttonNames: schoolNames, mergeButtons: false}}
+          name={'danceSchool'}
+          title={'School'}
+        />
+      </View>
+    )
   }
 
   getDanceChoreographerScreen() {
