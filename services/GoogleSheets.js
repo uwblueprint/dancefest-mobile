@@ -20,8 +20,7 @@ const apiUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + spreadsheetId 
 const pathArgs = '?valueInputOption=USER_ENTERED';
 export let token = '';
 
-export async function uploadCritiques(critiques, token) {
-  console.log('critiques: ', critiques);
+export async function uploadCritiques(critiques, givenToken) {
   // convert array of objects into array of arrays
   const cellData = [];
   _.forEach(critiques, () => {
@@ -34,7 +33,7 @@ export async function uploadCritiques(critiques, token) {
     });
   });
 
-  if (!token) {
+  if (!givenToken) {
     token = await signInWithGoogleAsync();
   }
   if (!token) {
@@ -56,6 +55,8 @@ export async function uploadCritiques(critiques, token) {
     if (response.status == 200) {
       return { success: true, message: 'uploaded successfully' };
     }
+    // if there was an error uploading, it may be because the token has expired
+    token = '';
     return { success: false, message: 'error uploading' + (await response.json()) };
   } catch (error) {
     console.error(error);
