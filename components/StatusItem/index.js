@@ -11,7 +11,7 @@ const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadD
           <Text style={style.danceNumberFiller}>#{danceNumber}</Text>
           <Text style={style.danceTitleFiller}>{danceTitle}</Text>
         </View>
-        <Icon name="Checkmark" height="65" width="65" fill="black" viewBox="0 0 25 25" />
+        <Icon name="Checkmark" height="65" width="65" fill="black" viewBox="0 0 30 30" />
       </View>
     );
   }
@@ -41,7 +41,7 @@ const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadD
         </View>
         <TouchableOpacity
           onPress={showAlert} >
-        <Icon name={iconName} height="65" width="65" fill={fillColor} viewBox="0 0 25 25" />
+        <Icon name={iconName} height="65" width="65" fill={fillColor} viewBox="0 0 30 30" />
         </TouchableOpacity>
       </View>
     );
@@ -52,7 +52,7 @@ const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadD
         <Text style={style.danceNumber}>#{danceNumber}</Text>
         <Text style={style.danceTitle}>{danceTitle}</Text>
       </View>
-      <Icon name={iconName} height="65" width="65" fill={fillColor} viewBox="0 0 25 25" />
+      <Icon name={iconName} height="65" width="65" fill={fillColor} viewBox="0 0 30 30" />
     </View>
   );
 };
