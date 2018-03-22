@@ -1,43 +1,73 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Alert, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from './../Icon';
 
-const DANCE_STATUS = {
-  uploaded: 0,
-  loading: 1,
-  requireInternet: 2,
-};
-
-const StatusItem = ({ danceNum, danceName, danceStatus }) => {
+const StatusItem = ({ danceNumber, danceTitle, uploadDanceCritiqueError, uploadDanceAudioRecordingError }) => {
+  if (danceNumber===-1) {
+    return (
+      <View style={style.items}>
+        <View style={style.information}>
+          <Text style={style.danceNumberFiller}>#{danceNumber}</Text>
+          <Text style={style.danceTitleFiller}>{danceTitle}</Text>
+        </View>
+        <Icon name="Checkmark" height="65" width="65" fill="black" viewBox="0 0 25 25" />
+      </View>
+    );
+  }
+  const showAlert = () => {
+      Alert.alert(
+        "Errors:",
+         JSON.stringify(uploadDanceCritiqueError).replace('"', '').replace('"', '') + " " +
+         JSON.stringify(uploadDanceAudioRecordingError).replace('"', '').replace('"', ''),
+      )
+   }
   let iconName;
   let fillColor;
-  if (danceStatus === DANCE_STATUS.uploaded) {
+  if ((uploadDanceCritiqueError === 'thisWasUploaded') && (uploadDanceAudioRecordingError === 'thisWasUploaded')) {
     iconName = 'Checkmark';
     fillColor = 'grey';
-  } else if (danceStatus === DANCE_STATUS.loading) {
-    iconName = 'Loop';
-    fillColor = 'white';
-  } else if (danceStatus === DANCE_STATUS.requireInternet) {
+  } else if ((uploadDanceCritiqueError === '') && (uploadDanceAudioRecordingError === '')) {
+    iconName = 'Exclamation';
+    fillColor = 'grey';
+  } else {
     iconName = 'Exclamation';
     fillColor = 'red';
+    return (
+      <View style={style.items}>
+        <View style={style.information}>
+          <Text style={style.danceNumber}>#{danceNumber}</Text>
+          <Text style={style.danceTitle}>{danceTitle}</Text>
+        </View>
+        <TouchableOpacity
+          onPress={showAlert} >
+        <Icon name={iconName} height="65" width="65" fill={fillColor} viewBox="0 0 25 25" />
+        </TouchableOpacity>
+      </View>
+    );
   }
   return (
     <View style={style.items}>
       <View style={style.information}>
-        <Text style={style.danceNum}>#{danceNum}</Text>
-        <Text style={style.danceName}>{danceName}</Text>
+        <Text style={style.danceNumber}>#{danceNumber}</Text>
+        <Text style={style.danceTitle}>{danceTitle}</Text>
       </View>
-      <Icon name={iconName} height="50" width="50" fill={fillColor} viewBox="0 0 30 30" />
+      <Icon name={iconName} height="65" width="65" fill={fillColor} viewBox="0 0 25 25" />
     </View>
   );
 };
 
 
 StatusItem.propTypes = {
-  danceNum: PropTypes.number.isRequired,
-  danceStatus: PropTypes.number.isRequired,
-  danceName: PropTypes.string.isRequired,
+  danceNumber: PropTypes.number.isRequired,
+  danceTitle: PropTypes.string.isRequired,
+  uploadDanceCritiqueError: PropTypes.string,
+  uploadDanceAudioRecordingError: PropTypes.string,
+};
+
+StatusItem.defaultProps = {
+  uploadDanceCritiqueError: 'thisWasUploaded',
+  uploadDanceAudioRecordingError: 'thisWasUploaded',
 };
 
 const style = StyleSheet.create({
@@ -49,21 +79,39 @@ const style = StyleSheet.create({
     height: 'auto',
     backgroundColor: 'black',
   },
-  danceNum: {
+  danceNumber: {
     alignItems: 'flex-start',
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: '300',
     color: 'grey',
   },
-  danceName: {
+  danceTitle: {
     alignItems: 'flex-end',
-    fontSize: 24,
+    fontSize: 30,
     color: 'white',
   },
   information: {
     width: '75%',
     height: 'auto',
   },
+  square: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    backgroundColor: 'yellow',
+  },
+  danceNumberFiller: {
+    alignItems: 'flex-start',
+    fontSize: 22,
+    fontWeight: '300',
+    color: 'black',
+  },
+  danceTitleFiller: {
+    alignItems: 'flex-end',
+    fontSize: 30,
+    color: 'black',
+  },
 });
 
-export { StatusItem, DANCE_STATUS };
+export default StatusItem;
