@@ -1,4 +1,5 @@
 import { findIndex, find } from 'lodash/fp';
+import uploadAudioAsync from '../services/UploadRecording';
 import { uploadCritiques as uploadCritiquesToGoogleSheets, token as googleApiToken } from '../services/GoogleSheets';
 import { AsyncStorage } from 'react-native';
 
@@ -125,7 +126,16 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
     }
   }
   if (audioRecordingUri !== null) {
-    // TODO: send to Google Drive here -- takes audioRecordingUri (issue #40)
+    try {
+      const response = await uploadAudioAsync(audioRecordingUri, danceNumber);
+      if (response.status === 200) {
+        console.log("s3 upload response: " + JSON.stringify(response));
+      } else {
+        googleDriveErrorMessage = 's3 upload error for ' + danceId + '; ' + (await response.json());
+      }
+    } catch (e) {
+      googleDriveErrorMessage = 'Error uploading critique ' + danceId + ' to s3 bucket: ' + error;
+    }
   }
 
   if (googleDriveErrorMessage || googleSheetsErrorMessage) {
