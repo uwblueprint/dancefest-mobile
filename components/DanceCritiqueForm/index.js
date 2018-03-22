@@ -196,7 +196,7 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   getCommunicationScreen() {
-    return this.getCustomizedCritiqueSection('Demonstrates the ability to explore the elements of dance and movement ideas that connect to the selected dance style.','currentCommunicationMark', 'Communication')
+    return this.getCustomizedCritiqueSection('Dancers demonstrate focus during performance and cohesion within the group and/or with the audience.','currentCommunicationMark', 'Communication')
   }
 
   getRecordingScreen() {
