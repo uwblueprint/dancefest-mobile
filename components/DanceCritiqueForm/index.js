@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { dispatch } from 'redux';
 import { reduxForm, Field, reset } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
-import { some, isEmpty } from 'lodash/fp';
+import { some, isEmpty, clone } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
 import { StatusItemPanel, filler } from '../StatusItemPanel';
@@ -16,7 +15,7 @@ import TextField from '../TextField';
 import Icon from '../Icon';
 import { normalize } from '../../util/Scale';
 
-import { initializeDanceCritique, submitDanceCritique, uploadDanceCritique, uploadDanceAudioRecording } from '../../reducers/danceCritiques';
+import { initializeDanceCritique, submitDanceCritique, uploadDanceCritique } from '../../reducers/danceCritiques';
 
 const CRITIQUE_SECTIONS = {
   welcome: 0,
@@ -25,20 +24,25 @@ const CRITIQUE_SECTIONS = {
   danceSchool: 3,
   danceChoreographer: 4,
   danceStyle: 5,
-  technique: 6,
-  spatialAwareness: 7,
-  useOfMusicTextSilence: 8,
-  communicationElements: 9,
-  communication: 10,
-  recording: 11,
-  submission: 12,
+  danceLevel: 6,
+  recording: 7,
+  technique: 8,
+  spatialAwareness: 9,
+  useOfMusicTextSilence: 10,
+  communicationElements: 11,
+  communication: 12,
+  submission: 13,
 };
 
-const CRITIQUE_UPLOAD_INTERVAL = 1 * 60 * 1000;
+const CRITIQUE_UPLOAD_INTERVAL = 1 * 5 * 1000;
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
     danceNumber: PropTypes.string.isRequired,
+    danceTitle: PropTypes.string.isRequired,
+    danceChoreographer: PropTypes.string.isRequired,
+    danceStyle: PropTypes.string.isRequired,
+    danceLevel: PropTypes.string.isRequired,
     techniqueMark: PropTypes.string.isRequired,
     spatialAwarenessMark: PropTypes.string.isRequired,
     useOfMusicTextSilenceMark: PropTypes.string.isRequired,
@@ -51,6 +55,10 @@ class DanceCritiqueFormInner extends React.Component {
 
   static defaultProps = {
     danceNumber: '',
+    danceTitle: '',
+    danceChoreographer: '',
+    danceStyle: '',
+    danceLevel: '',
     techniqueMark: '',
     spatialAwarenessMark: '',
     useOfMusicTextSilenceMark: '',
@@ -66,20 +74,47 @@ class DanceCritiqueFormInner extends React.Component {
 
     this.state = {
       screen: 0,
+    };
+  }
+
+  async uploadDanceCritiquesAndRecording() {
+    if (this.syncing) {
+      return;
+    }
+    try {
+      this.syncing = true;
+      const curNotUploaded = clone(this.props.notUploadedDanceCritiques);
+      console.log(this.props.uploadedDanceCritiques)
+      console.log(this.props.notUploadedDanceCritiques)
+      for (let critique of curNotUploaded) {
+        let critiqueId, recordingUri;
+        if (!critique.uploadDanceCritiqueError && !critique.uploadDanceAudioRecordingError) {
+          critiqueId = critique.id;
+          recordingUri = critique.audioRecordingUri;
+        } else {
+          critiqueId = critique.uploadDanceCritiqueError ? critique.id : null;
+          recordingUri = critique.uploadDanceAudioRecordingError ? critique.audioRecordingUri : null;
+        }
+        console.log('dispatching: ', critiqueId, recordingUri);
+        await this.props.onUploadDanceCritique(critiqueId, recordingUri);
+      }
+    } finally {
+      this.syncing = false;
     }
   }
 
- uploadDanceCritiquesAndRecording () {
-
-  }
-
   componentDidMount() {
-    this.timer = setInterval(() => {
-      this.uploadDanceCritiquesAndRecording();
+    this.timer = setInterval(async () => {
+      console.log('attempting uploads');
+      await this.uploadDanceCritiquesAndRecording();
     }, CRITIQUE_UPLOAD_INTERVAL);
   }
 
-  onSubmit = () => {
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
+  onSubmit = async () => {
     const danceCritique = {
       danceId: this.props.id,
       danceNumber: this.props.danceNumber,
@@ -91,15 +126,16 @@ class DanceCritiqueFormInner extends React.Component {
       spatialAwarenessMark: this.props.spatialAwarenessMark,
       useOfMusicTextSilenceMark: this.props.useOfMusicTextSilenceMark,
       communicationElementsMark: this.props.communicationElementsMark,
+      communicationMark: this.props.communicationMark,
     };
 
-    if (some(this.props)(isEmpty)) {
-      console.log('yo you\'re missing some required fields');
-      // TODO: handle error better
-    } else {
-      this.props.onSubmitDanceCritique(danceCritique, this.props.audioRecordingUri);
-      this.navigateScreen(CRITIQUE_SECTIONS.welcome)
-    }
+    // TODO:: do validation
+    await this.props.onSubmitDanceCritique(danceCritique, this.props.audioRecordingUri);
+  }
+
+  onStartNewDanceCritique = () => {
+    this.props.onStartNewDanceCritique();
+    this.navigateScreen(CRITIQUE_SECTIONS.welcome);
   }
 
   navigateScreen = (screen) => {
@@ -155,11 +191,25 @@ class DanceCritiqueFormInner extends React.Component {
     return (
       <View style={styles.container}>
         <CritiqueSection
-          critiqueInput={RadioButtons}
-          critiqueInputProps={{buttonNames: ['1', '2', '3'], mergeButtons: true}}
+          critiqueInput={TextField}
+          critiqueInputProps={{keyboardType: 'numeric'}}
           description={description}
           name={name}
           title={title}
+        />
+      </View>
+    )
+  }
+
+  getCompLevelScreen() {
+    const compLevels = ['Novice', 'PC1', 'PC2', 'C1', 'C2'];
+    return (
+      <View style={styles.container}>
+        <CritiqueSection
+          critiqueInput={RadioButtons}
+          critiqueInputProps={{buttonNames: compLevels, mergeButtons: false}}
+          name={'currentDanceLevel'}
+          title={'Dance Level'}
         />
       </View>
     )
@@ -172,7 +222,7 @@ class DanceCritiqueFormInner extends React.Component {
         <CritiqueSection
           critiqueInput={RadioButtons}
           critiqueInputProps={{buttonNames: danceStyles, mergeButtons: false}}
-          name={'danceStyle'}
+          name={'currentDanceStyle'}
           title={'Dance Style'}
         />
       </View>
@@ -222,7 +272,7 @@ class DanceCritiqueFormInner extends React.Component {
   getButtonText(state) {
     if (state === CRITIQUE_SECTIONS.welcome) {
       return 'Start >'
-    } else if (state === CRITIQUE_SECTIONS.recording) {
+    } else if (state === CRITIQUE_SECTIONS.communication) {
       return 'Submit'
     } else {
       return 'Next'
@@ -233,11 +283,13 @@ class DanceCritiqueFormInner extends React.Component {
     this.props.onInitialize()
   }
 
-  onNavButtonPress() {
+  async onNavButtonPress() {
     if (this.state.screen === CRITIQUE_SECTIONS.welcome) {
-      this.startDanceCritiqueSection()
+      this.startDanceCritiqueSection();
+    } else if (this.state.screen === CRITIQUE_SECTIONS.communication) {
+      await this.onSubmit();
     }
-    this.navigateScreen(this.state.screen + 1)
+    this.navigateScreen(this.state.screen + 1);
   }
 
   getNavigationButtons() {
@@ -248,7 +300,9 @@ class DanceCritiqueFormInner extends React.Component {
             <Button
             action='Start Another Critique >'
             color='black'
-            onSubmit={() => {this.onSubmit()}} />
+            onSubmit={() => {
+              this.onStartNewDanceCritique();
+            }} />
           </View>
         </View>
       )
@@ -268,7 +322,7 @@ class DanceCritiqueFormInner extends React.Component {
             <Button
               action={this.getButtonText(this.state.screen)}
               color='black'
-              onSubmit={() => {this.onNavButtonPress()}}
+              onSubmit={async () => this.onNavButtonPress()}
             />
           </View>
         </View>
@@ -290,6 +344,8 @@ class DanceCritiqueFormInner extends React.Component {
       return this.getDanceTitleScreen()
     } else if (this.state.screen === CRITIQUE_SECTIONS.danceStyle) {
       return this.getDanceStyleScreen()
+    } else if (this.state.screen === CRITIQUE_SECTIONS.danceLevel) {
+      return this.getCompLevelScreen();
     } else if (this.state.screen === CRITIQUE_SECTIONS.technique) {
       return this.getTechniqueScreen()
     } else if(this.state.screen === CRITIQUE_SECTIONS.spatialAwareness) {
@@ -373,32 +429,41 @@ const mapStateToProps = state => {
   return {
     id: state.danceCritiques.currentDanceId,
     danceNumber: formValues.currentDanceNumber,
+    danceTitle: formValues.currentDanceTitle,
+    danceChoreographer: formValues.currentDanceChoreographer,
+    danceStyle: formValues.currentDanceStyle,
+    danceLevel: formValues.currentDanceLevel,
     techniqueMark: formValues.currentTechniqueMark,
     spatialAwarenessMark: formValues.currentSpatialAwarenessMark,
     useOfMusicTextSilenceMark: formValues.currentUseOfMusicTextSilenceMark,
     communicationElementsMark: formValues.currentCommunicationElementsMark,
     communicationMark: formValues.currentCommunicationMark,
-    audioRecordingUri: state.currentAudioRecordingUri,
-    notUploadedDanceCritiques: state.notUploadedDanceCritiques,
-    uploadedDanceCritiques: state.uploadedDanceCritiques,
+    audioRecordingUri: state.audioRecordings.currentAudioRecordingUri,
+    notUploadedDanceCritiques: state.danceCritiques.notUploadedDanceCritiques,
+    uploadedDanceCritiques: state.danceCritiques.uploadedDanceCritiques,
   }
-}
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     onInitialize: () => {
-      dispatch(initializeDanceCritique())
+      dispatch(initializeDanceCritique());
     },
-    onSubmitDanceCritique: (props) => {
-      dispatch(submitDanceCritique(props))
-      dispatch(reset('danceCritique'))
+    onSubmitDanceCritique: async (danceCritique, audioRecordingUri) => {
+      dispatch(await submitDanceCritique(danceCritique, audioRecordingUri));
     },
+    onStartNewDanceCritique: () => {
+      dispatch(reset('danceCritique'));
+    },
+    onUploadDanceCritique: async (critiqueId, recordingUri) => {
+      dispatch(await uploadDanceCritique(critiqueId, recordingUri));
+    }
   }
-}
+};
 
 const DanceCritiqueForm = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(DanceCritiqueFormInner);
 
 export default reduxForm({
