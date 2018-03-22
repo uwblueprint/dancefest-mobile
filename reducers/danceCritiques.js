@@ -1,5 +1,5 @@
 import { findIndex, find } from 'lodash/fp';
-import { uploadAudioAsync } from '../services/UploadRecording';
+import uploadAudioAsync from '../services/UploadRecording';
 import { uploadCritiques as uploadCritiquesToGoogleSheets, token as googleApiToken } from '../services/GoogleSheets';
 import { AsyncStorage } from 'react-native';
 
@@ -123,11 +123,10 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
   }
   if (audioRecordingUri !== null) {
     try {
-      uploadAudioAsync(audioRecordingUri, danceId).then(response => {
+      uploadAudioAsync(audioRecordingUri, danceNumber).then(response => {
         if (response.ok) {
           // move dancecritique from not uploaded to uploaded
-          const { location } = JSON.parse(response.body);
-          console.log("location: " + location);
+          console.log("s3 upload response: " + JSON.stringify(response));
         }
       });
     } catch (e) {
