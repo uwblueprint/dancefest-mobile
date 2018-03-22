@@ -74,7 +74,7 @@ const style = StyleSheet.create({
     borderColor: '#BBBBBB',
     borderWidth: 1,
     margin: 5,
-    padding: 20,
+    padding: 15,
     backgroundColor: '#fff',
   },
   mergedButton: {

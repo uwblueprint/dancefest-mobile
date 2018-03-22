@@ -153,7 +153,7 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   getDanceNumberScreen() {
-    return this.getDanceDetailsScreen('currentDanceNumber', 'Dance Number')
+    return this.getDanceDetailsScreen('currentDanceNumber', 'Dance Number', 'numeric')
   }
 
   getDanceTitleScreen() {
@@ -178,11 +178,11 @@ class DanceCritiqueFormInner extends React.Component {
     return this.getDanceDetailsScreen('currentDanceChoreographer', 'Choreographer')
   }
 
-  getDanceDetailsScreen(name, title) {
+  getDanceDetailsScreen(name, title, keyboardType) {
     return(
       <View style={styles.container}>
         <Text style={styles.textFieldTitle}>{title}</Text>
-        <Field name={name} component={TextField} />
+        <Field name={name} component={TextField} props={{keyboardType: keyboardType}}/>
       </View>
     )
   }
@@ -252,7 +252,7 @@ class DanceCritiqueFormInner extends React.Component {
   getRecordingScreen() {
     return(
       <View style={styles.container}>
-        <AudioRecorder />
+        <AudioRecorder navigateScreen={this.navigateScreen} />
       </View>
     )
   }
@@ -306,6 +306,8 @@ class DanceCritiqueFormInner extends React.Component {
           </View>
         </View>
       )
+    } else if (this.state.screen === CRITIQUE_SECTIONS.recording) {
+      return null;
     } else {
       return(
         <View style={styles.buttonContainer}>
@@ -372,7 +374,7 @@ class DanceCritiqueFormInner extends React.Component {
         {this.getNavigationButtons()}
       </View>
       <View style={styles.panel}>
-        <StatusItemPanel statusItemData={this.props.uploadedDanceCritiques.concat(this.props.notUploadedDanceCritiques.concat(filler))}/>
+        <StatusItemPanel statusItemData={this.props.notUploadedDanceCritiques.concat(this.props.uploadedDanceCritiques.concat(filler))}/>
       </View>
 
       </View>

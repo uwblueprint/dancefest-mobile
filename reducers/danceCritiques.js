@@ -112,8 +112,12 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
       const critique = JSON.parse(critiqueString);
       danceNumber = critique.danceNumber;
       danceTitle = critique.danceTitle;
-      const { success, message: googleSheetsErrorMessage } = await uploadCritiquesToGoogleSheets([critique], googleApiToken);
+
+      const response =  await uploadCritiquesToGoogleSheets([critique], googleApiToken);
+      const success = response.success;
+      googleSheetsErrorMessage = response.message;
       console.log('upload result: ', success, googleSheetsErrorMessage);
+
       if (success) {
         googleSheetsErrorMessage = '';
       }
@@ -194,7 +198,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
         currentUseOfMusicTextSilenceMark: '',
         currentCommunicationElementsMark: '',
         currentCommunicationMark: '',
-        notUploadedDanceCritiques: state.notUploadedDanceCritiques.concat(abridgedDanceCritique),
+        notUploadedDanceCritiques: getDanceCritiqueById(action.danceId)(state.notUploadedDanceCritiques) ? state.notUploadedDanceCritiques : state.notUploadedDanceCritiques.concat(abridgedDanceCritique),
         submitDanceCritiqueError: '',
       }
     case SUBMIT_DANCE_CRITIQUE_FAILURE:
