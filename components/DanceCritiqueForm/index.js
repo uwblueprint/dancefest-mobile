@@ -372,7 +372,7 @@ class DanceCritiqueFormInner extends React.Component {
         {this.getNavigationButtons()}
       </View>
       <View style={styles.panel}>
-        <StatusItemPanel statusItemData={this.props.uploadedDanceCritiques.concat(this.props.notUploadedDanceCritiques.concat(filler))}/>
+        <StatusItemPanel statusItemData={this.props.notUploadedDanceCritiques.concat(this.props.uploadedDanceCritiques.concat(filler))}/>
       </View>
 
       </View>
