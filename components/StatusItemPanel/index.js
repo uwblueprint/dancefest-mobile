@@ -43,14 +43,14 @@ class StatusItemPanel extends React.Component {
           <TouchableOpacity
             style={styles.uploadButton}
             onPress={this.onPress} >
-            <Icon name="Upload" height="85" width="120" fill="white" viewBox="0 0 20 20" />
+            <Icon name="Upload" height="85" width="120" fill="white" viewBox="0 0 30 30" />
           </TouchableOpacity>
         </View>
         <View style={this.state.toggle ? styles.openSidebar : styles.closedSidebar}>
           <TouchableOpacity
             style={styles.closeButton}
             onPress={this.onPress} >
-            <Icon name="Close" height="60" width="60" fill="white" viewBox="0 0 20 20" />
+            <Icon name="Close" height="60" width="60" fill="white" viewBox="0 0 30 30" />
           </TouchableOpacity>
           <StatusItemList statusItemData={this.props.statusItemData} />
         </View>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     left: 0,
     marginTop: '-16%',
-    paddingTop: '6.5%',
+    paddingTop: '2%',
   },
   closedSidebar: {
     flex: 1,
@@ -96,13 +96,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     left: -600,
     marginTop: '-16%',
-    paddingTop: '6.5%',
+    paddingTop: '2.5%',
   },
   closeButton: {
     alignItems: 'flex-end',
     backgroundColor: 'black',
     paddingTop: 10,
-    paddingBottom: 10,
+    paddingBottom: 0,
     marginLeft: '74%',
     width: '25%',
   },
