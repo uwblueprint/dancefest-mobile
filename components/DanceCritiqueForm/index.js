@@ -153,7 +153,7 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   getDanceNumberScreen() {
-    return this.getDanceDetailsScreen('currentDanceNumber', 'Dance Number')
+    return this.getDanceDetailsScreen('currentDanceNumber', 'Dance Number', 'numeric')
   }
 
   getDanceTitleScreen() {
@@ -178,11 +178,11 @@ class DanceCritiqueFormInner extends React.Component {
     return this.getDanceDetailsScreen('currentDanceChoreographer', 'Choreographer')
   }
 
-  getDanceDetailsScreen(name, title) {
+  getDanceDetailsScreen(name, title, keyboardType) {
     return(
       <View style={styles.container}>
         <Text style={styles.textFieldTitle}>{title}</Text>
-        <Field name={name} component={TextField} />
+        <Field name={name} component={TextField} props={{keyboardType: keyboardType}}/>
       </View>
     )
   }
