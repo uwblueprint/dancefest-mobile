@@ -12,14 +12,15 @@ const orderedColNames = [
   'spatialAwarenessMark',
   'useOfMusicTextSilenceMark',
   'communicationElementsMark',
-  'communicationMark'
+  'communicationMark',
 ];
 const spreadsheetId = '1Ga35NSevZnTb96VEIe_txoSoHgI-rPsB29hjf5_x_o4';
-const range = 'Sheet1!A1%3A' + String.fromCharCode('A'.charCodeAt() + orderedColNames.length) + '1';
+const range = 'Sheet1!A1%3AJ1';
 const apiUrl = 'https://sheets.googleapis.com/v4/spreadsheets/' + spreadsheetId + '/values/' + range + ':append';
 const pathArgs = '?valueInputOption=USER_ENTERED';
+export let token = '';
 
-export async function uploadCritiques(critiques) {
+export async function uploadCritiques(critiques, token) {
   // convert array of objects into array of arrays
   const cellData = [];
   _.forEach(critiques, () => {
@@ -32,7 +33,9 @@ export async function uploadCritiques(critiques) {
     });
   });
 
-  const token = await signInWithGoogleAsync();
+  if (!token) {
+    token = await signInWithGoogleAsync();
+  }
   if (!token) {
     return { success: false, message: 'Google sign in failed'};
   }

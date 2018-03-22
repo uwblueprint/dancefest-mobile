@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect, dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { reduxForm, Field, reset } from 'redux-form';
 import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
-import { some, isEmpty, forEach, clone } from 'lodash/fp';
+import { some, isEmpty, clone } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
 import RadioButtons from '../RadioButtons';
@@ -76,13 +76,28 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   async uploadDanceCritiquesAndRecording() {
-    const curNotUploaded = clone(this.props.notUploadedDanceCritiques);
-    forEach(curNotUploaded, async (critique) => {
-      const critiqueId = critique.uploadDanceCritiqueError ? critique.id : null;
-      const recordingUri = critique.recordingUri ? critique.id : null;
-      console.log('dispatching: ', critiqueId)
-      dispatch(await uploadDanceCritique(critiqueId, recordingUri));
-    });
+    if (this.syncing) {
+      return;
+    }
+    try {
+      this.syncing = true;
+      const curNotUploaded = clone(this.props.notUploadedDanceCritiques);
+      console.log(curNotUploaded);
+      for (let critique of curNotUploaded) {
+        let critiqueId, recordingUri;
+        if (!critique.uploadDanceCritiqueError && !critique.uploadDanceAudioRecordingError) {
+          critiqueId = critique.id;
+          recordingUri = critique.audioRecordingUri;
+        } else {
+          critiqueId = critique.uploadDanceCritiqueError ? critique.id : null;
+          recordingUri = critique.uploadDanceAudioRecordingError ? critique.audioRecordingUri : null;
+        }
+        console.log('dispatching: ', critiqueId, recordingUri);
+        await this.props.onUploadDanceCritique(critiqueId, recordingUri);
+      }
+    } finally {
+      this.syncing = false;
+    }
   }
 
   componentDidMount() {
@@ -110,13 +125,13 @@ class DanceCritiqueFormInner extends React.Component {
       communicationElementsMark: this.props.communicationElementsMark,
     };
 
-    if (some(this.props)(isEmpty)) {
-      console.log('yo you\'re missing some required fields');
-      // TODO: handle error better
-    } else {
-      await this.props.onSubmitDanceCritique(danceCritique, this.props.audioRecordingUri);
-      this.navigateScreen(CRITIQUE_SECTIONS.welcome)
-    }
+    // TODO:: do validation
+    await this.props.onSubmitDanceCritique(danceCritique, this.props.audioRecordingUri);
+  }
+
+  onStartNewDanceCritique = () => {
+    this.props.onStartNewDanceCritique();
+    this.navigateScreen(CRITIQUE_SECTIONS.welcome);
   }
 
   navigateScreen = (screen) => {
@@ -239,9 +254,11 @@ class DanceCritiqueFormInner extends React.Component {
     this.props.onInitialize()
   }
 
-  onNavButtonPress() {
+  async onNavButtonPress() {
     if (this.state.screen === CRITIQUE_SECTIONS.welcome) {
       this.startDanceCritiqueSection()
+    } else if (this.state.screen === CRITIQUE_SECTIONS.recording) {
+      await this.onSubmit()
     }
     this.navigateScreen(this.state.screen + 1)
   }
@@ -253,7 +270,9 @@ class DanceCritiqueFormInner extends React.Component {
           <Button
           action='Start Another Critique >'
           color='black'
-          onSubmit={() => {this.onSubmit()}} />
+          onSubmit={() => {
+            this.onStartNewDanceCritique();
+          }} />
         </View>
       )
     } else {
@@ -272,7 +291,7 @@ class DanceCritiqueFormInner extends React.Component {
             <Button
               action={this.getButtonText(this.state.screen)}
               color='black'
-              onSubmit={() => {this.onNavButtonPress()}}
+              onSubmit={async () => this.onNavButtonPress()}
             />
           </View>
         </View>
@@ -367,26 +386,31 @@ const mapStateToProps = state => {
     useOfMusicTextSilenceMark: formValues.currentUseOfMusicTextSilenceMark,
     communicationElementsMark: formValues.currentCommunicationElementsMark,
     communicationMark: formValues.currentCommunicationMark,
-    audioRecordingUri: state.currentAudioRecordingUri,
-    notUploadedDanceCritiques: state.notUploadedDanceCritiques,
+    audioRecordingUri: state.audioRecordings.currentAudioRecordingUri,
+    notUploadedDanceCritiques: state.danceCritiques.notUploadedDanceCritiques,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onInitialize: () => {
-      dispatch(initializeDanceCritique())
+      dispatch(initializeDanceCritique());
     },
-    onSubmitDanceCritique: async (props) => {
-      dispatch(await submitDanceCritique(props))
-      dispatch(reset('danceCritique'))
+    onSubmitDanceCritique: async (danceCritique, audioRecordingUri) => {
+      dispatch(await submitDanceCritique(danceCritique, audioRecordingUri));
     },
+    onStartNewDanceCritique: () => {
+      dispatch(reset('danceCritique'));
+    },
+    onUploadDanceCritique: async (critiqueId, recordingUri) => {
+      dispatch(await uploadDanceCritique(critiqueId, recordingUri));
+    }
   }
 };
 
 const DanceCritiqueForm = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(DanceCritiqueFormInner);
 
 export default reduxForm({

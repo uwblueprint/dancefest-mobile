@@ -1,11 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Alert, Platform, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import _ from 'lodash';
 import { Audio, Permissions } from 'expo';
 import Icon from './../Icon';
 import { normalize } from '../../util/Scale';
 
-export default class AudioRecorder extends React.Component {
+import { setAudioUri } from '../../reducers/audioRecordings';
+
+class AudioRecorderInner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,9 +19,11 @@ export default class AudioRecorder extends React.Component {
   }
 
   updateDuration(status) {
-    this.setState({
-      recordingDuration: status.durationMillis || 0,
-    });
+    if (this.isMounted()) {
+      this.setState({
+        recordingDuration: status.durationMillis || 0,
+      });
+    }
   }
 
   async checkForExistingRecording() {
@@ -104,7 +109,7 @@ export default class AudioRecorder extends React.Component {
       stateUpdate.recording = newRecording;
     }
     if (uri) {
-      // TODO:: save URI to store
+      this.props.dispatch(setAudioUri(uri));
     }
     this.setState(stateUpdate);
   }
@@ -142,7 +147,7 @@ export default class AudioRecorder extends React.Component {
       }
 
       if (uri && !clear) {
-        // TODO:: save URI to store
+        this.props.dispatch(setAudioUri(uri));
       }
 
       const stateUpdate = {
@@ -187,6 +192,8 @@ export default class AudioRecorder extends React.Component {
     );
   }
 }
+
+const AudioRecorder = connect()(AudioRecorderInner);
 
 const styles = StyleSheet.create({
   audioRecorder: {
@@ -238,3 +245,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF2464',
   },
 });
+
+export default AudioRecorder;

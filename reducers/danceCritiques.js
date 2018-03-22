@@ -1,5 +1,6 @@
 import { findIndex, find } from 'lodash/fp';
-import { uploadCritiques as uploadCritiquesToGoogleSheets } from '../services/GoogleSheets';
+import { uploadCritiques as uploadCritiquesToGoogleSheets, token as googleApiToken } from '../services/GoogleSheets';
+import { AsyncStorage } from 'react-native';
 
 /**
  * Helpers
@@ -67,7 +68,7 @@ export const SUBMIT_DANCE_CRITIQUE_SUCCESS = 'SUBMIT_DANCE_CRITIQUE_SUCCESS';
 export const SUBMIT_DANCE_CRITIQUE_FAILURE = 'SUBMIT_DANCE_CRITIQUE_FAILURE';
 
 export async function submitDanceCritique (danceCritique, audioRecordingUri) {
-  const { id: danceId, danceNumber, danceTitle } = danceCritique;
+  const { danceId, danceNumber, danceTitle } = danceCritique;
   let submitDanceCritiqueError;
 
   try {
@@ -99,19 +100,23 @@ export async function submitDanceCritique (danceCritique, audioRecordingUri) {
 export const UPLOAD_DANCE_CRITIQUE_SUCCESS = 'UPLOAD_DANCE_CRITIQUE_SUCCESS';
 export const UPLOAD_DANCE_CRITIQUE_FAILURE = 'UPLOAD_DANCE_CRITIQUE_FAILURE';
 
-export async function uploadDanceCritique (danceCritiqueId, audioRecordingUri) {
+export async function uploadDanceCritique (danceId, audioRecordingUri) {
   let googleDriveErrorMessage = '';
   let googleSheetsErrorMessage = '';
+  let danceNumber, danceTitle;
 
-  if (danceCritiqueId !== null) {
+  if (danceId !== null) {
     try {
-      const critique = await AsyncStorage.getItem(danceCritiqueId);
-      const { success, message: googleSheetsErrorMessage } = await uploadCritiquesToGoogleSheets([critique]);
+      const critiqueString = await AsyncStorage.getItem(danceId);
+      const critique = JSON.parse(critiqueString);
+      danceNumber = critique.danceNumber;
+      danceTitle = critique.danceTitle;
+      const { success, message: googleSheetsErrorMessage } = await uploadCritiquesToGoogleSheets([critique], googleApiToken);
       if (success) {
         googleSheetsErrorMessage = '';
       }
     } catch (error) {
-      googleSheetsErrorMessage = 'Error getting critique ' + danceCritiqueId + ' from AsyncStorage!';
+      googleSheetsErrorMessage = 'Error getting critique ' + danceId + ' from AsyncStorage!';
     }
   }
   if (audioRecordingUri !== null) {
@@ -128,7 +133,7 @@ export async function uploadDanceCritique (danceCritiqueId, audioRecordingUri) {
   }
 
   try {
-    await AsyncStorage.removeItem(danceCritiqueId);
+    await AsyncStorage.removeItem(danceId);
   } catch (error) {
     // TODO:: handle this error properly. Right now if removing the item fails
     // then we just let the dance critique stay in the store
