@@ -69,6 +69,10 @@ class DanceCritiqueFormInner extends React.Component {
     }
   }
 
+ uploadDanceCritiquesAndRecording () {
+
+  }
+
   componentDidMount() {
     this.timer = setInterval(() => {
       this.uploadDanceCritiquesAndRecording();
