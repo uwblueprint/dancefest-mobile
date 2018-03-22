@@ -9,6 +9,12 @@
       "bundleIdentifier": "com.uwblueprint.dancefest"
     },
     "android": {
+      "config": {
+        "googleSignIn": {
+          "certificateHash": "BF5C6F497B478218C8F42F1274BA765F09C434D3",
+          "apiKey": "AIzaSyB7g_5Z2Cn6w4rwL7gQp7eGGU0KlovYpks"
+        }
+      },
       "package": "com.uwblueprint.dancefest"
     }
    }

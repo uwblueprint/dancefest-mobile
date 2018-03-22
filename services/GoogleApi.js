@@ -5,7 +5,7 @@ const config =
    iosStandaloneAppClientId: '620228359926-l9um9agdpoogfs82thfi1u5g7pjsgniu.apps.googleusercontent.com',
    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 } :{
-   androidStandaloneAppClientId: '620228359926-gr8206oqn5ci5hdauao697qmpb8inj08.apps.googleusercontent.com',
+   androidStandaloneAppClientId: '620228359926-6fc09eiven81esan1uh3eg003fa812hs.apps.googleusercontent.com',
    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 }:
 {
