@@ -6,12 +6,13 @@ import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
 import { some, isEmpty, clone } from 'lodash/fp';
 import { getFormValues } from 'redux-form';
 
+import { StatusItemPanel, filler } from '../StatusItemPanel';
 import RadioButtons from '../RadioButtons';
-import AudioRecorder from '../AudioRecorder';
 import Button from '../Button';
+import AudioRecorder from '../AudioRecorder';
 import CritiqueSection from '../CritiqueSection';
 import TextField from '../TextField';
-import Icon from '../Icon'
+import Icon from '../Icon';
 import { normalize } from '../../util/Scale';
 
 import { initializeDanceCritique, submitDanceCritique, uploadDanceCritique } from '../../reducers/danceCritiques';
@@ -23,20 +24,20 @@ const CRITIQUE_SECTIONS = {
   danceSchool: 3,
   danceChoreographer: 4,
   danceStyle: 5,
-  technique: 6,
-  spatialAwareness: 7,
-  useOfMusicTextSilence: 8,
-  communicationElements: 9,
-  communication: 10,
-  recording: 11,
-  submission: 12,
+  danceLevel: 6,
+  recording: 7,
+  technique: 8,
+  spatialAwareness: 9,
+  useOfMusicTextSilence: 10,
+  communicationElements: 11,
+  communication: 12,
+  submission: 13,
 };
 
 const CRITIQUE_UPLOAD_INTERVAL = 1 * 5 * 1000;
 
 class DanceCritiqueFormInner extends React.Component {
   static propTypes = {
-    id: PropTypes.string.isRequired,
     danceNumber: PropTypes.string.isRequired,
     danceTitle: PropTypes.string.isRequired,
     danceChoreographer: PropTypes.string.isRequired,
@@ -49,10 +50,10 @@ class DanceCritiqueFormInner extends React.Component {
     communicationMark: PropTypes.string.isRequired,
     audioRecordingUri: PropTypes.string.isRequired,
     notUploadedDanceCritiques: PropTypes.arrayOf(PropTypes.object).isRequired,
-  };
+    uploadedDanceCritiques: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }
 
   static defaultProps = {
-    id: '',
     danceNumber: '',
     danceTitle: '',
     danceChoreographer: '',
@@ -65,7 +66,8 @@ class DanceCritiqueFormInner extends React.Component {
     communicationMark: '',
     audioRecordingUri: '',
     notUploadedDanceCritiques: [],
-  };
+    uploadedDanceCritiques: [],
+  }
 
   constructor(props) {
     super(props);
@@ -82,7 +84,8 @@ class DanceCritiqueFormInner extends React.Component {
     try {
       this.syncing = true;
       const curNotUploaded = clone(this.props.notUploadedDanceCritiques);
-      console.log(curNotUploaded);
+      console.log(this.props.uploadedDanceCritiques)
+      console.log(this.props.notUploadedDanceCritiques)
       for (let critique of curNotUploaded) {
         let critiqueId, recordingUri;
         if (!critique.uploadDanceCritiqueError && !critique.uploadDanceAudioRecordingError) {
@@ -123,6 +126,7 @@ class DanceCritiqueFormInner extends React.Component {
       spatialAwarenessMark: this.props.spatialAwarenessMark,
       useOfMusicTextSilenceMark: this.props.useOfMusicTextSilenceMark,
       communicationElementsMark: this.props.communicationElementsMark,
+      communicationMark: this.props.communicationMark,
     };
 
     // TODO:: do validation
@@ -137,7 +141,7 @@ class DanceCritiqueFormInner extends React.Component {
   navigateScreen = (screen) => {
     this.setState({
       screen: screen
-    })
+    });
   }
 
   getWelcomeScreen() {
@@ -187,6 +191,20 @@ class DanceCritiqueFormInner extends React.Component {
     )
   }
 
+  getCompLevelScreen() {
+    const compLevels = ['Novice', 'PC1', 'PC2', 'C1', 'C2'];
+    return (
+      <View style={styles.container}>
+        <CritiqueSection
+          critiqueInput={RadioButtons}
+          critiqueInputProps={{buttonNames: compLevels, mergeButtons: false}}
+          name={'currentDanceLevel'}
+          title={'Dance Level'}
+        />
+      </View>
+    )
+  }
+
   getDanceStyleScreen() {
     const danceStyles = ['Jazz', 'Lyrical', 'Ballet','Modern/Contemporary', 'Musical Theatre/LipSync', 'Musical Theatre/Live Vocals', 'Hip Hop', 'Tap', 'Cultural', 'Open/Fusion', 'CREATIVE COLLABORATION', 'Teacher Choreographed Dances']
     return (
@@ -194,7 +212,7 @@ class DanceCritiqueFormInner extends React.Component {
         <CritiqueSection
           critiqueInput={RadioButtons}
           critiqueInputProps={{buttonNames: danceStyles, mergeButtons: false}}
-          name={'danceStyle'}
+          name={'currentDanceStyle'}
           title={'Dance Style'}
         />
       </View>
@@ -218,7 +236,7 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   getCommunicationScreen() {
-    return this.getCustomizedCritiqueSection('Demonstrates the ability to explore the elements of dance and movement ideas that connect to the selected dance style.','currentCommunicationMark', 'Communication')
+    return this.getCustomizedCritiqueSection('Dancers demonstrate focus during performance and cohesion within the group and/or with the audience.','currentCommunicationMark', 'Communication')
   }
 
   getRecordingScreen() {
@@ -243,7 +261,7 @@ class DanceCritiqueFormInner extends React.Component {
   getButtonText(state) {
     if (state === CRITIQUE_SECTIONS.welcome) {
       return 'Start >'
-    } else if (state === CRITIQUE_SECTIONS.recording) {
+    } else if (state === CRITIQUE_SECTIONS.communication) {
       return 'Submit'
     } else {
       return 'Next'
@@ -256,11 +274,11 @@ class DanceCritiqueFormInner extends React.Component {
 
   async onNavButtonPress() {
     if (this.state.screen === CRITIQUE_SECTIONS.welcome) {
-      this.startDanceCritiqueSection()
-    } else if (this.state.screen === CRITIQUE_SECTIONS.recording) {
-      await this.onSubmit()
+      this.startDanceCritiqueSection();
+    } else if (this.state.screen === CRITIQUE_SECTIONS.communication) {
+      await this.onSubmit();
     }
-    this.navigateScreen(this.state.screen + 1)
+    this.navigateScreen(this.state.screen + 1);
   }
 
   getNavigationButtons() {
@@ -313,6 +331,8 @@ class DanceCritiqueFormInner extends React.Component {
       return this.getDanceTitleScreen()
     } else if (this.state.screen === CRITIQUE_SECTIONS.danceStyle) {
       return this.getDanceStyleScreen()
+    } else if (this.state.screen === CRITIQUE_SECTIONS.danceLevel) {
+      return this.getCompLevelScreen();
     } else if (this.state.screen === CRITIQUE_SECTIONS.technique) {
       return this.getTechniqueScreen()
     } else if(this.state.screen === CRITIQUE_SECTIONS.spatialAwareness) {
@@ -332,15 +352,30 @@ class DanceCritiqueFormInner extends React.Component {
 
   render() {
     return (
+      <View style={styles.form}>
+
       <View style={styles.container}>
         {this.getCritiqueSection()}
         {this.getNavigationButtons()}
+      </View>
+      <View style={styles.panel}>
+        <StatusItemPanel statusItemData={this.props.uploadedDanceCritiques.concat(this.props.notUploadedDanceCritiques.concat(filler))}/>
+      </View>
+
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  form: {
+    flex: 1,
+//    flexDirection: 'row',
+  },
+  panel: {
+    position: 'absolute',
+
+  },
   container: {
     flex: 1,
     backgroundColor: '#000',
@@ -381,6 +416,10 @@ const mapStateToProps = state => {
   return {
     id: state.danceCritiques.currentDanceId,
     danceNumber: formValues.currentDanceNumber,
+    danceTitle: formValues.currentDanceTitle,
+    danceChoreographer: formValues.currentDanceChoreographer,
+    danceStyle: formValues.currentDanceStyle,
+    danceLevel: formValues.currentDanceLevel,
     techniqueMark: formValues.currentTechniqueMark,
     spatialAwarenessMark: formValues.currentSpatialAwarenessMark,
     useOfMusicTextSilenceMark: formValues.currentUseOfMusicTextSilenceMark,
@@ -388,6 +427,7 @@ const mapStateToProps = state => {
     communicationMark: formValues.currentCommunicationMark,
     audioRecordingUri: state.audioRecordings.currentAudioRecordingUri,
     notUploadedDanceCritiques: state.danceCritiques.notUploadedDanceCritiques,
+    uploadedDanceCritiques: state.danceCritiques.uploadedDanceCritiques,
   }
 };
 

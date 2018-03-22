@@ -21,6 +21,7 @@ const pathArgs = '?valueInputOption=USER_ENTERED';
 export let token = '';
 
 export async function uploadCritiques(critiques, token) {
+  console.log('critiques: ', critiques);
   // convert array of objects into array of arrays
   const cellData = [];
   _.forEach(critiques, () => {
@@ -52,8 +53,10 @@ export async function uploadCritiques(critiques, token) {
         values: cellData,
       }),
     });
-    console.log(response);
-    return { successs: response.ok, message: 'uploaded successfully' };
+    if (response.status == 200) {
+      return { success: true, message: 'uploaded successfully' };
+    }
+    return { success: false, message: 'error uploading' + (await response.json()) };
   } catch (error) {
     console.error(error);
     return { success: false, message: error};

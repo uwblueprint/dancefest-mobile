@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { StatusItem } from './../StatusItem';
+import StatusItem from './../StatusItem';
 
 
 const StatusItemListView = ({ statusItemData }) => (
@@ -10,10 +10,12 @@ const StatusItemListView = ({ statusItemData }) => (
       data={statusItemData}
       renderItem={({ item }) => (
         <StatusItem
-          danceNum={item.danceNum}
-          danceStatus={item.danceStatus}
-          danceName={item.danceName} />)}
-      keyExtractor={item => item.danceNum} />
+          danceNumber={parseInt(item.danceNumber)}
+          danceTitle={item.danceTitle}
+          uploadDanceCritiqueError={item.uploadDanceCritiqueError}
+          uploadDanceAudioRecordingError={item.uploadDanceAudioRecordingError}
+           />)}
+      keyExtractor={item => item.id} />
   </View>
 );
 
@@ -24,9 +26,7 @@ StatusItemListView.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: '6%',
-    width: '75%',
-    marginRight: '25%',
+    paddingTop: 0,
   },
 });
 

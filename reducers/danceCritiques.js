@@ -112,11 +112,12 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
       danceNumber = critique.danceNumber;
       danceTitle = critique.danceTitle;
       const { success, message: googleSheetsErrorMessage } = await uploadCritiquesToGoogleSheets([critique], googleApiToken);
+      console.log('upload result: ', success, googleSheetsErrorMessage);
       if (success) {
         googleSheetsErrorMessage = '';
       }
     } catch (error) {
-      googleSheetsErrorMessage = 'Error getting critique ' + danceId + ' from AsyncStorage!';
+      googleSheetsErrorMessage = 'Error getting critique ' + danceId + ' from AsyncStorage: ' + error;
     }
   }
   if (audioRecordingUri !== null) {
@@ -133,8 +134,10 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
   }
 
   try {
+    console.log('removing from async storage!')
     await AsyncStorage.removeItem(danceId);
   } catch (error) {
+    console.log('error removing ' + danceId + ' from async storage: ' + error);
     // TODO:: handle this error properly. Right now if removing the item fails
     // then we just let the dance critique stay in the store
   }
@@ -197,7 +200,7 @@ export default function danceCritiques (state = initialState(), action = {}) {
         danceNumber: action.danceNumber,
         danceTitle: action.danceTitle,
       };
-
+      console.log("upload success ???", index);
       return {
         ...state,
         notUploadedDanceCritiques: deleteItemAtIndex(index)(state.notUploadedDanceCritiques),

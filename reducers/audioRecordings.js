@@ -15,7 +15,6 @@ export function initialState () {
 export const SET_AUDIO_URI = 'SET_AUDIO_URI';
 
 export function setAudioUri(uri) {
-  console.log('setAudioUri');
   return {
     type: SET_AUDIO_URI,
     uri
@@ -29,7 +28,6 @@ export function setAudioUri(uri) {
 export default function audioRecordings (state = initialState(), action = {}) {
   switch (action.type) {
     case SET_AUDIO_URI:
-      console.log('setAudioUri dispatch', action.uri);
       return {
         ...state,
         currentAudioRecordingUri: action.uri,

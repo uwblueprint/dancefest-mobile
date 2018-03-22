@@ -19,11 +19,16 @@ class AudioRecorderInner extends React.Component {
   }
 
   updateDuration(status) {
-    if (this.isMounted()) {
-      this.setState({
-        recordingDuration: status.durationMillis || 0,
-      });
+    this.setState({
+      recordingDuration: status.durationMillis || 0,
+    });
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.recordingDuration == this.state.recordingDuration) {
+      return false;
     }
+    return true;
   }
 
   async checkForExistingRecording() {
