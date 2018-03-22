@@ -10,7 +10,7 @@ const StatusItemListView = ({ statusItemData }) => (
       data={statusItemData}
       renderItem={({ item }) => (
         <StatusItem
-          danceNumber={item.danceNumber}
+          danceNumber={parseInt(item.danceNumber)}
           danceTitle={item.danceTitle}
           uploadDanceCritiqueError={item.uploadDanceCritiqueError}
           uploadDanceAudioRecordingError={item.uploadDanceAudioRecordingError}
