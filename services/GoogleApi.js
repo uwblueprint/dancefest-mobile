@@ -1,3 +1,5 @@
+import Expo from 'expo';
+
 export async function signInWithGoogleAsync() {
   try {
     const result = await Expo.Google.logInAsync({
