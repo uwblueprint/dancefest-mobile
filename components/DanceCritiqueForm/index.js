@@ -153,7 +153,7 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   getDanceNumberScreen() {
-    return this.getDanceDetailsScreen('currentDanceNumber', 'Dance Number')
+    return this.getDanceDetailsScreen('currentDanceNumber', 'Dance Number', 'numeric')
   }
 
   getDanceTitleScreen() {
@@ -178,11 +178,11 @@ class DanceCritiqueFormInner extends React.Component {
     return this.getDanceDetailsScreen('currentDanceChoreographer', 'Choreographer')
   }
 
-  getDanceDetailsScreen(name, title) {
+  getDanceDetailsScreen(name, title, keyboardType) {
     return(
       <View style={styles.container}>
         <Text style={styles.textFieldTitle}>{title}</Text>
-        <Field name={name} component={TextField} />
+        <Field name={name} component={TextField} props={{keyboardType: keyboardType}}/>
       </View>
     )
   }
@@ -216,7 +216,7 @@ class DanceCritiqueFormInner extends React.Component {
   }
 
   getDanceStyleScreen() {
-    const danceStyles = ['Jazz', 'Lyrical', 'Ballet','Modern/Contemporary', 'Musical Theatre/LipSync', 'Musical Theatre/Live Vocals', 'Hip Hop', 'Tap', 'Cultural', 'Open/Fusion', 'CREATIVE COLLABORATION', 'Teacher Choreographed Dances']
+    const danceStyles = ['Jazz', 'Lyrical', 'Ballet', 'Tap', 'Modern/Contemporary', 'Musical Theatre/LipSync', 'Musical Theatre/Live Vocals', 'Hip Hop', 'Cultural', 'Open/Fusion', 'CREATIVE COLLABORATION', 'Teacher Choreographed Dances']
     return (
       <View style={styles.container}>
         <CritiqueSection
@@ -260,10 +260,11 @@ class DanceCritiqueFormInner extends React.Component {
   getSubmissionScreen() {
     return (
       <View style={styles.container, {alignItems: 'center'}}>
-        <View style={{paddingLeft: '15%'}} >
+        <View style={{paddingLeft: '10%'}} >
           <Icon name='Submission' height="200" width="200" fill='#EB6284' viewBox="0 0 30 30" />
         </View>
-        <Text style={{color: 'white'}}>Successfully Uploaded!</Text>
+        <Text style={{color: 'white', fontSize: 26, }}>Submitted Successfully!</Text>
+        <Text style={{color: 'white', fontSize: 22, }}>Check Status In Sidebar</Text>
       </View>
     )
   }
@@ -294,13 +295,15 @@ class DanceCritiqueFormInner extends React.Component {
   getNavigationButtons() {
     if (this.state.screen === CRITIQUE_SECTIONS.submission) {
       return(
-        <View style={styles.button}>
-          <Button
-          action='Start Another Critique >'
-          color='black'
-          onSubmit={() => {
-            this.onStartNewDanceCritique();
-          }} />
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Button
+            action='Start Another Critique >'
+            color='black'
+            onSubmit={() => {
+              this.onStartNewDanceCritique();
+            }} />
+          </View>
         </View>
       )
     } else {
@@ -369,7 +372,7 @@ class DanceCritiqueFormInner extends React.Component {
         {this.getNavigationButtons()}
       </View>
       <View style={styles.panel}>
-        <StatusItemPanel statusItemData={this.props.uploadedDanceCritiques.concat(this.props.notUploadedDanceCritiques.concat(filler))}/>
+        <StatusItemPanel statusItemData={this.props.notUploadedDanceCritiques.concat(this.props.uploadedDanceCritiques.concat(filler))}/>
       </View>
 
       </View>
