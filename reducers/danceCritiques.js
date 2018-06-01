@@ -3,6 +3,8 @@ import uploadAudioAsync from '../services/UploadRecording';
 import { uploadCritiques as uploadCritiquesToGoogleSheets, token as googleApiToken } from '../services/GoogleSheets';
 import { AsyncStorage } from 'react-native';
 
+// import { dummyFunction as dummy} from '../services/BackendServices.js'; // TESTING PURPOSES
+
 /**
  * Helpers
  */
