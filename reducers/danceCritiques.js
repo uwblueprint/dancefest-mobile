@@ -1,9 +1,9 @@
 import { findIndex, find } from 'lodash/fp';
 import uploadAudioAsync from '../services/UploadRecording';
-import { uploadCritiques as uploadCritiquesToGoogleSheets, token as googleApiToken } from '../services/GoogleSheets';
+//import { uploadCritiques as uploadCritiquesToGoogleSheets, token as googleApiToken } from '../services/GoogleSheets';
 import { AsyncStorage } from 'react-native';
 
-// import { dummyFunction as dummy} from '../services/BackendServices.js'; // TESTING PURPOSES
+import { sendToAPI } from '../services/BackendServices'; // TESTING PURPOSES
 
 /**
  * Helpers
@@ -116,7 +116,10 @@ export async function uploadDanceCritique (danceId, audioRecordingUri) {
       danceTitle = critique.danceTitle;
       critique.audioRecordingUri = audioRecordingUri;
 
-      const response =  await uploadCritiquesToGoogleSheets([critique], googleApiToken);
+      //const response =  await uploadCritiquesToGoogleSheets([critique], googleApiToken);
+
+      const response = await sendToAPI(critique);
+
       const success = response.success;
       googleSheetsErrorMessage = response.message;
       console.log('upload result: ', success, googleSheetsErrorMessage);
